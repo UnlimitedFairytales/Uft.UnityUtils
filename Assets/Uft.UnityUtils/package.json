@@ -11,5 +11,12 @@
   "dependencies": {
     "com.unity.ugui": "2.0.0"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "samples": [
+        {
+            "displayName": "Uft.UnityUtils.UI sample",
+            "description": "Uft.UnityUtils.UI sample",
+            "path": "Samples~/UISample"
+        }
+    ]
 }
