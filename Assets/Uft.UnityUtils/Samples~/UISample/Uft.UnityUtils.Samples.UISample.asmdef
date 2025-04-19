@@ -1,9 +1,10 @@
 {
-    "name": "Uft.UnityUtils.TapSample",
+    "name": "Uft.UnityUtils.Samples.UISample",
     "rootNamespace": "",
     "references": [
-        "GUID:c2c3a752e401a1a4d8e6e30b1c11ecf7",
-        "GUID:f51ebe6a0ceec4240a699833d6309b23"
+        "Uft.UnityUtils",
+        "UniTask",
+        "Unity.TextMeshPro"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

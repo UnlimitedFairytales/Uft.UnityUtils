@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Uft.UnityUtils.Samples
+namespace Uft.UnityUtils.Samples.UISample
 {
     public class TMPUtilSample : MonoBehaviour
     {
