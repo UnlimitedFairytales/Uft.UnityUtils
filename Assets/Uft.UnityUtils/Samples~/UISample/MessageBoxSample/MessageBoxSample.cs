@@ -3,7 +3,7 @@ using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Uft.UnityUtils.Samples
+namespace Uft.UnityUtils.Samples.UISample
 {
     public class MessageBoxSample : MonoBehaviour
     {

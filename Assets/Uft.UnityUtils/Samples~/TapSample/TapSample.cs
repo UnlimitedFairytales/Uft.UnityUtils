@@ -1,7 +1,7 @@
 ﻿using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-namespace Uft.UnityUtils.Samples
+namespace Uft.UnityUtils.Samples.TapSample
 {
     public class TapSample : MonoBehaviour
     {
