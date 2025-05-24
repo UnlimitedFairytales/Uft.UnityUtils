@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace Uft.UnityUtils.Common
@@ -49,6 +50,11 @@ namespace Uft.UnityUtils.Common
                 return dic[key].Equals(val);
             }
             return false;
+        }
+
+        public static ReadOnlyDictionary<TKey, TVal> CloneAsReadOnly<TKey, TVal>(this IDictionary<TKey, TVal> dictionary)
+        {
+            return new ReadOnlyDictionary<TKey, TVal>(new Dictionary<TKey, TVal>(dictionary));
         }
     }
 }
