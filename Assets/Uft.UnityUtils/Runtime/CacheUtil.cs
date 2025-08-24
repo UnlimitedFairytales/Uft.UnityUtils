@@ -35,10 +35,7 @@ namespace Uft.UnityUtils
 
         public static T[] GetCachedChildrenComponents<T>(T[] cached, MonoBehaviour script) where T : Component
         {
-            if (cached == null)
-            {
-                cached = script.GetComponentsInChildren<T>();
-            }
+            cached ??= script.GetComponentsInChildren<T>();
             return cached;
         }
 
