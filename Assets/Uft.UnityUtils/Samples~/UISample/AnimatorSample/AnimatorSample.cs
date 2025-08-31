@@ -25,7 +25,7 @@ namespace Uft.UnityUtils.Samples.UISample
                 var nextStateName = _isClosed ? SHOWING : CLOSING;
                 _isClosed = !_isClosed;
                 _animator.SetTrigger(nextStateName);
-                await AnimatorUtil.DelayForAnimation(_animator, nextStateName);
+                await AnimatorUtil.DelayForAnimation(_animator, nextStateName, true);
                 Debug.Log($"{nextStateName} complete");
             }));
         }

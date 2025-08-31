@@ -39,7 +39,7 @@ namespace Uft.UnityUtils.UI
             if (_animator != null)
             {
                 _animator.SetTrigger(_showingTriggerAndStateName);
-                await AnimatorUtil.DelayForAnimation(_animator, _showingTriggerAndStateName, _isCompletionOnUnexpectedNextState, default, _layerIndex);
+                await AnimatorUtil.DelayForAnimation(_animator, _showingTriggerAndStateName, true, _isCompletionOnUnexpectedNextState, default, _layerIndex);
             }
             while (_gameObject.activeSelf)
             {
@@ -61,7 +61,7 @@ namespace Uft.UnityUtils.UI
             if (_animator != null)
             {
                 _animator.SetTrigger(_closingTriggerAndStateName);
-                await AnimatorUtil.DelayForAnimation(_animator, _closingTriggerAndStateName, _isCompletionOnUnexpectedNextState, default, _layerIndex);
+                await AnimatorUtil.DelayForAnimation(_animator, _closingTriggerAndStateName, true, _isCompletionOnUnexpectedNextState, default, _layerIndex);
             }
             _gameObject.SetActive(false);
         }
