@@ -8,6 +8,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/Samples/PlayerLoopSample/PlayerLoopSample.unity
+    guid: a0bf3ae46e8499d41be231a665b3c9a5
+  - enabled: 1
+    path: Assets/Samples/PlayerLoopSample/PlayerLoopSample_Additive.unity
+    guid: 8efef7c9306beda4499c539526435979
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
