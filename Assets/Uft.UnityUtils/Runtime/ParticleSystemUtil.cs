@@ -9,15 +9,15 @@ namespace Uft.UnityUtils
         public static async UniTask DelayForParticleSystem(GameObject instantiated, CancellationToken cancellationToken = default)
         {
             var effects = instantiated.GetComponentsInChildren<ParticleSystem>(true);
-            var eachIsPlaying = true;
-            while (eachIsPlaying)
+            var isAnyPlaying = true;
+            while (isAnyPlaying)
             {
-                eachIsPlaying = false;
+                isAnyPlaying = false;
                 foreach (var effect in effects)
                 {
                     if (effect.isPlaying)
                     {
-                        eachIsPlaying = true;
+                        isAnyPlaying = true;
                         break;
                     }
                 }
