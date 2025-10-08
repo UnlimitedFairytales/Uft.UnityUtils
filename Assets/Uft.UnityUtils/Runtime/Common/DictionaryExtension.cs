@@ -33,14 +33,7 @@ namespace Uft.UnityUtils.Common
 
         public static void AddOrSet<TKey, TVal>(this Dictionary<TKey, TVal> dic, TKey key, TVal val)
         {
-            if (dic.ContainsKey(key))
-            {
-                dic[key] = val;
-            }
-            else
-            {
-                dic.Add(key, val);
-            }
+            dic[key] = val;
         }
 
         public static bool ContainsAndEquals<TKey, TVal>(this Dictionary<TKey, TVal> dic, TKey key, TVal val) where TVal : IEquatable<TVal>
