@@ -6,7 +6,7 @@ namespace Uft.UnityUtils
 {
     public static class AnimatorUtil
     {
-        public static async UniTask DelayForAnimation(Animator animator, string delayStateName, bool isCompleteAfterFirstLoop = false, bool isCompleteOnUnexpectedNextState = true, CancellationToken cancellationToken = default, int layerIndex = 0)
+        public static async UniTask DelayForAnimation(this Animator animator, string delayStateName, bool isCompleteAfterFirstLoop = false, bool isCompleteOnUnexpectedNextState = true, CancellationToken cancellationToken = default, int layerIndex = 0)
         {
             if (animator == null) return;
             await UniTask.NextFrame(cancellationToken); // NOTE: SetTrigger()後にStateが変わるのは Internal animation update後。そのため1フレーム待つ

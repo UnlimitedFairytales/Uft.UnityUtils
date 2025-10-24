@@ -6,7 +6,7 @@ namespace Uft.UnityUtils
 {
     public static class ParticleSystemUtil
     {
-        public static async UniTask DelayForParticleSystem(GameObject instantiated, CancellationToken cancellationToken = default)
+        public static async UniTask DelayForParticleSystem(this GameObject instantiated, CancellationToken cancellationToken = default)
         {
             var effects = instantiated.GetComponentsInChildren<ParticleSystem>(true);
             var isAnyPlaying = true;
@@ -25,7 +25,7 @@ namespace Uft.UnityUtils
             }
         }
 
-        public static async UniTask CreateAndPlayEffectAsync(GameObject effect_prefab, Vector3 screenPos, float distance, Camera camera, Transform parent, CancellationToken cancellationToken = default)
+        public static async UniTask CreateAndPlayEffectAsync(this GameObject effect_prefab, Vector3 screenPos, float distance, Camera camera, Transform parent, CancellationToken cancellationToken = default)
         {
             var instantiated = Object.Instantiate(effect_prefab, parent);
             if (instantiated != null)

@@ -7,7 +7,7 @@ namespace Uft.UnityUtils
     {
         // Cached
 
-        public static T GetCachedComponent<T>(T cached, MonoBehaviour script) where T : Component
+        public static T GetCachedComponent<T>(this T cached, MonoBehaviour script) where T : Component
         {
             if (cached == null)
             {
@@ -16,7 +16,7 @@ namespace Uft.UnityUtils
             return cached;
         }
 
-        public static T GetCachedChildComponent<T>(T cached, MonoBehaviour script, string name) where T : Component
+        public static T GetCachedChildComponent<T>(this T cached, MonoBehaviour script, string name) where T : Component
         {
             if (cached == null)
             {
@@ -33,7 +33,7 @@ namespace Uft.UnityUtils
             return cached;
         }
 
-        public static T[] GetCachedChildrenComponents<T>(T[] cached, MonoBehaviour script) where T : Component
+        public static T[] GetCachedChildrenComponents<T>(this T[] cached, MonoBehaviour script) where T : Component
         {
             cached ??= script.GetComponentsInChildren<T>();
             return cached;
@@ -41,7 +41,7 @@ namespace Uft.UnityUtils
 
         // Created
 
-        public static T GetCreatedObject<T>(T created, T obj) where T : Object
+        public static T GetCreatedObject<T>(this T created, T obj) where T : Object
         {
             if (created == null)
             {
@@ -53,7 +53,7 @@ namespace Uft.UnityUtils
             return created;
         }
 
-        public static List<T> GetCreatedObjectList<T>(List<T> created, List<T> objList) where T : Object
+        public static List<T> GetCreatedObjectList<T>(this List<T> created, List<T> objList) where T : Object
         {
             if (created == null)
             {
