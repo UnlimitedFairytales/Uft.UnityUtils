@@ -41,26 +41,26 @@ namespace Uft.UnityUtils
 
         // Created
 
-        public static T GetCreatedObject<T>(this T created, T obj) where T : Object
+        public static T GetCreatedObject<T>(this T created, T prefab) where T : Object
         {
             if (created == null)
             {
-                if (obj != null)
+                if (prefab != null)
                 {
-                    created = Object.Instantiate(obj);
+                    created = Object.Instantiate(prefab);
                 }
             }
             return created;
         }
 
-        public static List<T> GetCreatedObjectList<T>(this List<T> created, List<T> objList) where T : Object
+        public static List<T> GetCreatedObjectList<T>(this List<T> created, List<T> prefabList) where T : Object
         {
             if (created == null)
             {
                 created = new List<T>();
-                if (objList != null)
+                if (prefabList != null)
                 {
-                    foreach (var prefab in objList)
+                    foreach (var prefab in prefabList)
                     {
                         created.Add(Object.Instantiate(prefab));
                     }

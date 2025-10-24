@@ -16,27 +16,27 @@ namespace Uft.UnityUtils
             return instantiated;
         }
 
-        public static List<TComponent> GetComponentsInChildrenOrderByName<TComponent>(this Component that, Func<TComponent, bool> whereCondition = null) where TComponent : Component
+        public static List<TComponent> GetComponentsInChildrenOrderByName<TComponent>(this Component component, Func<TComponent, bool> whereCondition = null) where TComponent : Component
         {
             if (whereCondition == null)
             {
-                return that.GetComponentsInChildren<TComponent>()
-                    .OrderBy(component => component.gameObject.name)
+                return component.GetComponentsInChildren<TComponent>()
+                    .OrderBy(c => c.gameObject.name)
                     .ToList();
             }
             else
             {
-                return that.GetComponentsInChildren<TComponent>()
+                return component.GetComponentsInChildren<TComponent>()
                     .Where(whereCondition)
-                    .OrderBy(component => component.gameObject.name)
+                    .OrderBy(c => c.gameObject.name)
                     .ToList();
             }
         }
 
-        public static List<TComponent> GetComponentsInChildrenByName<TComponent>(this Component that, string name) where TComponent : Component
+        public static List<TComponent> GetComponentsInChildrenByName<TComponent>(this Component component, string name) where TComponent : Component
         {
-            return that.GetComponentsInChildren<TComponent>()
-                .Where(component => component.gameObject.name == name)
+            return component.GetComponentsInChildren<TComponent>()
+                .Where(c => c.gameObject.name == name)
                 .ToList();
         }
     }
