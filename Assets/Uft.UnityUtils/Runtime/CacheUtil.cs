@@ -7,20 +7,20 @@ namespace Uft.UnityUtils
     {
         // Cached
 
-        public static T GetCachedComponent<T>(this T cached, MonoBehaviour script) where T : Component
+        public static T GetCachedComponent<T>(this T cached, Component component) where T : Component
         {
             if (cached == null)
             {
-                cached = script.GetComponent<T>();
+                cached = component.GetComponent<T>();
             }
             return cached;
         }
 
-        public static T GetCachedChildComponent<T>(this T cached, MonoBehaviour script, string name) where T : Component
+        public static T GetCachedChildComponent<T>(this T cached, Component component, string name) where T : Component
         {
             if (cached == null)
             {
-                var children = script.GetComponentsInChildren<T>();
+                var children = component.GetComponentsInChildren<T>();
                 foreach (var item in children)
                 {
                     if (item.name == name)
@@ -33,9 +33,9 @@ namespace Uft.UnityUtils
             return cached;
         }
 
-        public static T[] GetCachedChildrenComponents<T>(this T[] cached, MonoBehaviour script) where T : Component
+        public static T[] GetCachedChildrenComponents<T>(this T[] cached, Component component) where T : Component
         {
-            cached ??= script.GetComponentsInChildren<T>();
+            cached ??= component.GetComponentsInChildren<T>();
             return cached;
         }
 
