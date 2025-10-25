@@ -14,13 +14,13 @@
   "license": "MIT",
   "samples": [
     {
-      "displayName": "Uft.UnityUtils tap sample",
-      "description": "Uft.UnityUtils tap sample",
+      "displayName": "TapSample",
+      "description": "TapSample",
       "path": "Samples~/TapSample"
     },
     {
-      "displayName": "Uft.UnityUtils ui sample",
-      "description": "Uft.UnityUtils ui sample",
+      "displayName": "UISample",
+      "description": "UISample",
       "path": "Samples~/UISample"
     }
   ]
