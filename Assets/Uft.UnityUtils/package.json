@@ -14,6 +14,16 @@
   "license": "MIT",
   "samples": [
     {
+      "displayName": "PlayerLoopSample",
+      "description": "PlayerLoopSample",
+      "path": "Samples~/PlayerLoopSample"
+    },
+    {
+      "displayName": "ScriptSample",
+      "description": "ScriptSample",
+      "path": "Samples~/ScriptSample"
+    },
+    {
       "displayName": "TapSample",
       "description": "TapSample",
       "path": "Samples~/TapSample"
