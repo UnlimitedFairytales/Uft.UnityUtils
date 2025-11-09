@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
@@ -35,6 +35,11 @@ namespace Uft.UnityUtils.Common
         readonly object _lock = new();
         readonly DataTable _dataTable = new();
 
+        /// <summary>
+        /// 簡易的な式評価。より実用的・高速な機能が欲しい場合は、NCalc（注意: MathHelperがdynamicなため、代替実装が必要）などを使用してください
+        /// </summary>
+        /// <param name="expression"></param>
+        /// <returns></returns>
         public bool? EvaluateBooleanOrNull(string expression)
         {
             object result = null;
@@ -46,6 +51,11 @@ namespace Uft.UnityUtils.Common
             return bool.Parse(result.ToString());
         }
 
+        /// <summary>
+        /// 簡易的な式評価。より実用的・高速な機能が欲しい場合は、NCalc（注意: MathHelperがdynamicなため、代替実装が必要）などを使用してください
+        /// </summary>
+        /// <param name="expression"></param>
+        /// <returns></returns>
         public double? EvaluateDoubleOrNull(string expression)
         {
             object result = null;
