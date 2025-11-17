@@ -1,4 +1,6 @@
+using System.IO;
 using TMPro;
+using Uft.UnityUtils.Csv;
 using UnityEngine;
 using UnityHelpers;
 
@@ -9,9 +11,11 @@ namespace Uft.UnityUtils.Samples.ScriptSample
         public const string PATH_PART1 = "Assets/Samples/Uft.UnityUtils";
         public const string PATH_PART2 = "ScriptSample/Scripts";
         const string fileName = "txt-sample.txt";
+        const string csvName = "csv-sample.csv";
 
         [SerializeField] TMP_Text txtText1;
         [SerializeField] TMP_Text txtText2;
+        [SerializeField] TMP_Text txtText3;
 
         void Awake()
         {
@@ -104,6 +108,16 @@ namespace Uft.UnityUtils.Samples.ScriptSample
 
             this.txtText2.text = AssetUtil.LoadText(relativePath, false);
             if (string.IsNullOrWhiteSpace(this.txtText2.text))
+            {
+                var message = "Please click \"Tools > Uft.UnityUtils.Samples > ScriptSample > ..., and restart";
+                Debug.LogWarning(message);
+                this.txtText2.text = message;
+            }
+
+            var fileInfo = new FileInfo(srcPath + $"/{csvName}");
+            var result = fileInfo.ReadCsv(CsvUtil.GetCsvConfiguration(CsvUtil.UTF8), CsvDtoSample.Map);
+            this.txtText3.text = string.Join("\n", result);
+            if (string.IsNullOrWhiteSpace(this.txtText3.text))
             {
                 var message = "Please click \"Tools > Uft.UnityUtils.Samples > ScriptSample > ..., and restart";
                 Debug.LogWarning(message);
