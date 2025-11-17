@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.LowLevel;
@@ -11,7 +11,7 @@ namespace Assets.Uft.UnityUtils.Runtime
     /// </summary>
     public static class PlayerLoopUtil
     {
-#if !DISABLE_UNITY_UTILS_JUST_BEFORE_UPDATE
+#if !DISABLE_UNITYUTILS_JUST_BEFORE_UPDATE
         public class JustBeforeUpdateType
         {
             public static void Run()

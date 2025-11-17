@@ -1,4 +1,4 @@
-﻿#if !DISABLE_UNITY_UTILS_SCRIPTED_IMPORTER
+#if !DISABLE_UNITYUTILS_SCRIPTED_IMPORTER
 using System.IO;
 using UnityEditor.AssetImporters;
 using UnityEngine;
