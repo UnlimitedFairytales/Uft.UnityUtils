@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace Uft.UnityUtils.UI
@@ -59,7 +59,7 @@ namespace Uft.UnityUtils.UI
                 case (AnchorPreset.BottomLeft):
                     SetDetailA(text, new Vector2(0, 0), adjustsPivot, adjustsVerticalTextAlign, Vertical.Bottom);
                     break;
-                case (AnchorPreset.BottonCenter):
+                case (AnchorPreset.BottomCenter):
                     SetDetailA(text, new Vector2(0.5f, 0), adjustsPivot, adjustsVerticalTextAlign, Vertical.Bottom);
                     break;
                 case (AnchorPreset.BottomRight):
