@@ -18,9 +18,9 @@ namespace Uft.UnityUtils.Samples.AudioSample
 
         private void Start()
         {
-            _audioBGM.Play();
-            _audioSE.Play();
-            _audioSE.Play();
+            this._audioBGM.Play();
+            this._audioSE.Play();
+            this._audioSE.Play();
         }
 
         void Update()
