@@ -1,7 +1,7 @@
 ﻿{
   "name": "com.unlimited-fairytales.unityutils",
   "displayName": "Uft.UnityUtils",
-  "version": "1.6.0",
+  "version": "1.7.0",
   "unity": "6000.0",
   "description": "This is simple utilities and helpers.\n\n* Dependencies must be installed manually.\n\nDependencies\n\n- com.unity.ugui\n- https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask\n- https://assetstore.unity.com/packages/tools/animation/dotween-hotween-v2-27676",
   "author": {
