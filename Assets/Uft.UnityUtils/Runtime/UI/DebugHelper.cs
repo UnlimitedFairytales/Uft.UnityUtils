@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using UnityEngine.Profiling;
 using UnityEngine.UI;
 
@@ -15,31 +15,31 @@ namespace Uft.UnityUtils.UI
 
         void Start()
         {
-            if (_text == null)
+            if (this._text == null)
             {
-                _text = TextUtil.CreateTextWithCanvas("initializing", 200, 100);
-                TextUtil.Arrange(_text, AnchorPreset.TopLeft);
-                _text.rectTransform.anchoredPosition = new Vector2(100, -100);
+                this._text = TextUtil.CreateTextWithCanvas("initializing", 200, 100);
+                TextUtil.Arrange(this._text, AnchorPreset.TopLeft);
+                this._text.rectTransform.anchoredPosition = new Vector2(100, -100);
             }
-            _normalColor = _text.color;
+            this._normalColor = this._text.color;
         }
 
         void Update()
         {
-            _timer += Time.unscaledDeltaTime;
-            _frameCount++;
-            if (_timer >= interval)
+            this._timer += Time.unscaledDeltaTime;
+            this._frameCount++;
+            if (this._timer >= this.interval)
             {
-                _fps = _frameCount / _timer;
-                _text.color = (_fps < 30f) ? Color.red : _normalColor;
-                _timer = 0f;
-                _frameCount = 0;
+                this._fps = this._frameCount / this._timer;
+                this._text.color = (this._fps < 30f) ? Color.red : this._normalColor;
+                this._timer = 0f;
+                this._frameCount = 0;
             }
             long totalReserved = Profiler.GetTotalReservedMemoryLong() / (1024 * 1024);
             long totalUsed = Profiler.GetTotalAllocatedMemoryLong() / (1024 * 1024);
             long monoUsed = Profiler.GetMonoUsedSizeLong() / (1024 * 1024);
 
-            _text.text = $"{_fps:F1} FPS" + "\n" +
+            this._text.text = $"{this._fps:F1} FPS" + "\n" +
                 $"Total Reserved: {totalReserved} MB\n" +
                 $"Used: {totalUsed} MB\n" +
                 $"Mono: {monoUsed} MB";
