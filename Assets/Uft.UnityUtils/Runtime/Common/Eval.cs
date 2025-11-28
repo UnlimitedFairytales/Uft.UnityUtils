@@ -43,7 +43,7 @@ namespace Uft.UnityUtils.Common
         public bool? EvaluateBooleanOrNull(string expression)
         {
             object result = null;
-            lock (_lock)
+            lock (this._lock)
             {
                 result = this._dataTable.Compute(expression, null);
             }
@@ -59,7 +59,7 @@ namespace Uft.UnityUtils.Common
         public double? EvaluateDoubleOrNull(string expression)
         {
             object result = null;
-            lock (_lock)
+            lock (this._lock)
             {
                 result = this._dataTable.Compute(expression, null);
             }

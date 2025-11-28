@@ -1,4 +1,4 @@
-﻿using Cysharp.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using System.Threading;
 using TMPro;
 using UnityEngine;
@@ -17,10 +17,10 @@ namespace Uft.UnityUtils.UI
 
         void Awake()
         {
-            _messageBoxHelper = new MessageBoxHelper<int>(gameObject, () => 0, _animator);
-            _tapArea.onClick.AddListener(UniTask.UnityAction(async () =>
+            this._messageBoxHelper = new MessageBoxHelper<int>(this.gameObject, () => 0, this._animator);
+            this._tapArea.onClick.AddListener(UniTask.UnityAction(async () =>
             {
-                await _messageBoxHelper.CloseAsync();
+                await this._messageBoxHelper.CloseAsync();
             }));
         }
 
@@ -28,11 +28,11 @@ namespace Uft.UnityUtils.UI
 
         public async UniTask ShowAsync(string headerText, string contentText, int timeout_sec = 0)
         {
-            if (_lblHeader != null) _lblHeader.SetText(headerText);
-            if (_lblContent != null) _lblContent.SetText(contentText);
+            if (this._lblHeader != null) this._lblHeader.SetText(headerText);
+            if (this._lblContent != null) this._lblContent.SetText(contentText);
             var cts = new CancellationTokenSource();
             cts.CancelAfterSlim(timeout_sec * 1000);
-            await _messageBoxHelper.ShowAsync(cts.Token);
+            await this._messageBoxHelper.ShowAsync(cts.Token);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using Cysharp.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using System;
 using System.Threading;
 using UnityEngine;
@@ -22,48 +22,48 @@ namespace Uft.UnityUtils.UI
             if (gameObject == null) new ArgumentNullException(nameof(gameObject));
             if (getResult == null) new ArgumentNullException(nameof(getResult));
 
-            _gameObject = gameObject;
-            _getResult = getResult;
-            _animator = animator;
-            _showingTriggerAndStateName = showingTriggerAndStateName;
-            _closingTriggerAndStateName = closingTriggerAndStateName;
-            _isCompletionOnUnexpectedNextState = isCompletionOnUnexpectedNextState;
-            _layerIndex = layerIndex;
+            this._gameObject = gameObject;
+            this._getResult = getResult;
+            this._animator = animator;
+            this._showingTriggerAndStateName = showingTriggerAndStateName;
+            this._closingTriggerAndStateName = closingTriggerAndStateName;
+            this._isCompletionOnUnexpectedNextState = isCompletionOnUnexpectedNextState;
+            this._layerIndex = layerIndex;
         }
 
         public virtual async UniTask<TResult> ShowAsync(CancellationToken ct)
         {
-            _gameObject.SetActive(true);
-            _isClosable = true;
+            this._gameObject.SetActive(true);
+            this._isClosable = true;
 
-            if (_animator != null)
+            if (this._animator != null)
             {
-                _animator.SetTrigger(_showingTriggerAndStateName);
-                await _animator.DelayForAnimation(_showingTriggerAndStateName, true, _isCompletionOnUnexpectedNextState, default, _layerIndex);
+                this._animator.SetTrigger(this._showingTriggerAndStateName);
+                await this._animator.DelayForAnimation(this._showingTriggerAndStateName, true, this._isCompletionOnUnexpectedNextState, default, this._layerIndex);
             }
-            while (_gameObject.activeSelf)
+            while (this._gameObject.activeSelf)
             {
                 await UniTask.NextFrame();
-                if (ct.IsCancellationRequested && _isClosable)
+                if (ct.IsCancellationRequested && this._isClosable)
                 {
                     Debug.Log($"{nameof(MessageBoxHelper<TResult>)}.{nameof(ShowAsync)} canceled");
-                    await CloseAsync();
+                    await this.CloseAsync();
                 }
             }
-            return _getResult();
+            return this._getResult();
         }
 
         public virtual async UniTask CloseAsync()
         {
-            if (!_isClosable) return;
-            _isClosable = false;
+            if (!this._isClosable) return;
+            this._isClosable = false;
 
-            if (_animator != null)
+            if (this._animator != null)
             {
-                _animator.SetTrigger(_closingTriggerAndStateName);
-                await _animator.DelayForAnimation(_closingTriggerAndStateName, true, _isCompletionOnUnexpectedNextState, default, _layerIndex);
+                this._animator.SetTrigger(this._closingTriggerAndStateName);
+                await this._animator.DelayForAnimation(this._closingTriggerAndStateName, true, this._isCompletionOnUnexpectedNextState, default, this._layerIndex);
             }
-            _gameObject.SetActive(false);
+            this._gameObject.SetActive(false);
         }
     }
 }
