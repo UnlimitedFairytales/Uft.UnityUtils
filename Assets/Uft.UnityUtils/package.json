@@ -3,7 +3,8 @@
   "displayName": "Uft.UnityUtils",
   "version": "1.9.0",
   "unity": "6000.0",
-  "description": "This is simple utilities and helpers.\n\n* Dependencies must be installed manually.\n\nDependencies\n\n- com.unity.ugui 2.0.0\n    - Import TMP Essentials\n- https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask\n- https://assetstore.unity.com/packages/tools/animation/dotween-hotween-v2-27676\n    - Setup DOTween\n    - Create ASMDEF\n    - Project Settings > Scripting Define Symbols > UNITASK_DOTWEEN_SUPPORT",
+  "hideInEditor": false,
+  "description": "This is simple utilities and helpers.\n\n* Dependencies must be installed manually.\n\nDependencies\n\n- com.unity.ugui 2.0.0\n    - Import TMP Essentials\n- https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask\n- https://assetstore.unity.com/packages/tools/animation/dotween-hotween-v2-27676\n    - Setup DOTween\n    - Create ASMDEF\n    - Project Settings > Player > Scripting Define Symbols > UNITASK_DOTWEEN_SUPPORT",
   "author": {
     "name": "Unlimited Fairytales",
     "url": "https://unlimited-fairytales.com/"
@@ -20,17 +21,17 @@
     },
     {
       "displayName": "PlayerLoopSample",
-      "description": "PlayerLoopSample",
+      "description": "PlayerLoopSample\n\n- Build Profiles > Scene List > Add PlayerLoopSample_Additive",
       "path": "Samples~/PlayerLoopSample"
     },
     {
       "displayName": "ScriptSample",
-      "description": "ScriptSample",
+      "description": "ScriptSample\n\nInstall\n\n- https://github.com/GlitchEnzo/NuGetForUnity.git?path=/src/NuGetForUnity\n    - CsvHelper 33.1.0\n\nProject Settings > Scripting Define Symbols\n\n- UNITYUTILS_CSVHELPER_SUPPORT",
       "path": "Samples~/ScriptSample"
     },
     {
       "displayName": "TapSample",
-      "description": "TapSample",
+      "description": "TapSample\n\n- Project Settings > Player > Active Input Handling > Both",
       "path": "Samples~/TapSample"
     },
     {
