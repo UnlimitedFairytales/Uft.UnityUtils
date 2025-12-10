@@ -7,7 +7,7 @@ using System;
 using System.IO;
 using UnityEngine;
 
-namespace UnityHelpers
+namespace Uft.UnityUtils
 {
     public static class AssetUtil
     {

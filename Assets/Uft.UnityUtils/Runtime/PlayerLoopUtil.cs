@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.LowLevel;
 using UnityEngine.PlayerLoop;
 
-namespace Assets.Uft.UnityUtils.Runtime
+namespace Uft.UnityUtils
 {
     /// <summary>
     /// https://docs.unity3d.com/6000.0/Documentation/Manual/player-loop-customizing.html

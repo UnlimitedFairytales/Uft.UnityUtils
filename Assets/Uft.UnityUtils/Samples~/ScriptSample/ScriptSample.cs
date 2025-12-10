@@ -2,7 +2,6 @@ using System.IO;
 using TMPro;
 using Uft.UnityUtils.Csv;
 using UnityEngine;
-using UnityHelpers;
 
 namespace Uft.UnityUtils.Samples.ScriptSample
 {

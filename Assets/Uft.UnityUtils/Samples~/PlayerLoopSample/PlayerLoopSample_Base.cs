@@ -1,4 +1,3 @@
-﻿using Assets.Uft.UnityUtils.Runtime;
 using UnityEngine;
 
 namespace Uft.UnityUtils.Samples.PlayerLoopSample
