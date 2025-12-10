@@ -1,11 +1,11 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 namespace Uft.UnityUtils
 {
     public static class CameraUtil
     {
         /// <summary>
-        /// ピクセル等倍になる距離。d = h / (2 * tan(vFov/2))
+        /// Perspectiveモード1PPUでピクセル等倍になる距離。d = h / (2 * tan(vFov/2))
         /// </summary>
         /// <param name="h"></param>
         /// <param name="vFov"></param>
