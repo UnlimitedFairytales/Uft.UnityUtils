@@ -21,7 +21,7 @@ namespace Uft.UnityUtils.Samples.UISample
         void Update()
         {
             // NOTE: StartでCanvasのcameraをバインドする場合、1フレーム目では正常に配置できない。インスペクタで完結しているなら1フレーム目でもOK
-            _count++;
+            this._count++;
             if (this._count == 2)
             {
                 var canvas = this.GetComponentInChildren<Canvas>();
