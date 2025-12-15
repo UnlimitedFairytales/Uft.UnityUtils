@@ -1,3 +1,5 @@
+#nullable enable
+
 using System;
 using UnityEngine;
 
@@ -30,7 +32,7 @@ namespace Uft.UnityUtils.UI
 
     public static class AnchorPresetUtil
     {
-        public static bool TryParseLooseAnchorPreset(string value, out AnchorPreset result)
+        public static bool TryParseLooseAnchorPreset(string? value, out AnchorPreset result)
         {
             value ??= "";
             if (value.Equals("top", StringComparison.OrdinalIgnoreCase))

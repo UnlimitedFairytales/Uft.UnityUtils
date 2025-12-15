@@ -1,3 +1,5 @@
+#nullable enable
+
 using UnityEngine;
 using UnityEngine.Profiling;
 using UnityEngine.UI;
@@ -6,14 +8,15 @@ namespace Uft.UnityUtils.UI
 {
     public class DebugHelper : MonoBehaviour
     {
-        [SerializeField] Text _text;
-        [SerializeField] float interval = 0.5f;
+        [SerializeField] Text? _text;
+        [SerializeField] float _interval = 0.5f;
+
         Color _normalColor;
         float _timer = 0f;
         int _frameCount = 0;
         float _fps;
 
-        void Start()
+        void Awake()
         {
             if (this._text == null)
             {
@@ -28,21 +31,22 @@ namespace Uft.UnityUtils.UI
         {
             this._timer += Time.unscaledDeltaTime;
             this._frameCount++;
-            if (this._timer >= this.interval)
+            if (this._timer >= this._interval)
             {
                 this._fps = this._frameCount / this._timer;
-                this._text.color = (this._fps < 30f) ? Color.red : this._normalColor;
-                this._timer = 0f;
+                this._text!.color = (this._fps < 30f) ? Color.red : this._normalColor;
+                this._timer -= this._interval;
                 this._frameCount = 0;
-            }
-            long totalReserved = Profiler.GetTotalReservedMemoryLong() / (1024 * 1024);
-            long totalUsed = Profiler.GetTotalAllocatedMemoryLong() / (1024 * 1024);
-            long monoUsed = Profiler.GetMonoUsedSizeLong() / (1024 * 1024);
 
-            this._text.text = $"{this._fps:F1} FPS" + "\n" +
-                $"Total Reserved: {totalReserved} MB\n" +
-                $"Used: {totalUsed} MB\n" +
-                $"Mono: {monoUsed} MB";
+                long totalReserved = Profiler.GetTotalReservedMemoryLong() / (1024 * 1024);
+                long totalUsed = Profiler.GetTotalAllocatedMemoryLong() / (1024 * 1024);
+                long monoUsed = Profiler.GetMonoUsedSizeLong() / (1024 * 1024);
+
+                this._text!.text = $"{this._fps:F1} FPS" + "\n" +
+                    $"Total Reserved: {totalReserved} MB\n" +
+                    $"Used: {totalUsed} MB\n" +
+                    $"Mono: {monoUsed} MB";
+            }
         }
     }
 }

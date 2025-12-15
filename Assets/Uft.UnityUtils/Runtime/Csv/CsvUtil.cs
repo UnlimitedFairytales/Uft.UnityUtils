@@ -1,3 +1,5 @@
+#nullable enable
+
 #if UNITYUTILS_CSVHELPER_SUPPORT
 using CsvHelper;
 using CsvHelper.Configuration;
@@ -24,7 +26,7 @@ namespace Uft.UnityUtils.Csv
             // ISO_2022_JP_WIN = Encoding.GetEncoding(50220);
             UTF8 = Encoding.GetEncoding(65001);
         }
-        public static CsvConfiguration GetCsvConfiguration(Encoding enc, string delimiter = null, BadDataFound badDataFound = null)
+        public static CsvConfiguration GetCsvConfiguration(Encoding enc, string? delimiter = null, BadDataFound? badDataFound = null)
         {
             // https://github.com/JoshClose/CsvHelper/blob/33.1.0/src/CsvHelper/Configuration/CsvConfiguration.cs
             var cultureInfo = CultureInfo.InvariantCulture;
