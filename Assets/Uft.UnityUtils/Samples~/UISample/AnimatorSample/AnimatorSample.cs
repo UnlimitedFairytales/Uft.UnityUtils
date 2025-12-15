@@ -1,4 +1,4 @@
-﻿using Cysharp.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -20,12 +20,12 @@ namespace Uft.UnityUtils.Samples.UISample
 
         void Start()
         {
-            _button.onClick.AddListener(UniTask.UnityAction(async () =>
+            this._button.onClick.AddListener(UniTask.UnityAction(async () =>
             {
-                var nextStateName = _isClosed ? SHOWING : CLOSING;
-                _isClosed = !_isClosed;
-                _animator.SetTrigger(nextStateName);
-                await _animator.DelayForAnimation(nextStateName, true);
+                var nextStateName = this._isClosed ? SHOWING : CLOSING;
+                this._isClosed = !this._isClosed;
+                this._animator.SetTrigger(nextStateName);
+                await this._animator.DelayForAnimation(nextStateName, true);
                 Debug.Log($"{nextStateName} complete");
             }));
         }
