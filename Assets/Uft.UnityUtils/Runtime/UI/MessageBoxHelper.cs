@@ -112,7 +112,7 @@ namespace Uft.UnityUtils.UI
             if (this._state == MessageBoxState.Closing)
             {
                 Assert.IsTrue(this._closingTask != null);
-                return this._closingTask!.Value;
+                return UniTask.CompletedTask; // NOTE: UniTaskは多重awaitを許可しないため、完了タスクを返す
             }
             if (this._state == MessageBoxState.Hidden) return UniTask.CompletedTask;
 

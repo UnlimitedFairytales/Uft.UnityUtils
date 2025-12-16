@@ -37,9 +37,22 @@ namespace Uft.UnityUtils.UI
 
             if (this._lblHeader != null) this._lblHeader.SetText(headerText);
             if (this._lblContent != null) this._lblContent.SetText(contentText);
-            using var cts = new CancellationTokenSource();
-            if (0 < timeout_sec) cts.CancelAfterSlim(timeout_sec * 1000);
-            await this._messageBoxHelper.ShowAsync(cts.Token);
+
+            var cts = new CancellationTokenSource();
+            IDisposable? timeoutTimer = null;
+            try
+            {
+                if (0 < timeout_sec)
+                {
+                    timeoutTimer = cts.CancelAfterSlim(timeout_sec * 1000);
+                }
+                await this._messageBoxHelper.ShowAsync(cts.Token);
+            }
+            finally
+            {
+                timeoutTimer?.Dispose();
+                cts.Dispose();
+            }
         }
     }
 }
