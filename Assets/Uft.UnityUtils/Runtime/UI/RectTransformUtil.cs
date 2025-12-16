@@ -9,11 +9,11 @@ namespace Uft.UnityUtils.UI
     {
         public static Vector3 GetWorldPosition(this RectTransform rt, Canvas canvasWithCamera, Vector2 offset, bool offsetsByCanvasSpace = true)
         {
-            if (canvasWithCamera.renderMode == RenderMode.ScreenSpaceOverlay) throw new ArgumentException($"{nameof(canvasWithCamera)} is ScreenSpaceOverlay and cannot use worldCamera.");
+            if (canvasWithCamera.renderMode == RenderMode.ScreenSpaceOverlay) throw new ArgumentException($"[{nameof(RectTransformUtil)}] {nameof(canvasWithCamera)} is ScreenSpaceOverlay and cannot use worldCamera.");
             if (offset == Vector2.zero) return rt.position;
 
             var camera = canvasWithCamera.worldCamera;
-            if (camera == null) throw new ArgumentException($"{nameof(canvasWithCamera)} does not have camera.");
+            if (camera == null) throw new ArgumentException($"[{nameof(RectTransformUtil)}] {nameof(canvasWithCamera)} does not have camera.");
 
             var screenPos = RectTransformUtility.WorldToScreenPoint(camera, rt.position);
             if (!offsetsByCanvasSpace)
