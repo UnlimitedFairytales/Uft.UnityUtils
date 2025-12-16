@@ -1,27 +1,59 @@
+#nullable enable
+
 using Cysharp.Threading.Tasks;
 using System;
 using System.Threading;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace Uft.UnityUtils.UI
 {
+    public readonly struct OperationResult<T>
+    {
+        public readonly OperationResultStatus status;
+        public readonly T? result;
+
+        public OperationResult(OperationResultStatus status, T? result)
+        {
+            this.status = status;
+            this.result = result;
+        }
+    }
+
+    public enum OperationResultStatus
+    {
+        Canceled,
+        Accepted,
+        RejectedDueToDuplicate,
+        RejectedDueToCooldown,
+    }
+
+    enum MessageBoxState
+    {
+        Hidden,
+        Opening,
+        Shown,
+        Closing
+    }
+
     public class MessageBoxHelper<TResult>
     {
         readonly GameObject _gameObject;
-        readonly Func<TResult> _getResult;
-        readonly Animator _animator;
+        readonly Func<OperationResultStatus, OperationResult<TResult>> _getResult;
+        readonly Animator? _animator;
         readonly string _showingTriggerAndStateName;
         readonly string _closingTriggerAndStateName;
         readonly bool _isCompletionOnUnexpectedNextState;
         readonly int _layerIndex;
 
-        bool _isClosable = false;
+        MessageBoxState _state = MessageBoxState.Hidden;
+        UniTask? _closingTask = null;
 
-        public MessageBoxHelper(GameObject gameObject, Func<TResult> getResult, Animator animator, string showingTriggerAndStateName = "Showing", string closingTriggerAndStateName = "Closing", bool isCompletionOnUnexpectedNextState = true, int layerIndex = 0)
+        public MessageBoxHelper(GameObject gameObject, Func<OperationResultStatus, OperationResult<TResult>> getResult, Animator? animator,
+            string showingTriggerAndStateName = "Showing",
+            string closingTriggerAndStateName = "Closing",
+            bool isCompletionOnUnexpectedNextState = true, int layerIndex = 0)
         {
-            if (gameObject == null) new ArgumentNullException(nameof(gameObject));
-            if (getResult == null) new ArgumentNullException(nameof(getResult));
-
             this._gameObject = gameObject;
             this._getResult = getResult;
             this._animator = animator;
@@ -31,39 +63,83 @@ namespace Uft.UnityUtils.UI
             this._layerIndex = layerIndex;
         }
 
-        public virtual async UniTask<TResult> ShowAsync(CancellationToken ct)
+        public virtual async UniTask<OperationResult<TResult>> ShowAsync(CancellationToken ct)
         {
-            this._gameObject.SetActive(true);
-            this._isClosable = true;
+            if (this._state != MessageBoxState.Hidden) return this._getResult(OperationResultStatus.RejectedDueToDuplicate);
+            if (!this._gameObject) return this._getResult(OperationResultStatus.Canceled);
 
-            if (this._animator != null)
+            try
             {
-                this._animator.SetTrigger(this._showingTriggerAndStateName);
-                await this._animator.DelayForAnimation(this._showingTriggerAndStateName, true, this._isCompletionOnUnexpectedNextState, default, this._layerIndex);
-            }
-            while (this._gameObject.activeSelf)
-            {
-                await UniTask.NextFrame();
-                if (ct.IsCancellationRequested && this._isClosable)
+                // 1
+                this._state = MessageBoxState.Opening;
+                this._gameObject.SetActive(true);
+
+                // 2
+                if (this._animator != null)
                 {
-                    Debug.Log($"{nameof(MessageBoxHelper<TResult>)}.{nameof(ShowAsync)} canceled");
-                    await this.CloseAsync();
+                    this._animator.SetTrigger(this._showingTriggerAndStateName);
+                    await this._animator.DelayForAnimation(this._showingTriggerAndStateName, true, this._isCompletionOnUnexpectedNextState, this._layerIndex, ct);
+                }
+
+                // 3
+                if (!this._gameObject || !this._gameObject.activeInHierarchy) return this._getResult(OperationResultStatus.Canceled);
+                this._state = MessageBoxState.Shown;
+
+                while (this._gameObject && this._gameObject.activeInHierarchy)
+                {
+                    await UniTask.NextFrame(ct);
+                }
+
+                // 4
+                return this._getResult(this._gameObject ? OperationResultStatus.Accepted : OperationResultStatus.Canceled);
+            }
+            catch (OperationCanceledException)
+            {
+                await this.CloseAsync(CancellationToken.None);
+                return this._getResult(OperationResultStatus.Canceled);
+            }
+            finally
+            {
+                if (this._state == MessageBoxState.Opening || this._state == MessageBoxState.Shown)
+                {
+                    this._state = this._gameObject && this._gameObject.activeInHierarchy ? MessageBoxState.Shown : MessageBoxState.Hidden;
                 }
             }
-            return this._getResult();
         }
 
-        public virtual async UniTask CloseAsync()
+        public virtual UniTask CloseAsync(CancellationToken ct)
         {
-            if (!this._isClosable) return;
-            this._isClosable = false;
-
-            if (this._animator != null)
+            if (this._state == MessageBoxState.Closing)
             {
-                this._animator.SetTrigger(this._closingTriggerAndStateName);
-                await this._animator.DelayForAnimation(this._closingTriggerAndStateName, true, this._isCompletionOnUnexpectedNextState, default, this._layerIndex);
+                Assert.IsTrue(this._closingTask != null);
+                return this._closingTask!.Value;
             }
-            this._gameObject.SetActive(false);
+            if (this._state == MessageBoxState.Hidden) return UniTask.CompletedTask;
+
+            this._state = MessageBoxState.Closing;
+            var uniTask = this.CloseAsyncInner(ct);
+            this._closingTask = uniTask;
+            return uniTask;
+        }
+
+        protected virtual async UniTask CloseAsyncInner(CancellationToken ct)
+        {
+            try
+            {
+                Assert.IsTrue(this._state == MessageBoxState.Closing);
+                if (!this._gameObject) return;
+                if (this._animator != null)
+                {
+                    this._animator.SetTrigger(this._closingTriggerAndStateName);
+                    await this._animator.DelayForAnimation(this._closingTriggerAndStateName, true, this._isCompletionOnUnexpectedNextState, this._layerIndex, ct);
+                }
+            }
+            finally
+            {
+                if (this._gameObject) this._gameObject.SetActive(false);
+                this._closingTask = null;
+                this._state = MessageBoxState.Hidden;
+            }
         }
     }
 }

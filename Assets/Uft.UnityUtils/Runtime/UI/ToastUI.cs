@@ -17,10 +17,10 @@ namespace Uft.UnityUtils.UI
 
         void Awake()
         {
-            this._messageBoxHelper = new MessageBoxHelper<int>(this.gameObject, () => 0, this._animator);
+            this._messageBoxHelper = new MessageBoxHelper<int>(this.gameObject, (status) => new OperationResult<int>(status, 0), this._animator);
             this._tapArea.onClick.AddListener(UniTask.UnityAction(async () =>
             {
-                await this._messageBoxHelper.CloseAsync();
+                await this._messageBoxHelper.CloseAsync(default);
             }));
         }
 
