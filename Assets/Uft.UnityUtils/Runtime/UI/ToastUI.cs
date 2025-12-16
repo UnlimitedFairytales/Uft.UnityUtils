@@ -1,4 +1,7 @@
+#nullable enable
+
 using Cysharp.Threading.Tasks;
+using System;
 using System.Threading;
 using TMPro;
 using UnityEngine;
@@ -8,15 +11,17 @@ namespace Uft.UnityUtils.UI
 {
     public class ToastUI : MonoBehaviour
     {
-        [SerializeField] Animator _animator;
-        [SerializeField] TMP_Text _lblHeader;
-        [SerializeField] TMP_Text _lblContent;
-        [SerializeField] Button _tapArea;
+        [SerializeField] Animator? _animator;
+        [SerializeField] TMP_Text? _lblHeader;
+        [SerializeField] TMP_Text? _lblContent;
+        [SerializeField] Button? _tapArea;
 
-        MessageBoxHelper<int> _messageBoxHelper;
+        MessageBoxHelper<int>? _messageBoxHelper;
 
         void Awake()
         {
+            if (this._tapArea == null) throw new UnassignedReferenceException($"[{nameof(ToastUI)}] {nameof(this._tapArea)}");
+
             this._messageBoxHelper = new MessageBoxHelper<int>(this.gameObject, (status) => new OperationResult<int>(status, 0), this._animator);
             this._tapArea.onClick.AddListener(UniTask.UnityAction(async () =>
             {
@@ -28,10 +33,12 @@ namespace Uft.UnityUtils.UI
 
         public async UniTask ShowAsync(string headerText, string contentText, int timeout_sec = 0)
         {
+            if (this._messageBoxHelper == null) throw new OperationCanceledException("Before Awake()");
+
             if (this._lblHeader != null) this._lblHeader.SetText(headerText);
             if (this._lblContent != null) this._lblContent.SetText(contentText);
-            var cts = new CancellationTokenSource();
-            cts.CancelAfterSlim(timeout_sec * 1000);
+            using var cts = new CancellationTokenSource();
+            if (0 < timeout_sec) cts.CancelAfterSlim(timeout_sec * 1000);
             await this._messageBoxHelper.ShowAsync(cts.Token);
         }
     }
