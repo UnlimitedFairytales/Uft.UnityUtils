@@ -1,4 +1,6 @@
-﻿using Cysharp.Threading.Tasks;
+#nullable enable
+
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using System.Threading;
 using TMPro;
@@ -9,7 +11,7 @@ namespace Uft.UnityUtils.UI
 {
     public static class TMPUtil
     {
-        public const float ONE_FRAME = 0.0166f;
+        public const float ONE_FRAME = 0.016666f;
 
         /// <summary>
         /// 簡易的なタイプライターエフェクト。より実用的な機能が欲しい場合は、DOTween Proなどを使用してください
@@ -21,25 +23,35 @@ namespace Uft.UnityUtils.UI
         /// <param name="scrollRect"></param>
         /// <param name="scrollDuration_sec"></param>
         /// <returns></returns>
-        public static async UniTask TypeWriterEffectAsync(this TMP_Text tmp, string text, float wait_sec = ONE_FRAME * 2, CancellationToken ct = default, ScrollRect scrollRect = null, float scrollDuration_sec = 0.3f)
+        public static async UniTask TypeWriterEffectAsync(this TMP_Text tmp, string text, float wait_sec = ONE_FRAME * 2, CancellationToken ct = default, ScrollRect? scrollRect = null, float scrollDuration_sec = 0.3f)
         {
-            var waitCounter = 0.0f;
-            foreach (var c in text)
+            var charsPerFrame = wait_sec < 0.001f ? 1000 : ONE_FRAME / wait_sec;
+
+            int index = 0;
+            float acc = 0f;
+            while (index < text.Length)
             {
-                tmp.text += c.ToString();
-                waitCounter += wait_sec;
-                if (ONE_FRAME <= waitCounter)
+                await UniTask.NextFrame(ct);
+
+                if (!tmp) return;
+
+                acc += charsPerFrame;
+                if (acc < 1) continue;
+
+                var emitCount = Mathf.RoundToInt(acc);
+                acc = 0;
+                for (int i = 0; i < emitCount && index < text.Length; i++)
                 {
-                    await UniTask.WaitForSeconds(wait_sec);
-                    waitCounter = 0.0f;
+                    tmp.text += text[index];
+                    index++;
                 }
-                if (ct.IsCancellationRequested) return;
                 if (scrollRect != null &&
                     0.1f < scrollRect.verticalNormalizedPosition &&
                     scrollRect.viewport.rect.height + 0.1f < scrollRect.content.rect.height &&
                     !DOTween.IsTweening(scrollRect))
                 {
-                    await scrollRect.DOVerticalNormalizedPos(0.0f, scrollDuration_sec);
+                    var t = scrollRect.DOVerticalNormalizedPos(0.0f, scrollDuration_sec);
+                    await t.ToUniTask(cancellationToken: ct);
                 }
             }
         }
