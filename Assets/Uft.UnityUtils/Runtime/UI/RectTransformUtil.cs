@@ -1,3 +1,5 @@
+#nullable enable
+
 using System;
 using UnityEngine;
 
@@ -11,6 +13,8 @@ namespace Uft.UnityUtils.UI
             if (offset == Vector2.zero) return rt.position;
 
             var camera = canvasWithCamera.worldCamera;
+            if (camera == null) throw new ArgumentException($"{nameof(canvasWithCamera)} does not have camera.");
+
             var screenPos = RectTransformUtility.WorldToScreenPoint(camera, rt.position);
             if (!offsetsByCanvasSpace)
             {
