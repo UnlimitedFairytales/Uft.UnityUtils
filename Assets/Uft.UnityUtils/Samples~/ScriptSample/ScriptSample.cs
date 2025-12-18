@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using TMPro;
 using Uft.UnityUtils.Csv;
@@ -86,41 +87,52 @@ namespace Uft.UnityUtils.Samples.ScriptSample
         {
             var srcPath = DirectoryUtil.GetLatestSampleSourceDirectory(PATH_PART1, PATH_PART2);
             var resourcesPath = DirectoryUtil.ToResourcesPath(srcPath);
+            var streamingAssetsPath = DirectoryUtil.ToStreamingAssetsPath(srcPath);
             var relativePath = $"{resourcesPath}/{fileName}"["Assets/Resources/".Length..];
             {
-                // NOTE: API動作確認
-                var streamingAssetsPath = DirectoryUtil.ToStreamingAssetsPath(srcPath);
+                // NOTE: API動作確認                
                 var relativePath2 = $"{streamingAssetsPath}/{fileName}"["Assets/StreamingAssets/".Length..];
                 if (relativePath == relativePath2)
                 {
-                    Debug.Log("relativePath and relativePath2 are the same.");
+                    DevLog.Log("relativePath and relativePath2 are the same.");
                 }
             }
-
-            this.txtText1.text = AssetUtil.LoadText(relativePath, true);
-            if (string.IsNullOrWhiteSpace(this.txtText1.text))
+            try
+            {
+                this.txtText1.text = AssetUtil.LoadText(relativePath, true);
+            }
+            catch (Exception ex)
             {
                 var message = "Please click \"Tools > Uft.UnityUtils.Samples > ScriptSample > ..., and restart";
-                Debug.LogWarning(message);
+                DevLog.LogWarning(ex.Message);
+                DevLog.LogException(ex);
                 this.txtText1.text = message;
             }
 
-            this.txtText2.text = AssetUtil.LoadText(relativePath, false);
-            if (string.IsNullOrWhiteSpace(this.txtText2.text))
+            try
+            {
+                this.txtText2.text = AssetUtil.LoadText(relativePath, false);
+            }
+            catch (Exception ex)
             {
                 var message = "Please click \"Tools > Uft.UnityUtils.Samples > ScriptSample > ..., and restart";
-                Debug.LogWarning(message);
+                DevLog.LogWarning(ex.Message);
+                DevLog.LogException(ex);
                 this.txtText2.text = message;
             }
 
-            var fileInfo = new FileInfo(srcPath + $"/{csvName}");
-            var result = fileInfo.ReadCsv(CsvUtil.GetCsvConfiguration(CsvUtil.UTF8), CsvDtoSample.Map);
-            this.txtText3.text = string.Join("\n", result);
-            if (string.IsNullOrWhiteSpace(this.txtText3.text))
+            try
+            {
+                var fileInfo = new FileInfo($"{streamingAssetsPath}/{csvName}");
+                var result = fileInfo.ReadCsv(CsvUtil.GetCsvConfiguration(CsvUtil.UTF8), CsvDtoSample.Map);
+                this.txtText3.text = string.Join("\n", result);
+            }
+            catch (Exception ex)
             {
                 var message = "Please click \"Tools > Uft.UnityUtils.Samples > ScriptSample > ..., and restart";
-                Debug.LogWarning(message);
-                this.txtText2.text = message;
+                DevLog.LogWarning(ex.Message);
+                DevLog.LogException(ex);
+                this.txtText3.text = message;
             }
         }
     }

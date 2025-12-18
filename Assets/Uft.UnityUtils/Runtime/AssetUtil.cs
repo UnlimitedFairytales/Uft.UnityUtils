@@ -2,6 +2,7 @@
 // #undef UNITY_EDITOR
 
 #nullable enable
+
 using Cysharp.Threading.Tasks;
 using System;
 using System.IO;
@@ -11,28 +12,34 @@ namespace Uft.UnityUtils
 {
     public static class AssetUtil
     {
-        public static bool _defaultModeIsResources = false;
+        const string NAME = "[" + nameof(AssetUtil) + "]";
+
+        static bool _defaultModeIsResources;
+        public static bool DefaultModeIsResources
+        {
+            get => _defaultModeIsResources;
+            set
+            {
+                _defaultModeIsResources = value;
+                DevLog.LogWarning($"{NAME} {nameof(DefaultModeIsResources)} = {value}");
+            }
+        }
 
         /// <summary>このメソッドは、Android/WebGL の StreamingAssets に対して使用できません。非同期版を使用してください。</summary>
-        public static string? LoadText(string relativePath, bool? isResources = null)
+        public static string LoadText(string relativePath, bool? isResources = null)
         {
-            var name = $"{nameof(AssetUtil)}.{nameof(LoadText)}()";
-            isResources ??= _defaultModeIsResources;
+            isResources ??= DefaultModeIsResources;
 
             var supportsSync =
                 (Application.platform != RuntimePlatform.Android) &&
                 (Application.platform != RuntimePlatform.WebGLPlayer);
-            if (!supportsSync && !isResources.Value) throw new NotSupportedException($"{name} : {Application.platform} + StreamingAssets is not supported for sync");
+            if (!supportsSync && !isResources.Value) throw new NotSupportedException($"{Application.platform} + StreamingAssets is not supported for sync");
 
             if (isResources.Value)
             {
                 var path = FixPath(relativePath);
                 var asset = Resources.Load<TextAsset>(path);
-                if (asset == null)
-                {
-                    Debug.LogError($"{name} [Resources] Failed to load: {path}");
-                    return null;
-                }
+                if (asset == null) throw new InvalidOperationException($"[Resources] Failed to load: {path}");
                 return asset.text;
             }
             else
@@ -44,16 +51,14 @@ namespace Uft.UnityUtils
                 }
                 catch (Exception ex)
                 {
-                    Debug.LogError($"{name} [StreamingAssets] Failed to load: {path}, ex.Message=[{ex.Message}]");
-                    return null;
+                    throw new InvalidOperationException($"[StreamingAssets] Failed to load: {path}", ex);
                 }
             }
         }
 
-        public static async UniTask<string?> LoadTextAsync(string relativePath, bool? isResources = null)
+        public static async UniTask<string> LoadTextAsync(string relativePath, bool? isResources = null)
         {
-            var name = $"{nameof(AssetUtil)}.{nameof(LoadTextAsync)}()";
-            isResources ??= _defaultModeIsResources;
+            isResources ??= DefaultModeIsResources;
 
             if (isResources.Value)
             {
@@ -61,11 +66,7 @@ namespace Uft.UnityUtils
                 var asyncOperation = Resources.LoadAsync<TextAsset>(path);
                 await asyncOperation;
                 var asset = asyncOperation.asset as TextAsset;
-                if (asset == null)
-                {
-                    Debug.LogError($"{name} [Resources] Failed to load: {path}");
-                    return null;
-                }
+                if (asset == null) throw new InvalidOperationException($"[Resources] Failed to load: {path}");
                 return asset.text;
             }
             else
@@ -90,8 +91,7 @@ namespace Uft.UnityUtils
 #endif
                 catch (Exception ex)
                 {
-                    Debug.LogError($"{name} [StreamingAssets] Failed to load: {path}, ex.Message=[{ex.Message}]");
-                    return null;
+                    throw new InvalidOperationException($"[StreamingAssets] Failed to load: {path}", ex);
                 }
             }
         }

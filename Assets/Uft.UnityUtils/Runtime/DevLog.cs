@@ -1,3 +1,5 @@
+#nullable enable
+
 using System.Diagnostics;
 using UnityEngine;
 
@@ -27,27 +29,27 @@ namespace Uft.UnityUtils
         public const string black = "black";
 
         [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD"), Conditional("DEBUG")]
-        public static void Log(string message, Object context = null, string color = null)
+        public static void Log(string message, Object? context = null, string? color = null)
         {
             message = FixColorTag(message, color);
             UnityEngine.Debug.Log(message, context);
         }
 
         [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD"), Conditional("DEBUG")]
-        public static void LogWarning(string message, Object context = null, string color = null)
+        public static void LogWarning(string message, Object? context = null, string? color = null)
         {
             message = FixColorTag(message, color);
             UnityEngine.Debug.LogWarning(message, context);
         }
 
         [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD"), Conditional("DEBUG")]
-        public static void LogError(string message, Object context = null, string color = null)
+        public static void LogError(string message, Object? context = null, string? color = null)
         {
             message = FixColorTag(message, color);
             UnityEngine.Debug.LogError(message, context);
         }
 
-        static string FixColorTag(string message, string color)
+        static string FixColorTag(string message, string? color)
         {
             if (!string.IsNullOrWhiteSpace(color))
             {
@@ -57,7 +59,7 @@ namespace Uft.UnityUtils
         }
 
         [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD"), Conditional("DEBUG")]
-        public static void LogException(System.Exception exception, Object context = null)
+        public static void LogException(System.Exception exception, Object? context = null)
         {
             UnityEngine.Debug.LogException(exception, context);
         }
