@@ -7,6 +7,8 @@ namespace Uft.UnityUtils
 {
     public static class CacheUtil
     {
+        const string NAME = "[" + nameof(CacheUtil) + "]";
+
         // Cached
 
         public static T? GetCachedComponent<T>(T? cached, Component component) where T : Component
@@ -21,7 +23,7 @@ namespace Uft.UnityUtils
 
             var children = component.GetComponentsInChildren<T>(includeInactive);
             if (children.Length == 0) return null;
-            if (children.Length == 1) return children[0];
+            if (children.Length == 1 && name == null) return children[0];
             if (name != null)
             {
                 foreach (var item in children)
@@ -30,7 +32,7 @@ namespace Uft.UnityUtils
                 }
                 return null;
             }
-            DevLog.LogWarning($"[{nameof(CacheUtil)}] Name == null and multiple components were found,  {nameof(GetCachedChildComponent)} returns first item.");
+            DevLog.LogWarning($"{NAME} Name == null and multiple components were found,  {nameof(GetCachedChildComponent)} returns first item.");
             return children[0];
         }
 
