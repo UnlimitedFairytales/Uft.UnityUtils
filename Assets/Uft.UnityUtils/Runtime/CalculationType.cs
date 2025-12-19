@@ -1,4 +1,6 @@
-﻿namespace Uft.UnityUtils
+#nullable enable
+
+namespace Uft.UnityUtils
 {
     public enum CalculationType
     {
