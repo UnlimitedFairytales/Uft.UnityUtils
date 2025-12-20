@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+#nullable enable
+
+using UnityEngine;
 
 namespace Uft.UnityUtils
 {
