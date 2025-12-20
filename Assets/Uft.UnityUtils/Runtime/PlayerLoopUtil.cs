@@ -1,5 +1,7 @@
 #nullable enable
 
+// #define DISABLE_UNITYUTILS_JUST_BEFORE_UPDATE
+
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,6 +15,8 @@ namespace Uft.UnityUtils
     /// </summary>
     public static class PlayerLoopUtil
     {
+        const string NAME = "[" + nameof(PlayerLoopUtil) + "]";
+
 #if !DISABLE_UNITYUTILS_JUST_BEFORE_UPDATE
         public class JustBeforeUpdateType
         {
@@ -34,61 +38,75 @@ namespace Uft.UnityUtils
         }
 
         public static event Action? JustBeforeUpdate;
-        public static bool _installed;
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-        private static void Reset()
+        static void Reset()
         {
             JustBeforeUpdate = null;
-            _installed = false;
         }
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterAssembliesLoaded)]
-        private static void Install()
+        static void Install()
         {
-            if (_installed) return;
-
             var loop = PlayerLoop.GetDefaultPlayerLoop();
-            Cysharp.Threading.Tasks.PlayerLoopHelper.Initialize(ref loop);
+            if (ContainsType(loop, typeof(JustBeforeUpdateType))) return;
 
+            Cysharp.Threading.Tasks.PlayerLoopHelper.Initialize(ref loop);
             var customUpdate = new PlayerLoopSystem()
             {
                 updateDelegate = JustBeforeUpdateType.Run,
                 type = typeof(JustBeforeUpdateType)
             };
-            InsertBefore<Update.ScriptRunBehaviourUpdate>(ref loop, customUpdate);
-            PlayerLoop.SetPlayerLoop(loop);
-            _installed = true;
+            if (InsertBefore<Update.ScriptRunBehaviourUpdate>(ref loop, customUpdate))
+            {
+                PlayerLoop.SetPlayerLoop(loop);
+                DevLog.Log($"{NAME} enable JustBeforeUpdate");
+            }
+            else
+            {
+                DevLog.LogWarning($"{NAME} Failed to setup JustBeforeUpdate");
+            }
         }
 #endif
 
         public static bool InsertBefore<TTarget>(ref PlayerLoopSystem root, PlayerLoopSystem node)
         {
-            if (root.subSystemList == null) return false;
+            return InsertBeforeInner<TTarget>(ref root, root.subSystemList, node);
+        }
 
-            for (int i = 0; i < root.subSystemList.Length; i++)
+        static bool InsertBeforeInner<TTarget>(ref PlayerLoopSystem parent, PlayerLoopSystem[]? children, PlayerLoopSystem node)
+        {
+            if (children == null) return false;
+
+            for (int i = 0; i < children.Length; i++)
             {
-                ref var sub = ref root.subSystemList[i];
-                var listInSub = sub.subSystemList;
-                if (listInSub != null)
+                if (children[i].type == typeof(TTarget))
                 {
-                    for (int j = 0; j < listInSub.Length; j++)
-                    {
-                        if (listInSub[j].type == typeof(TTarget))
-                        {
-                            var newListInSub = new List<PlayerLoopSystem>(listInSub);
-                            newListInSub.Insert(j, node);
-                            sub.subSystemList = newListInSub.ToArray();
-                            return true;
-                        }
-                    }
-                }
-                var copy = sub;
-                if (InsertBefore<TTarget>(ref copy, node))
-                {
-                    sub = copy;
+                    var newChildren = new List<PlayerLoopSystem>(children);
+                    newChildren.Insert(i, node);
+                    parent.subSystemList = newChildren.ToArray();
                     return true;
                 }
+
+                var grandChildren = children[i].subSystemList;
+                if (InsertBeforeInner<TTarget>(ref children[i], grandChildren, node))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        static bool ContainsType(PlayerLoopSystem root, Type type)
+        {
+            if (root.type == type) return true;
+
+            var list = root.subSystemList;
+            if (list == null) return false;
+
+            for (int i = 0; i < list.Length; i++)
+            {
+                if (ContainsType(list[i], type)) return true;
             }
             return false;
         }
