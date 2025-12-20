@@ -1,4 +1,6 @@
-﻿using System;
+#nullable enable
+
+using System;
 using UnityEngine;
 
 namespace Uft.UnityUtils
@@ -34,21 +36,13 @@ namespace Uft.UnityUtils
         public static float GetAngle(this Vector3 from, Vector3 to, CalculationType calcType = CalculationType.XY, bool isRadian = false)
         {
             var vec = GetDirection(from, to, calcType, false);
-            var angle = 0f;
-            switch (calcType)
+            var angle = calcType switch
             {
-                case CalculationType.Normal:
-                    throw new Exception("GetAngle don't accept " + CalculationType.Normal.ToString());
-                case CalculationType.XY:
-                    angle = Mathf.Atan2(vec.y, vec.x);
-                    break;
-                case CalculationType.YZ:
-                    angle = Mathf.Atan2(vec.z, vec.y);
-                    break;
-                case CalculationType.ZX:
-                    angle = Mathf.Atan2(vec.x, vec.z);
-                    break;
-            }
+                CalculationType.XY => Mathf.Atan2(vec.y, vec.x),
+                CalculationType.YZ => Mathf.Atan2(vec.z, vec.y),
+                CalculationType.ZX => Mathf.Atan2(vec.x, vec.z),
+                _ => throw new ArgumentException("GetAngle don't accept " + CalculationType.Normal.ToString(), nameof(calcType)),
+            };
             if (!isRadian)
             {
                 angle *= Mathf.Rad2Deg;
