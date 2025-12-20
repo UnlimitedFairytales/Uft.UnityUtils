@@ -1,3 +1,5 @@
+#nullable enable
+
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -31,7 +33,7 @@ namespace Uft.UnityUtils
             }
         }
 
-        public static event Action JustBeforeUpdate;
+        public static event Action? JustBeforeUpdate;
         public static bool _installed;
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
