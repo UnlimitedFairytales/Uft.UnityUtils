@@ -1,4 +1,5 @@
 #nullable enable
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,19 +11,21 @@ namespace Uft.UnityUtils
     public static class DirectoryUtil
     {
         /// <summary>GetLatestSampleSourceDirectory (Assets/Samples/...で始まる想定) の指定した内容を Assets/Resources/Samples/... へ コピー</summary>
-        public static void CopyLatestSampleToResources(string pathPart1, string pathPart2)
+        public static void CopyLatestSampleToResources(string pathPart1, string pathPart2, bool excludesMetaFile = true)
         {
             var src = GetLatestSampleSourceDirectory(pathPart1, pathPart2);
+            if (!Directory.Exists(src)) throw new DirectoryNotFoundException($"Source directory not found: {src}");
             var dst = ToResourcesPath(src);
-            CopyDirectory(src, dst, true, true);
+            CopyDirectory(src, dst, true, true, excludesMetaFile);
         }
 
         /// <summary>GetLatestSampleSourceDirectory (Assets/Samples/...で始まる想定) の指定した内容を Assets/StreamingAssets/Samples/... へ コピー</summary>
-        public static void CopyLatestSampleToStreamingAssets(string pathPart1, string pathPart2)
+        public static void CopyLatestSampleToStreamingAssets(string pathPart1, string pathPart2, bool excludesMetaFile = true)
         {
             var src = GetLatestSampleSourceDirectory(pathPart1, pathPart2);
+            if (!Directory.Exists(src)) throw new DirectoryNotFoundException($"Source directory not found: {src}");
             var dst = ToStreamingAssetsPath(src);
-            CopyDirectory(src, dst, true, true);
+            CopyDirectory(src, dst, true, true, excludesMetaFile);
         }
 
         /// <summary>pathPart1/x.x.x/pathPart2</summary>
@@ -36,16 +39,18 @@ namespace Uft.UnityUtils
             {
                 throw new DirectoryNotFoundException($"Source directory not found: {pathPart1}/<version>/{pathPart2}");
             }
-            var latestDir = verDirs
-                .Select(verDirs => new
+            var verDirs2 = verDirs
+                .Select(v => new
                 {
-                    OriginalString = verDirs,
-                    Version = ParseVersion(Path.GetFileName(verDirs))
+                    OriginalString = v,
+                    Version = ParseVersion(Path.GetFileName(v))
                 })
+                .Where(x => x.Version != null)
                 .OrderByDescending(record => record.Version)
                 .ThenByDescending(record => record.OriginalString, StringComparer.Ordinal)
-                .First()
-                .OriginalString;
+                .ToArray();
+            if (verDirs2.Length == 0) throw new DirectoryNotFoundException($"Source directory not found: {pathPart1}/<version>/{pathPart2}");
+            var latestDir = verDirs2[0].OriginalString;
 
             return latestDir + "/" + pathPart2;
         }
@@ -53,7 +58,7 @@ namespace Uft.UnityUtils
         /// <summary>e.g. "1.2.3", "1.2", "v1.2.3"</summary>
         public static Version? ParseVersion(string versionString)
         {
-            var m = Regex.Match(versionString, @"(\d+)\.(\d+)(?:\.(\d+))?");
+            var m = Regex.Match(versionString, @"^v?(\d+)\.(\d+)(?:\.(\d+))?$");
             if (!m.Success) return null;
             var major = int.Parse(m.Groups[1].Value);
             var minor = int.Parse(m.Groups[2].Value);
@@ -61,16 +66,19 @@ namespace Uft.UnityUtils
             return new Version(major, minor, patch);
         }
 
-
-        /// <summary>Assets/Samples/... で始まるパスを Assets/Resources/... に変換する</summary>
+        /// <summary>Assets/xxx/... で始まるパスを Assets/Resources/xxx/... に変換する</summary>
         public static string ToResourcesPath(string copySourcePath)
         {
+            if (!copySourcePath.StartsWith("Assets/")) throw new ArgumentException(copySourcePath, nameof(copySourcePath));
+
             return $"Assets/Resources/{copySourcePath["Assets/".Length..]}";
         }
 
-        /// <summary>Assets/Samples/... で始まるパスを Assets/StreamingAssets/... に変換する</summary>
+        /// <summary>Assets/xxx/... で始まるパスを Assets/StreamingAssets/xxx/... に変換する</summary>
         public static string ToStreamingAssetsPath(string copySourcePath)
         {
+            if (!copySourcePath.StartsWith("Assets/")) throw new ArgumentException(copySourcePath, nameof(copySourcePath));
+
             return $"Assets/StreamingAssets/{copySourcePath["Assets/".Length..]}";
         }
 
