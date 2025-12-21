@@ -32,6 +32,7 @@ namespace Uft.UnityUtils.UI
 
     public static class AnchorPresetUtil
     {
+        // TODO: サンプル
         public static bool TryParseLooseAnchorPreset(string? value, out AnchorPreset result)
         {
             value ??= "";
@@ -63,6 +64,7 @@ namespace Uft.UnityUtils.UI
             return Enum.TryParse(value, true, out result);
         }
 
+        // TODO: サンプル
         public static Vector2 GetPivot(this AnchorPreset anchorPreset)
         {
             return anchorPreset switch

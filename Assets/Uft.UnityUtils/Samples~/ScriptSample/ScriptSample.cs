@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using System;
 using System.IO;
 using TMPro;
@@ -111,7 +112,11 @@ namespace Uft.UnityUtils.Samples.ScriptSample
 
             try
             {
-                this.txtText2.text = AssetUtil.LoadText(relativePath, false);
+                UniTask.Void(async () =>
+                {
+                    await UniTask.WaitForSeconds(1);
+                    this.txtText2.text = await AssetUtil.LoadTextAsync(relativePath, false);
+                });
             }
             catch (Exception ex)
             {

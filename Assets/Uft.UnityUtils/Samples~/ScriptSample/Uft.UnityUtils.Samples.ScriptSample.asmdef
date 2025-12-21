@@ -4,6 +4,7 @@
     "references": [
         "Uft.UnityUtils",
         "Uft.UnityUtils.Common",
+        "UniTask",
         "Unity.TextMeshPro"
     ],
     "includePlatforms": [],

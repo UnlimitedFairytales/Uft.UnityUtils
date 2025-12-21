@@ -11,12 +11,14 @@ namespace Uft.UnityUtils
 
         // Cached
 
+        // TODO: サンプル
         public static T? GetCachedComponent<T>(T? cached, Component component) where T : Component
         {
             if (cached != null) return cached;
             return component.GetComponent<T>();
         }
 
+        // TODO: サンプル
         public static T? GetCachedChildComponent<T>(T? cached, Component component, bool includeInactive, string? name = null) where T : Component
         {
             if (cached != null) return cached;
@@ -36,6 +38,7 @@ namespace Uft.UnityUtils
             return children[0];
         }
 
+        // TODO: サンプル
         public static T[] GetCachedChildrenComponents<T>(T[]? cached, Component component, bool includeInactive) where T : Component
         {
             if (cached != null) return cached;
@@ -45,6 +48,7 @@ namespace Uft.UnityUtils
 
         // Created
 
+        // TODO: サンプル
         public static T? GetCreatedObject<T>(T? created, T? prefab) where T : Object
         {
             if (created != null) return created;
@@ -53,6 +57,7 @@ namespace Uft.UnityUtils
             return null;
         }
 
+        // TODO: サンプル
         public static List<T> GetCreatedObjectList<T>(List<T>? created, List<T>? prefabList) where T : Object
         {
             if (created != null) return created;
