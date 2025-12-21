@@ -1,7 +1,8 @@
+#nullable enable
+
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Globalization;
 
 namespace Uft.UnityUtils.Common
 {
@@ -42,13 +43,14 @@ namespace Uft.UnityUtils.Common
         /// <returns></returns>
         public bool? EvaluateBooleanOrNull(string expression)
         {
-            object result = null;
+            object? result;
             lock (this._lock)
             {
                 result = this._dataTable.Compute(expression, null);
             }
             if (result is DBNull || result == null) return null;
-            return bool.Parse(result.ToString());
+            if (result is bool v) return v;
+            throw new InvalidOperationException(expression);
         }
 
         /// <summary>
@@ -58,13 +60,23 @@ namespace Uft.UnityUtils.Common
         /// <returns></returns>
         public double? EvaluateDoubleOrNull(string expression)
         {
-            object result = null;
+            object? result;
             lock (this._lock)
             {
                 result = this._dataTable.Compute(expression, null);
             }
             if (result is DBNull || result == null) return null;
-            return double.Parse(result.ToString(), CultureInfo.InvariantCulture);
+            return result switch
+            {
+                decimal m => (double)m,
+                double d => d,
+                float f => f,
+                int i => i,
+                long l => l,
+                short s => s,
+                byte b => b,
+                _ => throw new InvalidOperationException(expression),
+            };
         }
     }
 }
