@@ -1,4 +1,6 @@
-﻿using System;
+#nullable enable
+
+using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -7,19 +9,21 @@ namespace Uft.UnityUtils.Common
 {
     public static class Reflec
     {
+        static readonly BindingFlags Default = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static;
+
         static object GetMemberValue(object o, string memberName, bool isProperty)
         {
             var type = o.GetType();
-            Func<MemberInfo> lambda1;
+            Func<MemberInfo?> lambda1;
             Func<MemberInfo, object> lambda2;
             if (isProperty)
             {
-                lambda1 = () => type.GetProperty(memberName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static | BindingFlags.GetProperty);
+                lambda1 = () => type.GetProperty(memberName, Default | BindingFlags.GetProperty);
                 lambda2 = (i) => ((PropertyInfo)i).GetValue(o, null);
             }
             else
             {
-                lambda1 = () => type.GetField(memberName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
+                lambda1 = () => type.GetField(memberName, Default | BindingFlags.GetField);
                 lambda2 = (i) => ((FieldInfo)i).GetValue(o);
             }
             var info = lambda1();
@@ -28,6 +32,7 @@ namespace Uft.UnityUtils.Common
                 type = type.BaseType;
                 info = lambda1();
             }
+            if (info == null) throw new ArgumentException(memberName, nameof(memberName));
             return lambda2(info);
         }
 
@@ -53,13 +58,14 @@ namespace Uft.UnityUtils.Common
         {
             var memberName = ((MemberExpression)e.Body).Member.Name;
             var type = o.GetType();
-            PropertyInfo propertyInfo = type.GetProperty(memberName);
-            while (!propertyInfo.CanWrite && type.BaseType != null)
+            PropertyInfo? info = type.GetProperty(memberName, Default | BindingFlags.GetProperty);
+            while ((info == null || !info.CanWrite) && type.BaseType != null)
             {
                 type = type.BaseType;
-                propertyInfo = type.GetProperty(memberName);
+                info = type.GetProperty(memberName, Default | BindingFlags.GetProperty);
             }
-            propertyInfo.SetValue(o, value, null);
+            if (info == null) throw new ArgumentException(memberName, nameof(memberName)); // NOTE: 引数とメッセージにズレはあるが、通じるのでヨシ
+            info.SetValue(o, value, null);
         }
 
         /// <summary>
@@ -81,14 +87,15 @@ namespace Uft.UnityUtils.Common
         /// <param name="value"></param>
         public static void SetField(object o, string memberName, object value)
         {
-            FieldInfo fieldInfo = o.GetType().GetField(memberName, BindingFlags.GetField | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
-            fieldInfo.SetValue(o, value);
+            FieldInfo? info = o.GetType().GetField(memberName, Default | BindingFlags.GetField )
+                ?? throw new ArgumentException(memberName, nameof(memberName));
+            info.SetValue(o, value);
         }
 
         public static string ToFieldName(string name)
         {
             var post = 1 < name.Length ? name[1..] : "";
-            return "_" + name[0].ToString().ToLower() + post;
+            return "_" + name[0].ToString().ToLowerInvariant() + post;
         }
 
         /// <summary>
@@ -103,13 +110,14 @@ namespace Uft.UnityUtils.Common
             var memberName = ToFieldName(((MemberExpression)e.Body).Member.Name);
 
             var type = o.GetType();
-            FieldInfo fieldInfo = type.GetField(memberName, BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
-            while (fieldInfo == null && type.BaseType != null)
+            FieldInfo? info = type.GetField(memberName, Default | BindingFlags.GetField);
+            while (info == null && type.BaseType != null)
             {
                 type = type.BaseType;
-                fieldInfo = type.GetField(memberName, BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
+                info = type.GetField(memberName, Default | BindingFlags.GetField);
             }
-            fieldInfo.SetValue(o, value);
+            if (info == null) throw new ArgumentException(memberName, nameof(memberName));
+            info.SetValue(o, value);
         }
 
         /// <summary>
@@ -121,8 +129,9 @@ namespace Uft.UnityUtils.Common
         /// <returns></returns>
         public static object InvokePrivateMethod(object o, string memberName, object[] parameters)
         {
-            MethodInfo methodInfo = o.GetType().GetMethod(memberName, BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
-            return methodInfo.Invoke(o, parameters);
+            MethodInfo info = o.GetType().GetMethod(memberName, Default | BindingFlags.InvokeMethod)
+                ?? throw new ArgumentException(memberName, nameof(memberName));
+            return info.Invoke(o, parameters);
         }
 
         /// <summary>
@@ -133,14 +142,18 @@ namespace Uft.UnityUtils.Common
         /// <returns></returns>
         public static List<TSearchType> GetInstanceFieldByType<TSearchType>(object o)
         {
-            var fieldInfos = GetInstanceFieldInfosFromType(o, typeof(TSearchType));
+            var infos = GetInstanceFieldInfosFromType(o, typeof(TSearchType));
             var list = new List<TSearchType>();
-            foreach (var f in fieldInfos)
+            foreach (var f in infos)
             {
                 var t = f.FieldType;
                 if (t.IsArray || t == typeof(List<TSearchType>))
                 {
-                    list.AddRange((IEnumerable<TSearchType>)f.GetValue(o));
+                    var val = (IEnumerable<TSearchType>)f.GetValue(o);
+                    if (val != null)
+                    {
+                        list.AddRange(val);
+                    }
                 }
                 else
                 {
@@ -188,7 +201,7 @@ namespace Uft.UnityUtils.Common
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public static Type GetTypeFromName(String name)
+        public static Type? GetTypeFromName(String name)
         {
             List<Type> types = GetAllTypes();
             foreach (Type type in types)
