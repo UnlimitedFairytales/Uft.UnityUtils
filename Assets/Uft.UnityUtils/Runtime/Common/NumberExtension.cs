@@ -1,5 +1,6 @@
-﻿using System;
-using System.Globalization;
+#nullable enable
+
+using System;
 
 namespace Uft.UnityUtils.Common
 {
@@ -8,19 +9,12 @@ namespace Uft.UnityUtils.Common
         /// <summary>
         /// Machine epsilon.<br/>* C#'s float.Epsilon is not machine epsilon.
         /// </summary>
-        public static float FloatEpsilon { get { return 0.00000011920929f; } } // 1.1920929e-7
+        public const float FLOAT_EPSILON = 0.00000011920929f; // 1.1920929e-7
+        public const float DEFAULT_TOLERANCE = 1e-6f;
 
-        public static float SafeToFloat(this string text)
-        {
-            float.TryParse(text, NumberStyles.Number, CultureInfo.InvariantCulture, out float returnValue);
-            return returnValue;
-        }
+        public static float SafeToFloat(this string text) => InvariantCultureUtil.FloatTryParse(text, out float r) ? r : 0f;
 
-        public static int SafeToInt(this string text)
-        {
-            int.TryParse(text, NumberStyles.Number, CultureInfo.InvariantCulture, out int returnValue);
-            return returnValue;
-        }
+        public static int SafeToInt(this string text) => InvariantCultureUtil.IntTryParse(text, out int r) ? r : 0;
 
         public static float Clamp(this float value, float min, float max)
         {
@@ -32,10 +26,14 @@ namespace Uft.UnityUtils.Common
             return Math.Max(Math.Min(value, max), min);
         }
 
-        public static bool Is0fEpsilon(this float value)
+        public static bool Approximately(float a, float b)
         {
-            return -FloatEpsilon < value && value < FloatEpsilon;
+            var diff = Math.Abs(a - b);
+            var scale = Math.Max(Math.Abs(a), Math.Abs(b));
+            return diff < DEFAULT_TOLERANCE * Math.Max(1.0f, scale);
         }
+
+        public static bool ApproximatelyZero(this float value) => Approximately(value, 0f);
 
         public static bool IsEven(this int value)
         {

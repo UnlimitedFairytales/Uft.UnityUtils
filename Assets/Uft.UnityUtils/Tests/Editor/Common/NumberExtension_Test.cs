@@ -1,4 +1,4 @@
-﻿using NUnit.Framework;
+using NUnit.Framework;
 using Uft.UnityUtils.Common;
 
 namespace Uft.UnityUtils.Tests.Editor.Common
@@ -202,10 +202,10 @@ namespace Uft.UnityUtils.Tests.Editor.Common
             var val4 = +0.00000011f;
 
             // Act
-            var res1 = val1.Is0fEpsilon();
-            var res2 = val2.Is0fEpsilon();
-            var res3 = val3.Is0fEpsilon();
-            var res4 = val4.Is0fEpsilon();
+            var res1 = val1.ApproximatelyZero();
+            var res2 = val2.ApproximatelyZero();
+            var res3 = val3.ApproximatelyZero();
+            var res4 = val4.ApproximatelyZero();
 
             // Assert
             Assert.AreEqual(false, res1); // 1.1920929e-7
