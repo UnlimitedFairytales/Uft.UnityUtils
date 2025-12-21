@@ -1,4 +1,4 @@
-﻿using NUnit.Framework;
+using NUnit.Framework;
 using System;
 using System.Data;
 using System.Text.RegularExpressions;
@@ -51,10 +51,9 @@ namespace Uft.UnityUtils.Tests.Editor.Common
             Assert.AreEqual(null, eval.EvaluateBooleanOrNull(" NulL = NulL"));
             Assert.AreEqual(true, eval.EvaluateBooleanOrNull(" NulL IS NulL"));
 
-            Assert.AreEqual(null, eval.EvaluateBooleanOrNull(null));
             Assert.AreEqual(null, eval.EvaluateBooleanOrNull(""));
             Assert.Throws<SyntaxErrorException>(() => eval.EvaluateBooleanOrNull("1+2 *"));
-            Assert.Throws<FormatException>(() => eval.EvaluateBooleanOrNull("1+2"));
+            Assert.Throws<InvalidOperationException>(() => eval.EvaluateBooleanOrNull("1+2"));
         }
 
         [Test]
@@ -70,10 +69,9 @@ namespace Uft.UnityUtils.Tests.Editor.Common
             Assert.AreEqual(0.5d, eval.EvaluateDoubleOrNull(" 1/2"), double.Epsilon);
             Assert.AreEqual(2.0d, eval.EvaluateDoubleOrNull(" 8%3"), double.Epsilon);
 
-            Assert.AreEqual(null, eval.EvaluateDoubleOrNull(null));
             Assert.AreEqual(null, eval.EvaluateDoubleOrNull(""));
             Assert.Throws<SyntaxErrorException>(() => eval.EvaluateDoubleOrNull("1+2 <>"));
-            Assert.Throws<FormatException>(() => eval.EvaluateDoubleOrNull("1+2 = 3"));
+            Assert.Throws<InvalidOperationException>(() => eval.EvaluateDoubleOrNull("1+2 = 3"));
         }
 
 

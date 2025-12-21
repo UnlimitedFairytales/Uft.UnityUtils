@@ -1,4 +1,4 @@
-﻿using NUnit.Framework;
+using NUnit.Framework;
 using System;
 using UnityEngine;
 
@@ -123,7 +123,7 @@ namespace Uft.UnityUtils.Tests.Editor
         }
 
         [Test]
-        public void GetAngle02_from_to_normal_ThrowsException()
+        public void GetAngle02_from_to_normal_ThrowsArgumentException()
         {
             // Arrange
             var (from, to) = Arrange();
@@ -132,7 +132,7 @@ namespace Uft.UnityUtils.Tests.Editor
             // -
 
             // Assert
-            Assert.Throws<Exception>(() => { Vector3Util.GetAngle(from, to, CalculationType.Normal); });
+            Assert.Throws<ArgumentException>(() => { Vector3Util.GetAngle(from, to, CalculationType.Normal); });
         }
 
         [Test]

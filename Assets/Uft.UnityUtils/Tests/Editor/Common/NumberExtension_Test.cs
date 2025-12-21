@@ -26,7 +26,7 @@ namespace Uft.UnityUtils.Tests.Editor.Common
             var input15 = "true";
             var input16 = (string)null;
             var input17 = "134985.0";
-            var input18 = "134,985";
+            var input18 = "134,985"; // Cannot parse
 
             // Act
             var output01 = NumberExtension.SafeToFloat(input01);
@@ -66,7 +66,7 @@ namespace Uft.UnityUtils.Tests.Editor.Common
             Assert.AreEqual(0, output15, 0.001);
             Assert.AreEqual(0, output16, 0.001);
             Assert.AreEqual(134985, output17, 0.001);
-            Assert.AreEqual(134985, output18, 0.001);
+            Assert.AreEqual(0, output18); // Cannot parse
         }
 
         [Test]
@@ -89,8 +89,8 @@ namespace Uft.UnityUtils.Tests.Editor.Common
             var input14 = "false";
             var input15 = "true";
             var input16 = (string)null;
-            var input17 = "134985.0";
-            var input18 = "134,985";
+            var input17 = "134985.0"; //    float and double are correct format. Although int is bad format.
+            var input18 = "134,985"; // Cannot parse
 
             // Act
             var output01 = NumberExtension.SafeToInt(input01);
@@ -109,8 +109,8 @@ namespace Uft.UnityUtils.Tests.Editor.Common
             var output14 = NumberExtension.SafeToInt(input14);
             var output15 = NumberExtension.SafeToInt(input15);
             var output16 = NumberExtension.SafeToInt(input16);
-            var output17 = NumberExtension.SafeToFloat(input17);
-            var output18 = NumberExtension.SafeToFloat(input18);
+            var output17 = NumberExtension.SafeToInt(input17);
+            var output18 = NumberExtension.SafeToInt(input18);
 
             // Assert
             Assert.AreEqual(13230, output01);
@@ -124,13 +124,13 @@ namespace Uft.UnityUtils.Tests.Editor.Common
             Assert.AreEqual(0, output09);
             Assert.AreEqual(0, output10);
             Assert.AreEqual(-12034, output11);
-            Assert.AreEqual(-2147483648, output12, 0.001);
-            Assert.AreEqual(0, output13, 0.001);
-            Assert.AreEqual(0, output14, 0.001);
-            Assert.AreEqual(0, output15, 0.001);
-            Assert.AreEqual(0, output16, 0.001);
-            Assert.AreEqual(134985, output17, 0.001);
-            Assert.AreEqual(134985, output18, 0.001);
+            Assert.AreEqual(-2147483648, output12);
+            Assert.AreEqual(0, output13);
+            Assert.AreEqual(0, output14);
+            Assert.AreEqual(0, output15);
+            Assert.AreEqual(0, output16);
+            Assert.AreEqual(0, output17);
+            Assert.AreEqual(0, output18); // Cannot parse
         }
 
         [Test]
@@ -193,13 +193,13 @@ namespace Uft.UnityUtils.Tests.Editor.Common
         }
 
         [Test]
-        public static void Is0fEpsilon_float_Test()
+        public static void ApproximatelyZero_float_Test()
         {
             // Arrange
-            var val1 = -0.00000012f;
-            var val2 = +0.00000012f;
-            var val3 = -0.00000011f;
-            var val4 = +0.00000011f;
+            var val1 = -0.000001f;
+            var val2 = +0.000001f;
+            var val3 = -0.0000009999999f; // 0.0000009999999747378752
+            var val4 = +0.0000009999999f; // 0.0000009999999747378752
 
             // Act
             var res1 = val1.ApproximatelyZero();
@@ -208,10 +208,10 @@ namespace Uft.UnityUtils.Tests.Editor.Common
             var res4 = val4.ApproximatelyZero();
 
             // Assert
-            Assert.AreEqual(false, res1); // 1.1920929e-7
-            Assert.AreEqual(false, res2); // 1.1920929e-7
-            Assert.AreEqual(true, res3); // 1.1920929e-7
-            Assert.AreEqual(true, res4); // 1.1920929e-7
+            Assert.AreEqual(false, res1); // 1e-6
+            Assert.AreEqual(false, res2); // 1e-6
+            Assert.AreEqual(true, res3); // 1e-6
+            Assert.AreEqual(true, res4); // 1e-6
         }
 
         [Test]

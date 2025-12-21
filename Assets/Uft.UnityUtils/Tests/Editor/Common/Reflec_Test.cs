@@ -1,4 +1,4 @@
-﻿using NUnit.Framework;
+using NUnit.Framework;
 using System;
 using Uft.UnityUtils.Common;
 
@@ -41,13 +41,13 @@ namespace Uft.UnityUtils.Tests.Editor.Common
         }
 
         [Test]
-        public void GetProperty_InvalidMemberName_ThrowsNullReferenceException()
+        public void GetProperty_InvalidMemberName_ThrowsArgumentException()
         {
             // Arrange
             var value = new DummyClass("foo", "bar", "baz");
             // Act
             // Assert
-            Assert.Throws<NullReferenceException>(() => Reflec.GetProperty(value, "UnknownProperty"));
+            Assert.Throws<ArgumentException>(() => Reflec.GetProperty(value, "UnknownProperty"));
         }
 
         // -
@@ -80,13 +80,13 @@ namespace Uft.UnityUtils.Tests.Editor.Common
         }
 
         [Test]
-        public void GetField_InvalidMemberName_ThrowsNullReferenceException()
+        public void GetField_InvalidMemberName_ThrowsArgumentException()
         {
             // Arrange
             var value = new DummyClass("foo", "bar", "baz");
             // Act
             // Assert
-            Assert.Throws<NullReferenceException>(() => Reflec.GetField(value, "UnknownProperty"));
+            Assert.Throws<ArgumentException>(() => Reflec.GetField(value, "UnknownField"));
         }
 
         // -

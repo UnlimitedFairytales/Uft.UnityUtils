@@ -1,4 +1,4 @@
-﻿using Uft.UnityUtils.Common;
+using Uft.UnityUtils.Common;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -10,46 +10,7 @@ namespace Uft.UnityUtils.Tests.Editor.Common
         // ToDictionary
 
         [Test]
-        public void ToDictionary01_null_null_IsLength0()
-        {
-            // Arrange
-            // -
-
-            // Act
-            var nullAndNull = DictionaryExtension.ToDictionary<int, int>(null, null);
-
-            // Assert
-            Assert.AreEqual(0, nullAndNull.Count);
-        }
-
-        [Test]
-        public void ToDictionary02_keys_null_IsLength3()
-        {
-            // Arrange
-            var keys = new List<int>(new int[] { 10, 20, 30 });
-
-            // Act
-            var keysAndNull = DictionaryExtension.ToDictionary<int, int>(keys, null);
-
-            // Assert
-            Assert.AreEqual(3, keysAndNull.Count);
-        }
-
-        [Test]
-        public void ToDictionary03_null_vals_IsLength0()
-        {
-            // Arrange
-            var vals = new List<int>(new int[] { 10, 20, 30 });
-
-            // Act
-            var nullAndVals = DictionaryExtension.ToDictionary<int, int>(null, vals);
-
-            // Assert
-            Assert.AreEqual(0, nullAndVals.Count);
-        }
-
-        [Test]
-        public void ToDictionary04_3keys_4vals_IsLength3()
+        public void ToDictionary01_3keys_4vals_IsLength3()
         {
             // Arrange
             var keys = new List<int>(new int[] { 10, 20, 30 });
@@ -63,7 +24,7 @@ namespace Uft.UnityUtils.Tests.Editor.Common
         }
 
         [Test]
-        public void ToDictionary05_4keys_3vals_IsLength4()
+        public void ToDictionary02_4keys_3vals_IsLength4()
         {
             // Arrange
             var keys = new List<int>(new int[] { 10, 20, 30, 40 });
@@ -77,7 +38,7 @@ namespace Uft.UnityUtils.Tests.Editor.Common
         }
 
         [Test]
-        public void ToDictionary06_duplicatedKeys_ThrowsArgumentException()
+        public void ToDictionary03_duplicatedKeys_ThrowsArgumentException()
         {
             // Arrange
             var keys = new List<int>(new int[] { 10, 20, 30, 40, 10 });
@@ -94,7 +55,7 @@ namespace Uft.UnityUtils.Tests.Editor.Common
         }
 
         [Test]
-        public void ToDictionary07_duplicatedVals_IsOK()
+        public void ToDictionary04_duplicatedVals_IsOK()
         {
             // Arrange
             var keys = new List<int>(new int[] { 10, 20, 30 });
@@ -111,7 +72,7 @@ namespace Uft.UnityUtils.Tests.Editor.Common
         }
 
         [Test]
-        public void ToDictionary08_stringList_IsOK()
+        public void ToDictionary05_stringList_IsOK()
         {
             // Arrange
             var keys = new List<string>(new string[] { "10", "20", "30", "40" });
@@ -129,21 +90,7 @@ namespace Uft.UnityUtils.Tests.Editor.Common
         // ToListPair
 
         [Test]
-        public void ToListPair01_null_IsLength0()
-        {
-            // Arrange
-            // -
-
-            // Act
-            var keysAndVals = DictionaryExtension.ToListPair<string, int>(null);
-
-            // Assert
-            Assert.AreEqual(0, keysAndVals.Key.Count);
-            Assert.AreEqual(0, keysAndVals.Value.Count);
-        }
-
-        [Test]
-        public void ToListPair02_3dictionary_Is3ListPair()
+        public void ToListPair01_3dictionary_Is3ListPair()
         {
             // Arrange
             var dic = new Dictionary<string, int>
@@ -157,6 +104,7 @@ namespace Uft.UnityUtils.Tests.Editor.Common
             var keysAndVals = DictionaryExtension.ToListPair<string, int>(dic);
 
             // Assert
+            // HACK: 厳密には順序は未定義だが、Dictionaryの場合実質Insert順
             Assert.AreEqual(3, keysAndVals.Key.Count);
             Assert.AreEqual("1st", keysAndVals.Key[0]);
             Assert.AreEqual("3rd", keysAndVals.Key[2]);

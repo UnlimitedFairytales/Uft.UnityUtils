@@ -98,6 +98,7 @@ namespace Uft.UnityUtils.Common
             return "_" + name[0].ToString().ToLowerInvariant() + post;
         }
 
+        // TODO: テストコード
         /// <summary>
         /// This function is very heavy! (about 100 or 1000 times for simple assignment expression.)
         /// </summary>
@@ -120,6 +121,7 @@ namespace Uft.UnityUtils.Common
             info.SetValue(o, value);
         }
 
+        // TODO: テストコード
         /// <summary>
         /// This function is very heavy! (about 100 or 1000 times for simple assignment expression.)
         /// </summary>
@@ -134,6 +136,7 @@ namespace Uft.UnityUtils.Common
             return info.Invoke(o, parameters);
         }
 
+        // TODO: テストコード
         /// <summary>
         /// This function is very heavy! (about 100 or 1000 times for simple assignment expression.)
         /// </summary>
@@ -163,6 +166,7 @@ namespace Uft.UnityUtils.Common
             return list;
         }
 
+        // TODO: テストコード
         /// <summary>
         /// This function is very heavy! (about 100 or 1000 times for simple assignment expression.)
         /// </summary>
@@ -196,6 +200,7 @@ namespace Uft.UnityUtils.Common
             return fieldInfos;
         }
 
+        // TODO: テストコード
         /// <summary>
         /// This function is very heavy! (about 100 or 1000 times for simple assignment expression.)
         /// </summary>
@@ -212,6 +217,7 @@ namespace Uft.UnityUtils.Common
             return null;
         }
 
+        // TODO: テストコード
         /// <summary>
         /// This function is very heavy! (about 100 or 1000 times for simple assignment expression.)
         /// </summary>
