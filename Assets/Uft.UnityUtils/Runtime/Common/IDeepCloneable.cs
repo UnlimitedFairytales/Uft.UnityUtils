@@ -1,4 +1,6 @@
-﻿namespace Uft.UnityUtils.Common
+#nullable enable
+
+namespace Uft.UnityUtils.Common
 {
     public interface IDeepCloneable<out T>
     {
