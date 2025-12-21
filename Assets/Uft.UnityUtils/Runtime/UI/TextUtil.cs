@@ -21,6 +21,8 @@ namespace Uft.UnityUtils.UI
             Right = 3,
         }
 
+        const string FONT_FILE_NAME_LEGACY = "LegacyRuntime.ttf";
+
         public static Text CreateTextWithCanvas(string text, int width = 400, int height = 400)
         {
             var canvasGo = new GameObject("DynamicCanvas");
@@ -29,7 +31,9 @@ namespace Uft.UnityUtils.UI
             var textGo = new GameObject("DynamicText");
             textGo.transform.SetParent(canvasGo.transform, false);
             var result = textGo.AddComponent<Text>();
-            result.font = (Font)Resources.GetBuiltinResource(typeof(Font), "LegacyRuntime.ttf"); // 2022.3.1以降はこちら指定
+            var font = (Font)Resources.GetBuiltinResource(typeof(Font), FONT_FILE_NAME_LEGACY); // 2022.3.1以降はこちら指定
+            if (font == null) throw new UnityException($"This unity version does not include {FONT_FILE_NAME_LEGACY}");
+            result.font = font;
             result.color = (new Color(50 / 255f, 50 / 255f, 50 / 255f, 1));
             result.rectTransform.sizeDelta = new Vector2(width, height);
             result.text = text;
