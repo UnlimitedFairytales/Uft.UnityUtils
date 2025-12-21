@@ -33,6 +33,7 @@ namespace Uft.UnityUtils.UI
 
         public async UniTask ShowAsync(string headerText, string contentText, int timeout_sec = 0)
         {
+            this.gameObject.SetActive(true);
             if (this._messageBoxHelper == null) throw new OperationCanceledException("Before Awake()");
 
             if (this._lblHeader != null) this._lblHeader.SetText(headerText);

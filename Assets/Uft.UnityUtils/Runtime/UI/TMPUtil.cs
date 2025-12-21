@@ -42,13 +42,13 @@ namespace Uft.UnityUtils.UI
                 acc = 0;
                 for (int i = 0; i < emitCount && index < text.Length; i++)
                 {
-                    tmp.text += text[index];
+                    tmp.text += text[index]; // NOTE: tmpが未初期化の場合にNREしうる
                     index++;
                 }
                 if (scrollRect != null &&
                     0.1f < scrollRect.verticalNormalizedPosition &&
                     scrollRect.viewport.rect.height + 0.1f < scrollRect.content.rect.height &&
-                    !DOTween.IsTweening(scrollRect))
+                    !DOTween.IsTweening(scrollRect)) // NOTE: scrollRectのアサインが不十分だとNREしうるが、考慮外とする
                 {
                     var t = scrollRect.DOVerticalNormalizedPos(0.0f, scrollDuration_sec);
                     await t.ToUniTask(cancellationToken: ct);
