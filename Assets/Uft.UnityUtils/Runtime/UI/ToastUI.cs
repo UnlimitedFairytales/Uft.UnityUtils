@@ -2,6 +2,7 @@
 
 using Cysharp.Threading.Tasks;
 using System;
+using System.Linq;
 using System.Threading;
 using TMPro;
 using UnityEngine;
@@ -17,6 +18,31 @@ namespace Uft.UnityUtils.UI
         [SerializeField] Button? _tapArea;
 
         MessageBoxHelper<int>? _messageBoxHelper;
+
+        void Reset()
+        {
+            // NOTE: ResetはLinq許容
+            if (this._animator == null) this._animator = this.GetComponentInChildren<Animator>();
+            if (this._lblHeader == null)
+            {
+                this._lblHeader = this.GetComponentsInChildren<TMP_Text>()
+                    .Where(tmp => tmp.gameObject.name.Contains("Header", StringComparison.OrdinalIgnoreCase))
+                    .FirstOrDefault();
+            }
+            if (this._lblContent == null)
+            {
+                this._lblContent = this.GetComponentsInChildren<TMP_Text>()
+                    .Where(tmp =>
+                        tmp.gameObject.name.Contains("Content", StringComparison.OrdinalIgnoreCase) ||
+                        tmp.gameObject.name.Contains("Text", StringComparison.OrdinalIgnoreCase) ||
+                        tmp.gameObject.name.Contains("Body", StringComparison.OrdinalIgnoreCase))
+                    .FirstOrDefault();
+            }
+            if (this._tapArea == null)
+            {
+                this._tapArea = this.GetComponentInChildren<Button>();
+            }
+        }
 
         void Awake()
         {
