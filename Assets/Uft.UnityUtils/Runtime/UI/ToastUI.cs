@@ -46,7 +46,7 @@ namespace Uft.UnityUtils.UI
 
         void Awake()
         {
-            if (this._tapArea == null) throw new UnassignedReferenceException($"{nameof(this._tapArea)}");
+            if (this._tapArea == null) throw new UnassignedReferenceException(nameof(this._tapArea));
 
             this._messageBoxHelper = new MessageBoxHelper<int>(this.gameObject, (status) => new OperationResult<int>(status, 0), this._animator);
             this._tapArea.onClick.AddListener(UniTask.UnityAction(async () =>
