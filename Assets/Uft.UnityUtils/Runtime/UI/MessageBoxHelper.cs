@@ -28,10 +28,10 @@ namespace Uft.UnityUtils.UI
         RejectedDueToCooldown,
     }
 
-    enum MessageBoxState
+    public enum MessageBoxState
     {
-        Hidden,
-        Opening,
+        Closed,
+        Showing,
         Shown,
         Closing
     }
@@ -46,7 +46,7 @@ namespace Uft.UnityUtils.UI
         readonly bool _isCompletionOnUnexpectedNextState;
         readonly int _layerIndex;
 
-        MessageBoxState _state = MessageBoxState.Hidden;
+        MessageBoxState _state = MessageBoxState.Closed; public MessageBoxState State => this._state;
         UniTask? _closingTask = null;
 
         public MessageBoxHelper(GameObject gameObject, Func<OperationResultStatus, OperationResult<TResult>> getResult, Animator? animator,
@@ -65,13 +65,13 @@ namespace Uft.UnityUtils.UI
 
         public virtual async UniTask<OperationResult<TResult>> ShowAsync(CancellationToken ct)
         {
-            if (this._state != MessageBoxState.Hidden) return this._getResult(OperationResultStatus.RejectedDueToDuplicate);
+            if (this._state != MessageBoxState.Closed) return this._getResult(OperationResultStatus.RejectedDueToDuplicate);
             if (!this._gameObject) return this._getResult(OperationResultStatus.Canceled);
 
             try
             {
                 // 1
-                this._state = MessageBoxState.Opening;
+                this._state = MessageBoxState.Showing;
                 this._gameObject.SetActive(true);
 
                 // 2
@@ -100,9 +100,9 @@ namespace Uft.UnityUtils.UI
             }
             finally
             {
-                if (this._state == MessageBoxState.Opening || this._state == MessageBoxState.Shown)
+                if (this._state == MessageBoxState.Showing || this._state == MessageBoxState.Shown)
                 {
-                    this._state = this._gameObject && this._gameObject.activeInHierarchy ? MessageBoxState.Shown : MessageBoxState.Hidden;
+                    this._state = this._gameObject && this._gameObject.activeInHierarchy ? MessageBoxState.Shown : MessageBoxState.Closed;
                 }
             }
         }
@@ -114,7 +114,7 @@ namespace Uft.UnityUtils.UI
                 Assert.IsTrue(this._closingTask != null);
                 return UniTask.CompletedTask; // NOTE: UniTaskは多重awaitを許可しないため、完了タスクを返す
             }
-            if (this._state == MessageBoxState.Hidden) return UniTask.CompletedTask;
+            if (this._state == MessageBoxState.Closed) return UniTask.CompletedTask;
 
             this._state = MessageBoxState.Closing;
             var uniTask = this.CloseAsyncInner(ct);
@@ -138,7 +138,7 @@ namespace Uft.UnityUtils.UI
             {
                 if (this._gameObject) this._gameObject.SetActive(false);
                 this._closingTask = null;
-                this._state = MessageBoxState.Hidden;
+                this._state = MessageBoxState.Closed;
             }
         }
     }

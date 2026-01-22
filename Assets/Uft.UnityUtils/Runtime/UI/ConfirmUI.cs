@@ -11,7 +11,7 @@ namespace Uft.UnityUtils.UI
 {
     public class ConfirmUI : ToastUI
     {
-        [SerializeField] Button? _btnCancel;
+        [SerializeField] Button? _btnCancel; public Button? BtnCancel => this._btnCancel;
 
         protected override void Reset()
         {

@@ -19,7 +19,7 @@ namespace Uft.UnityUtils.UI
         [SerializeField] protected Animator? _animator;
         [SerializeField] protected TMP_Text? _lblHeader;
         [SerializeField] protected TMP_Text? _lblContent;
-        [SerializeField] protected Button? _btnOk;
+        [SerializeField] protected Button? _btnOk; public Button? BtnOk => this._btnOk;
 
         protected MessageBoxHelper<int>? _messageBoxHelper;
 
@@ -62,6 +62,8 @@ namespace Uft.UnityUtils.UI
         }
 
         // Unity event functions & event handlers / pure code
+
+        public MessageBoxState State => this._messageBoxHelper?.State ?? MessageBoxState.Closed;
 
         /// <summary>引数がnullの場合は文字列を適用しません。</summary>
         public async UniTask<OperationResult<int>> ShowAsync(string? headerText = null, string? contentText = null, int timeout_sec = 0)
