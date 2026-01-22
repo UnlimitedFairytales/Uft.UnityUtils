@@ -52,7 +52,7 @@ MonoBehaviour:
   _animator: {fileID: 5054261734101542295}
   _lblHeader: {fileID: 6190549251822855487}
   _lblContent: {fileID: 3187120030108689720}
-  _tapArea: {fileID: 8347510558324088072}
+  _btnOk: {fileID: 8347510558324088072}
 --- !u!1 &2028546332286665741
 GameObject:
   m_ObjectHideFlags: 0

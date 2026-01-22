@@ -2,6 +2,7 @@
 
 using Cysharp.Threading.Tasks;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
 using TMPro;
@@ -12,12 +13,17 @@ namespace Uft.UnityUtils.UI
 {
     public class ToastUI : MonoBehaviour
     {
-        [SerializeField] Animator? _animator;
-        [SerializeField] TMP_Text? _lblHeader;
-        [SerializeField] TMP_Text? _lblContent;
-        [SerializeField] Button? _tapArea;
+        public const int RESULT_OK = 1;
+        public const int RESULT_CANCEL = 2;
 
-        MessageBoxHelper<int>? _messageBoxHelper;
+        [SerializeField] protected Animator? _animator;
+        [SerializeField] protected TMP_Text? _lblHeader;
+        [SerializeField] protected TMP_Text? _lblContent;
+        [SerializeField] protected Button? _btnOk;
+
+        protected MessageBoxHelper<int>? _messageBoxHelper;
+
+        protected int _result;
 
         protected virtual void Reset()
         {
@@ -26,7 +32,9 @@ namespace Uft.UnityUtils.UI
             if (this._lblHeader == null)
             {
                 this._lblHeader = this.GetComponentsInChildren<TMP_Text>()
-                    .Where(tmp => tmp.gameObject.name.Contains("Header", StringComparison.OrdinalIgnoreCase))
+                    .Where(tmp =>
+                        tmp.gameObject.name.Contains("Title", StringComparison.OrdinalIgnoreCase) ||
+                        tmp.gameObject.name.Contains("Header", StringComparison.OrdinalIgnoreCase))
                     .FirstOrDefault();
             }
             if (this._lblContent == null)
@@ -34,25 +42,23 @@ namespace Uft.UnityUtils.UI
                 this._lblContent = this.GetComponentsInChildren<TMP_Text>()
                     .Where(tmp =>
                         tmp.gameObject.name.Contains("Content", StringComparison.OrdinalIgnoreCase) ||
-                        tmp.gameObject.name.Contains("Text", StringComparison.OrdinalIgnoreCase) ||
                         tmp.gameObject.name.Contains("Body", StringComparison.OrdinalIgnoreCase))
                     .FirstOrDefault();
             }
-            if (this._tapArea == null)
+            if (this._btnOk == null)
             {
-                this._tapArea = this.GetComponentInChildren<Button>();
+                this._btnOk = this.GetComponentInChildren<Button>();
             }
         }
 
+        [MemberNotNull(nameof(this._btnOk))]
+        [MemberNotNull(nameof(this._messageBoxHelper))]
         protected virtual void Awake()
         {
-            if (this._tapArea == null) throw new UnassignedReferenceException(nameof(this._tapArea));
+            if (this._btnOk == null) throw new UnassignedReferenceException(nameof(this._btnOk));
 
-            this._messageBoxHelper = new MessageBoxHelper<int>(this.gameObject, (status) => new OperationResult<int>(status, 0), this._animator);
-            this._tapArea.onClick.AddListener(UniTask.UnityAction(async () =>
-            {
-                await this._messageBoxHelper.CloseAsync(default);
-            }));
+            this._messageBoxHelper = new MessageBoxHelper<int>(this.gameObject, (status) => new OperationResult<int>(status, this._result), this._animator);
+            this._btnOk.onClick.AddListener(UniTask.UnityAction(async () => await this.SubmitOk()));
         }
 
         // Unity event functions & event handlers / pure code
@@ -80,6 +86,14 @@ namespace Uft.UnityUtils.UI
                 timeoutTimer?.Dispose();
                 cts.Dispose();
             }
+        }
+
+        public virtual async UniTask SubmitOk()
+        {
+            if (this._messageBoxHelper == null) throw new OperationCanceledException("Before Awake()");
+
+            this._result = RESULT_OK;
+            await this._messageBoxHelper.CloseAsync(default);
         }
     }
 }
