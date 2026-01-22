@@ -1,0 +1,59 @@
+#pragma warning disable IDE0009 // メンバー アクセスを修飾する必要があります。
+
+namespace System.Diagnostics.CodeAnalysis
+{
+    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Property, Inherited = false, AllowMultiple = true)]
+    sealed class MemberNotNullAttribute : Attribute
+    {
+        /// <summary>Initializes the attribute with a field or property member.</summary>
+        /// <param name="member">
+        /// The field or property member that is promised to be not-null.
+        /// </param>
+        public MemberNotNullAttribute(string member) => Members = new[] { member };
+
+        /// <summary>Initializes the attribute with the list of field and property members.</summary>
+        /// <param name="members">
+        /// The list of field and property members that are promised to be not-null.
+        /// </param>
+        public MemberNotNullAttribute(params string[] members) => Members = members;
+
+        /// <summary>Gets field or property member names.</summary>
+        public string[] Members { get; }
+    }
+
+    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Property, Inherited = false, AllowMultiple = true)]
+    sealed class MemberNotNullWhenAttribute : Attribute
+    {
+        /// <summary>Initializes the attribute with the specified return value condition and a field or property member.</summary>
+        /// <param name="returnValue">
+        /// The return value condition. If the method returns this value, the associated field or property member will not be null.
+        /// </param>
+        /// <param name="member">
+        /// The field or property member that is promised to be not-null.
+        /// </param>
+        public MemberNotNullWhenAttribute(bool returnValue, string member)
+        {
+            ReturnValue = returnValue;
+            Members = new[] { member };
+        }
+
+        /// <summary>Initializes the attribute with the specified return value condition and list of field and property members.</summary>
+        /// <param name="returnValue">
+        /// The return value condition. If the method returns this value, the associated field and property members will not be null.
+        /// </param>
+        /// <param name="members">
+        /// The list of field and property members that are promised to be not-null.
+        /// </param>
+        public MemberNotNullWhenAttribute(bool returnValue, params string[] members)
+        {
+            ReturnValue = returnValue;
+            Members = members;
+        }
+
+        /// <summary>Gets the return value condition.</summary>
+        public bool ReturnValue { get; }
+
+        /// <summary>Gets field or property member names.</summary>
+        public string[] Members { get; }
+    }
+}
