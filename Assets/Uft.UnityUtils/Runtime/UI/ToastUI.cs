@@ -19,7 +19,7 @@ namespace Uft.UnityUtils.UI
 
         MessageBoxHelper<int>? _messageBoxHelper;
 
-        void Reset()
+        protected virtual void Reset()
         {
             // NOTE: ResetはLinq許容
             if (this._animator == null) this._animator = this.GetComponentInChildren<Animator>();
@@ -44,7 +44,7 @@ namespace Uft.UnityUtils.UI
             }
         }
 
-        void Awake()
+        protected virtual void Awake()
         {
             if (this._tapArea == null) throw new UnassignedReferenceException(nameof(this._tapArea));
 

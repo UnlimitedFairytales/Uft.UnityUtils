@@ -16,7 +16,7 @@ namespace Uft.UnityUtils.UI
         int _frameCount = 0;
         float _fps;
 
-        void Awake()
+        protected virtual void Awake()
         {
             if (this._text == null)
             {
@@ -27,7 +27,7 @@ namespace Uft.UnityUtils.UI
             this._normalColor = this._text.color;
         }
 
-        void Update()
+        protected virtual void Update()
         {
             this._timer += Time.unscaledDeltaTime;
             this._frameCount++;
