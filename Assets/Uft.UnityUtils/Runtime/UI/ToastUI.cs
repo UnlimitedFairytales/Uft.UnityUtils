@@ -63,13 +63,14 @@ namespace Uft.UnityUtils.UI
 
         // Unity event functions & event handlers / pure code
 
-        public async UniTask ShowAsync(string headerText, string contentText, int timeout_sec = 0)
+        /// <summary>引数がnullの場合は文字列を適用しません。</summary>
+        public async UniTask<OperationResult<int>> ShowAsync(string? headerText = null, string? contentText = null, int timeout_sec = 0)
         {
             this.gameObject.SetActive(true);
             if (this._messageBoxHelper == null) throw new OperationCanceledException("Before Awake()");
 
-            if (this._lblHeader != null) this._lblHeader.SetText(headerText);
-            if (this._lblContent != null) this._lblContent.SetText(contentText);
+            if (this._lblHeader != null && headerText != null) this._lblHeader.SetText(headerText);
+            if (this._lblContent != null && contentText != null) this._lblContent.SetText(contentText);
 
             var cts = new CancellationTokenSource();
             IDisposable? timeoutTimer = null;
@@ -79,7 +80,7 @@ namespace Uft.UnityUtils.UI
                 {
                     timeoutTimer = cts.CancelAfterSlim(timeout_sec * 1000);
                 }
-                await this._messageBoxHelper.ShowAsync(cts.Token);
+                return await this._messageBoxHelper.ShowAsync(cts.Token);
             }
             finally
             {
