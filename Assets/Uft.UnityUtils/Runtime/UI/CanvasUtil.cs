@@ -20,10 +20,7 @@ namespace Uft.UnityUtils.UI
                     canvas.worldCamera = camera;
                     canvas.planeDistance = camera.nearClipPlane + 0.01f;
                 }
-                else if (canvas.renderMode == RenderMode.ScreenSpaceCamera)
-                {
-                    canvas.worldCamera = camera;
-                }
+                canvas.worldCamera = camera;
             }
         }
     }
