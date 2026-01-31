@@ -1,0 +1,17 @@
+{
+    "name": "Uft.UnityUtils.Samples.TransformSample",
+    "rootNamespace": "",
+    "references": [
+        "GUID:c2c3a752e401a1a4d8e6e30b1c11ecf7",
+        "GUID:f51ebe6a0ceec4240a699833d6309b23"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
