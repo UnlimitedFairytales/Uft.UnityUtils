@@ -1,9 +1,9 @@
 using UnityEngine;
 
-namespace Uft.UnityUtils.Samples.UISample
+namespace Uft.UnityUtils
 {
     [DefaultExecutionOrder(10000)]
-    public class RectTransformUtilSample : MonoBehaviour
+    public class BillBoard : MonoBehaviour
     {
         public bool isYOnly = false;
         public Camera sourceCamera;
@@ -16,10 +16,16 @@ namespace Uft.UnityUtils.Samples.UISample
             }
             if (this.sourceCamera == null) return;
 
-            this.transform.forward = this.sourceCamera.transform.forward;
-            if (this.isYOnly)
+            if (!this.isYOnly)
             {
-                this.transform.rotation = Quaternion.Euler(0, this.transform.rotation.eulerAngles.y, 0);
+                this.transform.forward = this.sourceCamera.transform.forward;
+                return;
+            }
+            var fwd = this.sourceCamera.transform.forward;
+            fwd.y = 0f;
+            if (fwd != Vector3.zero)
+            {
+                this.transform.rotation = Quaternion.LookRotation(fwd, Vector3.up);
             }
         }
     }
