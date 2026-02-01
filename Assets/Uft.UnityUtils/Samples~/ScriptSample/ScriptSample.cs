@@ -106,25 +106,26 @@ namespace Uft.UnityUtils.Samples.ScriptSample
             {
                 var message = "Please click \"Tools > Uft.UnityUtils.Samples > ScriptSample > ..., and restart";
                 DevLog.LogWarning(ex.Message);
-                DevLog.LogException(ex);
+                // DevLog.LogException(ex);
                 this.txtText1.text = message;
             }
 
-            try
+            UniTask.Void(async () =>
             {
-                UniTask.Void(async () =>
+                try
                 {
                     await UniTask.WaitForSeconds(1);
                     this.txtText2.text = await AssetUtil.LoadTextAsync(relativePath, false);
-                });
-            }
-            catch (Exception ex)
-            {
-                var message = "Please click \"Tools > Uft.UnityUtils.Samples > ScriptSample > ..., and restart";
-                DevLog.LogWarning(ex.Message);
-                DevLog.LogException(ex);
-                this.txtText2.text = message;
-            }
+                }
+                catch (Exception ex)
+                {
+                    var message = "Please click \"Tools > Uft.UnityUtils.Samples > ScriptSample > ..., and restart";
+                    DevLog.LogWarning(ex.Message);
+                    // DevLog.LogException(ex);
+                    this.txtText2.text = message;
+                }
+            });
+
 
             try
             {
@@ -136,7 +137,7 @@ namespace Uft.UnityUtils.Samples.ScriptSample
             {
                 var message = "Please click \"Tools > Uft.UnityUtils.Samples > ScriptSample > ..., and restart";
                 DevLog.LogWarning(ex.Message);
-                DevLog.LogException(ex);
+                // DevLog.LogException(ex);
                 this.txtText3.text = message;
             }
         }
