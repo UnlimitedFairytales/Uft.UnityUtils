@@ -13,6 +13,11 @@ namespace Uft.UnityUtils.Samples.ScriptSample
         [SerializeField] GameObject _objPrototype;
         GameObject _instantiated; public GameObject Instantiated => CacheUtil.GetCreatedObject(ref this._instantiated, this._objPrototype);
 
+        private void Awake()
+        {
+            CacheUtil.isHeavyCallLogged = true;
+        }
+
         void Update()
         {
             this.TxtText1.text = this.TxtText1 == this.TxtTextList[0] ? "yeah1" : "Huh?";
