@@ -15,7 +15,7 @@ namespace Uft.UnityUtils.Samples.UISample
         void Start()
         {
             CanvasUtil.SetCameraToCanvas(this._canvas.gameObject, Camera.main, true);
-            this._canvas.planeDistance = CameraUtil.DISTANCE_720P_FOV60 / 100;
+            this._canvas.planeDistance = CameraUtil.DISTANCE_720P_FOV60_PPU100;
         }
 
         void Update()
