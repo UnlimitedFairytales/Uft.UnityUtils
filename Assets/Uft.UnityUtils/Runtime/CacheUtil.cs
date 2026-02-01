@@ -1,6 +1,5 @@
 #nullable enable
 
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Uft.UnityUtils
@@ -11,66 +10,56 @@ namespace Uft.UnityUtils
 
         // Cached
 
-        // TODO: サンプル
-        public static T? GetCachedComponent<T>(T? cached, Component component) where T : Component
+        public static T? GetCachedComponent<T>(ref T? cached, Component component) where T : Component
         {
             if (cached != null) return cached;
-            return component.GetComponent<T>();
+            cached = component.GetComponent<T>();
+            return cached;
         }
 
-        // TODO: サンプル
-        public static T? GetCachedChildComponent<T>(T? cached, Component component, bool includeInactive, string? name = null) where T : Component
+        public static T? GetCachedChildComponent<T>(ref T? cached, Component component, bool includeInactive, string? name = null) where T : Component
         {
             if (cached != null) return cached;
 
             var children = component.GetComponentsInChildren<T>(includeInactive);
             if (children.Length == 0) return null;
-            if (children.Length == 1 && name == null) return children[0];
+            if (children.Length == 1 && name == null)
+            {
+                cached = children[0];
+                return cached;
+            }
             if (name != null)
             {
                 foreach (var item in children)
                 {
-                    if (item.name == name) return item;
+                    if (item.name == name)
+                    {
+                        cached = item;
+                        return cached;
+                    }
                 }
                 return null;
             }
             DevLog.LogWarning($"{NAME} Name == null and multiple components were found,  {nameof(GetCachedChildComponent)} returns first item.");
-            return children[0];
+            cached = children[0];
+            return cached;
         }
 
-        // TODO: サンプル
-        public static T[] GetCachedChildrenComponents<T>(T[]? cached, Component component, bool includeInactive) where T : Component
+        public static T[] GetCachedChildrenComponents<T>(ref T[]? cached, Component component, bool includeInactive) where T : Component
         {
             if (cached != null) return cached;
 
-            return component.GetComponentsInChildren<T>(includeInactive);
+            cached = component.GetComponentsInChildren<T>(includeInactive);
+            return cached;
         }
 
         // Created
 
-        // TODO: サンプル
-        public static T? GetCreatedObject<T>(T? created, T? prefab) where T : Object
+        public static T? GetCreatedObject<T>(ref T? created, T prefab) where T : Object
         {
             if (created != null) return created;
 
-            if (prefab != null) return Object.Instantiate(prefab);
-            return null;
-        }
-
-        // TODO: サンプル
-        public static List<T> GetCreatedObjectList<T>(List<T>? created, List<T>? prefabList) where T : Object
-        {
-            if (created != null) return created;
-
-            created = new List<T>();
-            if (prefabList != null)
-            {
-                foreach (var prefab in prefabList)
-                {
-                    if (prefab == null) continue;
-                    created.Add(Object.Instantiate(prefab));
-                }
-            }
+            created = Object.Instantiate(prefab);
             return created;
         }
     }
