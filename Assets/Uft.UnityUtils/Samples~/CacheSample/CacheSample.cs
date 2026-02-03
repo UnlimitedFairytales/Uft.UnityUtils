@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-namespace Uft.UnityUtils.Samples.ScriptSample
+namespace Uft.UnityUtils.Samples.CacheSample
 {
     public class CacheSample : MonoBehaviour
     {
