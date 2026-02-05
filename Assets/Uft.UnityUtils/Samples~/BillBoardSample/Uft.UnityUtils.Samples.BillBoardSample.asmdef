@@ -1,0 +1,16 @@
+{
+    "name": "Uft.UnityUtils.Samples.BillBoardSample",
+    "rootNamespace": "",
+    "references": [
+        "GUID:c2c3a752e401a1a4d8e6e30b1c11ecf7"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
