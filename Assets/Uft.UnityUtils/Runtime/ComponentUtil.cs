@@ -18,7 +18,6 @@ namespace Uft.UnityUtils
             return instantiated;
         }
 
-        // TODO: サンプル
         public static List<TComponent> GetComponentsInChildrenOrderByName<TComponent>(this Component component, bool includeInactive, Func<TComponent, bool>? whereCondition = null) where TComponent : Component
         {
             if (whereCondition == null)
@@ -34,14 +33,6 @@ namespace Uft.UnityUtils
                     .OrderBy(c => c.gameObject.name)
                     .ToList();
             }
-        }
-
-        // TODO: サンプル
-        public static List<TComponent> GetComponentsInChildrenByName<TComponent>(this Component component, bool includeInactive, string name) where TComponent : Component
-        {
-            return component.GetComponentsInChildren<TComponent>(includeInactive)
-                .Where(c => c.gameObject.name == name)
-                .ToList();
         }
     }
 }
