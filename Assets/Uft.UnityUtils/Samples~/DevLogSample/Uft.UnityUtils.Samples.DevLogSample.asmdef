@@ -1,0 +1,17 @@
+{
+    "name": "Uft.UnityUtils.Samples.DevLogSample",
+    "rootNamespace": "",
+    "references": [
+        "Uft.UnityUtils",
+        "Unity.TextMeshPro"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
