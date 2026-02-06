@@ -2,7 +2,8 @@
     "name": "Uft.UnityUtils.Samples.BillBoardSample",
     "rootNamespace": "",
     "references": [
-        "GUID:c2c3a752e401a1a4d8e6e30b1c11ecf7"
+        "Uft.UnityUtils",
+        "Unity.TextMeshPro"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -3,7 +3,6 @@
     "rootNamespace": "",
     "references": [
         "Uft.UnityUtils",
-        "Uft.UnityUtils.Common",
         "Unity.TextMeshPro"
     ],
     "includePlatforms": [],

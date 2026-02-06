@@ -2,8 +2,8 @@
     "name": "Uft.UnityUtils.Samples.CacheSample",
     "rootNamespace": "",
     "references": [
-        "GUID:c2c3a752e401a1a4d8e6e30b1c11ecf7",
-        "GUID:6055be8ebefd69e48b49212b09b47b2f"
+        "Uft.UnityUtils",
+        "Unity.TextMeshPro"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
