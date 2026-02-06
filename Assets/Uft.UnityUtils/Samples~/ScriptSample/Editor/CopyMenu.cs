@@ -1,4 +1,5 @@
 using System;
+using Uft.UnityUtils.Common;
 using UnityEditor;
 
 namespace Uft.UnityUtils.Samples.ScriptSample.Editor

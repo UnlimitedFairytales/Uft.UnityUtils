@@ -6,7 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace Uft.UnityUtils
+namespace Uft.UnityUtils.Common
 {
     public static class DirectoryUtil
     {
