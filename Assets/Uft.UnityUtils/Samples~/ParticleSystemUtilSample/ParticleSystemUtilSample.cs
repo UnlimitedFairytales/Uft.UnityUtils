@@ -1,9 +1,9 @@
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
-namespace Uft.UnityUtils.Samples.TapSample
+namespace Uft.UnityUtils.Samples.ParticleSystemUtilSample
 {
-    public class TapSample : MonoBehaviour
+    public class ParticleSystemUtilSample : MonoBehaviour
     {
         [SerializeField] GameObject _tapEffect_prefab;
 

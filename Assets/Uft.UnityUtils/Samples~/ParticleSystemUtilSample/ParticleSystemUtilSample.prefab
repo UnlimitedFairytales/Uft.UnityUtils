@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1319481428039586842}
   - component: {fileID: -5609962337952459419}
   m_Layer: 0
-  m_Name: TapSample
+  m_Name: ParticleSystemUtilSample
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
