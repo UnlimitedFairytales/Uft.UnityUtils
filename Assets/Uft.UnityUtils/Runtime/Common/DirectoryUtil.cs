@@ -30,7 +30,7 @@ namespace Uft.UnityUtils.Common
 
         /// <summary>pathPart1/x.x.x/pathPart2</summary>
         /// <param name="pathPart1">e.g. Assets/Samples/Uft.UnityUtils</param>
-        /// <param name="pathPart2">e.g. ScriptSample/Scripts</param>
+        /// <param name="pathPart2">e.g. AssetUtilSample/Scripts</param>
         public static string GetLatestSampleSourceDirectory(string pathPart1, string pathPart2)
         {
             var verDirs = EnumerateSubdirectories(pathPart1)
