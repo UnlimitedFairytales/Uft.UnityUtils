@@ -1,6 +1,6 @@
 using CsvHelper;
 
-namespace Uft.UnityUtils.Samples.ScriptSample
+namespace Uft.UnityUtils.Samples.CsvUtilSample
 {
     public class CsvDtoSample
     {

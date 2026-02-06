@@ -1,10 +1,9 @@
 {
-    "name": "Uft.UnityUtils.Samples.ScriptSample",
+    "name": "Uft.UnityUtils.Samples.CsvUtilSample",
     "rootNamespace": "",
     "references": [
         "Uft.UnityUtils",
         "Uft.UnityUtils.Common",
-        "UniTask",
         "Unity.TextMeshPro"
     ],
     "includePlatforms": [],
