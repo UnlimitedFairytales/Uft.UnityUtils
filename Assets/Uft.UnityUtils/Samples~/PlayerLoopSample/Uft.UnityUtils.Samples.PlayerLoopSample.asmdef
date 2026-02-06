@@ -2,8 +2,8 @@
     "name": "Uft.UnityUtils.Samples.PlayerLoopSample",
     "rootNamespace": "",
     "references": [
-        "GUID:c2c3a752e401a1a4d8e6e30b1c11ecf7",
-        "GUID:f51ebe6a0ceec4240a699833d6309b23"
+        "Uft.UnityUtils",
+        "Unity.TextMeshPro"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
