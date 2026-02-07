@@ -6,7 +6,7 @@ namespace Uft.UnityUtils.UI
 {
     public static class CanvasUtil
     {
-        public static void SetCameraToCanvas(this GameObject gameObject, Camera camera, bool overlay2Camera = true, bool includeInactive = false)
+        public static void SetCameraToCanvas(this GameObject gameObject, Camera camera, bool overlay2Camera = true, float? overlay2CameraDistance = null, bool includeInactive = false)
         {
             var canvases = gameObject.GetComponentsInChildren<Canvas>(includeInactive);
             if (canvases == null) return;
@@ -17,8 +17,9 @@ namespace Uft.UnityUtils.UI
                 {
                     if (!overlay2Camera) continue;
                     canvas.renderMode = RenderMode.ScreenSpaceCamera;
-                    canvas.worldCamera = camera;
-                    canvas.planeDistance = camera.nearClipPlane + 0.01f;
+                    canvas.planeDistance = overlay2CameraDistance != null ?
+                        overlay2CameraDistance.Value :
+                        camera.nearClipPlane + 0.01f;
                 }
                 canvas.worldCamera = camera;
             }

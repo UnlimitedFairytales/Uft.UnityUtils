@@ -347,7 +347,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5295565121460829365, guid: d4ec30fb05cb8c34788dede5dd07a9cc, type: 3}
       propertyPath: m_Name
-      value: RectTransformSample
+      value: CanvasUtilSample
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

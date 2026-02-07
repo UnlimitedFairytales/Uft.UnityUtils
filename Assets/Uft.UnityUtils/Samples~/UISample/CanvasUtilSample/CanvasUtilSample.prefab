@@ -275,7 +275,7 @@ GameObject:
   - component: {fileID: 4880011029136619526}
   - component: {fileID: 455882330595883432}
   m_Layer: 0
-  m_Name: RectTransformSample
+  m_Name: CanvasUtilSample
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

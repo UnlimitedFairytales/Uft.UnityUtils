@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace Uft.UnityUtils.Samples.UISample
 {
-    public class RectTransformSample : MonoBehaviour
+    public class CanvasUtilSample : MonoBehaviour
     {
         [SerializeField] Canvas _canvas;
         [SerializeField] Image _image;
@@ -14,8 +14,7 @@ namespace Uft.UnityUtils.Samples.UISample
 
         void Start()
         {
-            CanvasUtil.SetCameraToCanvas(this._canvas.gameObject, Camera.main, true);
-            this._canvas.planeDistance = CameraUtil.DISTANCE_720P_FOV60_PPU100;
+            CanvasUtil.SetCameraToCanvas(this._canvas.gameObject, Camera.main, true, CameraUtil.DISTANCE_720P_FOV60_PPU100);
         }
 
         void Update()
