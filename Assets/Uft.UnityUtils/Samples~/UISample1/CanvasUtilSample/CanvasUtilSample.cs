@@ -2,7 +2,7 @@ using Uft.UnityUtils.UI;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Uft.UnityUtils.Samples.UISample
+namespace Uft.UnityUtils.Samples.UISample1
 {
     public class CanvasUtilSample : MonoBehaviour
     {
