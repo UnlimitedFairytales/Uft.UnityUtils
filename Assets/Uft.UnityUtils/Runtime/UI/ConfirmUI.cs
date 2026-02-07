@@ -65,7 +65,7 @@ namespace Uft.UnityUtils.UI
         public async UniTask<OperationResult<int>> ShowAsync(string? headerText = null, string? contentText = null, int timeout_sec = 0, int initialSelection = RESULT_CANCEL)
         {
             this.gameObject.SetActive(true);
-            if (this._messageBoxHelper == null) throw new OperationCanceledException("Before Awake()");
+            if (this._windowHelper == null) throw new OperationCanceledException("Before Awake()");
             if (this._btnOk == null) throw new UnassignedReferenceException(nameof(this._btnOk));
             if (this._btnCancel == null) throw new UnassignedReferenceException(nameof(this._btnCancel));
 
@@ -90,7 +90,7 @@ namespace Uft.UnityUtils.UI
                 {
                     timeoutTimer = cts.CancelAfterSlim(timeout_sec * 1000);
                 }
-                return await this._messageBoxHelper.ShowAsync(cts.Token);
+                return await this._windowHelper.ShowAsync(cts.Token);
             }
             finally
             {
@@ -101,10 +101,10 @@ namespace Uft.UnityUtils.UI
 
         public virtual async UniTask SubmitCancel()
         {
-            if (this._messageBoxHelper == null) throw new OperationCanceledException("Before Awake()");
+            if (this._windowHelper == null) throw new OperationCanceledException("Before Awake()");
 
             this._result = RESULT_CANCEL;
-            await this._messageBoxHelper.CloseAsync(default);
+            await this._windowHelper.HideAsync(default);
         }
     }
 }

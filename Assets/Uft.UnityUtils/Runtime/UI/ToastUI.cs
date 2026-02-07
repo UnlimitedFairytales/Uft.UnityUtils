@@ -21,7 +21,7 @@ namespace Uft.UnityUtils.UI
         [SerializeField] protected TMP_Text? _lblContent;
         [SerializeField] protected Button? _btnOk; public Button? BtnOk => this._btnOk;
 
-        protected MessageBoxHelper<int>? _messageBoxHelper;
+        protected WindowHelper<int>? _windowHelper;
 
         protected int _result;
 
@@ -52,24 +52,24 @@ namespace Uft.UnityUtils.UI
         }
 
         [MemberNotNull(nameof(this._btnOk))]
-        [MemberNotNull(nameof(this._messageBoxHelper))]
+        [MemberNotNull(nameof(this._windowHelper))]
         protected virtual void Awake()
         {
             if (this._btnOk == null) throw new UnassignedReferenceException(nameof(this._btnOk));
 
-            this._messageBoxHelper = new MessageBoxHelper<int>(this.gameObject, (status) => new OperationResult<int>(status, this._result), this._animator);
+            this._windowHelper = new WindowHelper<int>(this.gameObject, (status) => new OperationResult<int>(status, this._result), this._animator);
             this._btnOk.onClick.AddListener(UniTask.UnityAction(async () => await this.SubmitOk()));
         }
 
         // Unity event functions & event handlers / pure code
 
-        public MessageBoxState State => this._messageBoxHelper?.State ?? MessageBoxState.Closed;
+        public WindowState State => this._windowHelper?.State ?? WindowState.Hidden;
 
         /// <summary>引数がnullの場合は文字列を適用しません。</summary>
         public async UniTask<OperationResult<int>> ShowAsync(string? headerText = null, string? contentText = null, int timeout_sec = 0)
         {
             this.gameObject.SetActive(true);
-            if (this._messageBoxHelper == null) throw new OperationCanceledException("Before Awake()");
+            if (this._windowHelper == null) throw new OperationCanceledException("Before Awake()");
 
             if (this._lblHeader != null && headerText != null) this._lblHeader.SetText(headerText);
             if (this._lblContent != null && contentText != null) this._lblContent.SetText(contentText);
@@ -82,7 +82,7 @@ namespace Uft.UnityUtils.UI
                 {
                     timeoutTimer = cts.CancelAfterSlim(timeout_sec * 1000);
                 }
-                return await this._messageBoxHelper.ShowAsync(cts.Token);
+                return await this._windowHelper.ShowAsync(cts.Token);
             }
             finally
             {
@@ -93,10 +93,10 @@ namespace Uft.UnityUtils.UI
 
         public virtual async UniTask SubmitOk()
         {
-            if (this._messageBoxHelper == null) throw new OperationCanceledException("Before Awake()");
+            if (this._windowHelper == null) throw new OperationCanceledException("Before Awake()");
 
             this._result = RESULT_OK;
-            await this._messageBoxHelper.CloseAsync(default);
+            await this._windowHelper.HideAsync(default);
         }
     }
 }

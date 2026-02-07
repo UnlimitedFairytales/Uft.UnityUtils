@@ -6,7 +6,7 @@ using System.Threading;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace Uft.UnityUtils.UI
+namespace Uft.UnityUtils
 {
     public readonly struct OperationResult<T>
     {
@@ -28,50 +28,50 @@ namespace Uft.UnityUtils.UI
         RejectedDueToCooldown,
     }
 
-    public enum MessageBoxState
+    public enum WindowState
     {
-        Closed,
+        Hidden,
         Showing,
         Shown,
-        Closing
+        Hiding
     }
 
-    public class MessageBoxHelper<TResult>
+    public class WindowHelper<TResult>
     {
         readonly GameObject _gameObject;
         readonly Func<OperationResultStatus, OperationResult<TResult>> _getResult;
         readonly Animator? _animator;
         readonly string _showingTriggerAndStateName;
-        readonly string _closingTriggerAndStateName;
+        readonly string _hidingTriggerAndStateName;
         readonly bool _isCompletionOnUnexpectedNextState;
         readonly int _layerIndex;
 
-        MessageBoxState _state = MessageBoxState.Closed; public MessageBoxState State => this._state;
-        UniTask? _closingTask = null;
+        WindowState _state = WindowState.Hidden; public WindowState State => this._state;
+        UniTask? _hidingTask = null;
 
-        public MessageBoxHelper(GameObject gameObject, Func<OperationResultStatus, OperationResult<TResult>> getResult, Animator? animator,
+        public WindowHelper(GameObject gameObject, Func<OperationResultStatus, OperationResult<TResult>> getResult, Animator? animator,
             string showingTriggerAndStateName = "Showing",
-            string closingTriggerAndStateName = "Closing",
+            string hidingTriggerAndStateName = "Hiding",
             bool isCompletionOnUnexpectedNextState = true, int layerIndex = 0)
         {
             this._gameObject = gameObject;
             this._getResult = getResult;
             this._animator = animator;
             this._showingTriggerAndStateName = showingTriggerAndStateName;
-            this._closingTriggerAndStateName = closingTriggerAndStateName;
+            this._hidingTriggerAndStateName = hidingTriggerAndStateName;
             this._isCompletionOnUnexpectedNextState = isCompletionOnUnexpectedNextState;
             this._layerIndex = layerIndex;
         }
 
         public virtual async UniTask<OperationResult<TResult>> ShowAsync(CancellationToken ct)
         {
-            if (this._state != MessageBoxState.Closed) return this._getResult(OperationResultStatus.RejectedDueToDuplicate);
+            if (this._state != WindowState.Hidden) return this._getResult(OperationResultStatus.RejectedDueToDuplicate);
             if (!this._gameObject) return this._getResult(OperationResultStatus.Canceled);
 
             try
             {
                 // 1
-                this._state = MessageBoxState.Showing;
+                this._state = WindowState.Showing;
                 this._gameObject.SetActive(true);
 
                 // 2
@@ -83,7 +83,7 @@ namespace Uft.UnityUtils.UI
 
                 // 3
                 if (!this._gameObject || !this._gameObject.activeInHierarchy) return this._getResult(OperationResultStatus.Canceled);
-                this._state = MessageBoxState.Shown;
+                this._state = WindowState.Shown;
 
                 while (this._gameObject && this._gameObject.activeInHierarchy)
                 {
@@ -95,50 +95,50 @@ namespace Uft.UnityUtils.UI
             }
             catch (OperationCanceledException)
             {
-                await this.CloseAsync(CancellationToken.None);
+                await this.HideAsync(CancellationToken.None);
                 return this._getResult(OperationResultStatus.Canceled);
             }
             finally
             {
-                if (this._state == MessageBoxState.Showing || this._state == MessageBoxState.Shown)
+                if (this._state == WindowState.Showing || this._state == WindowState.Shown)
                 {
-                    this._state = this._gameObject && this._gameObject.activeInHierarchy ? MessageBoxState.Shown : MessageBoxState.Closed;
+                    this._state = this._gameObject && this._gameObject.activeInHierarchy ? WindowState.Shown : WindowState.Hidden;
                 }
             }
         }
 
-        public virtual UniTask CloseAsync(CancellationToken ct)
+        public virtual UniTask HideAsync(CancellationToken ct)
         {
-            if (this._state == MessageBoxState.Closing)
+            if (this._state == WindowState.Hiding)
             {
-                Assert.IsTrue(this._closingTask != null);
+                Assert.IsTrue(this._hidingTask != null);
                 return UniTask.CompletedTask; // NOTE: UniTaskは多重awaitを許可しないため、完了タスクを返す
             }
-            if (this._state == MessageBoxState.Closed) return UniTask.CompletedTask;
+            if (this._state == WindowState.Hidden) return UniTask.CompletedTask;
 
-            this._state = MessageBoxState.Closing;
-            var uniTask = this.CloseAsyncInner(ct);
-            this._closingTask = uniTask;
+            this._state = WindowState.Hiding;
+            var uniTask = this.HideAsyncInner(ct);
+            this._hidingTask = uniTask;
             return uniTask;
         }
 
-        protected virtual async UniTask CloseAsyncInner(CancellationToken ct)
+        protected virtual async UniTask HideAsyncInner(CancellationToken ct)
         {
             try
             {
-                Assert.IsTrue(this._state == MessageBoxState.Closing);
+                Assert.IsTrue(this._state == WindowState.Hiding);
                 if (!this._gameObject) return;
                 if (this._animator != null)
                 {
-                    this._animator.SetTrigger(this._closingTriggerAndStateName);
-                    await this._animator.DelayForAnimation(this._closingTriggerAndStateName, true, this._isCompletionOnUnexpectedNextState, this._layerIndex, ct);
+                    this._animator.SetTrigger(this._hidingTriggerAndStateName);
+                    await this._animator.DelayForAnimation(this._hidingTriggerAndStateName, true, this._isCompletionOnUnexpectedNextState, this._layerIndex, ct);
                 }
             }
             finally
             {
                 if (this._gameObject) this._gameObject.SetActive(false);
-                this._closingTask = null;
-                this._state = MessageBoxState.Closed;
+                this._hidingTask = null;
+                this._state = WindowState.Hidden;
             }
         }
     }
