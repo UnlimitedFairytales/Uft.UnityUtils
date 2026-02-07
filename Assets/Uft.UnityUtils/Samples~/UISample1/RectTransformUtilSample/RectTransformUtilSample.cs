@@ -11,6 +11,8 @@ namespace Uft.UnityUtils.Samples.UISample
 
         void Start()
         {
+            this.gameObject.SetCameraToCanvas(Camera.main, true, CameraUtil.DISTANCE1080P_FOV60_PPU100);
+
             var canvas = this._images[0].canvas;
             for (int i = 0; i < this._cubes.Length; i++)
             {

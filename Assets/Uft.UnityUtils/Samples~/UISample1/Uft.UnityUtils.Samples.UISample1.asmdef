@@ -1,10 +1,10 @@
 {
-    "name": "Uft.UnityUtils.Samples.UISample2",
+    "name": "Uft.UnityUtils.Samples.UISample1",
     "rootNamespace": "",
     "references": [
         "Uft.UnityUtils",
-        "UniTask",
-        "Unity.TextMeshPro"
+        "Unity.TextMeshPro",
+        "UniTask"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
