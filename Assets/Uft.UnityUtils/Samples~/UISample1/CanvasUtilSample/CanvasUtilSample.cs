@@ -6,7 +6,6 @@ namespace Uft.UnityUtils.Samples.UISample1
 {
     public class CanvasUtilSample : MonoBehaviour
     {
-        [SerializeField] Canvas _canvas;
         [SerializeField] Image _image;
         [SerializeField] SpriteRenderer _spriteRenderer;
 
@@ -14,7 +13,7 @@ namespace Uft.UnityUtils.Samples.UISample1
 
         void Start()
         {
-            CanvasUtil.SetCameraToCanvas(this._canvas.gameObject, Camera.main, true, CameraUtil.DISTANCE_720P_FOV60_PPU100);
+            CanvasUtil.SetCameraToCanvas(this.gameObject, Camera.main, true, CameraUtil.DISTANCE_720P_FOV60_PPU100);
         }
 
         void Update()
@@ -25,7 +24,7 @@ namespace Uft.UnityUtils.Samples.UISample1
             {
                 var canvas = this.GetComponentInChildren<Canvas>();
                 var worldPos = this._image.rectTransform.GetWorldPosition(canvas, new Vector2(-200, -200));
-                this._spriteRenderer.transform.position = worldPos;
+                this._spriteRenderer.transform.SetPositionAndRotation(worldPos, Camera.main.transform.rotation); // NOTE: Canvas座標系基準 & ビルボード
             }
         }
     }
