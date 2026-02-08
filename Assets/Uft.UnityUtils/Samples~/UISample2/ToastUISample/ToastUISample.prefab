@@ -268,7 +268,7 @@ GameObject:
   - component: {fileID: 4784130474541718054}
   - component: {fileID: 5800362412942363698}
   m_Layer: 0
-  m_Name: MessageBoxSample
+  m_Name: ToastUISample
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

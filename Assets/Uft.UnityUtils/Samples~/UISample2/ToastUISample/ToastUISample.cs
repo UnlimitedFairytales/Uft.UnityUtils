@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace Uft.UnityUtils.Samples.UISample
 {
-    public class MessageBoxSample : MonoBehaviour
+    public class ToastUISample : MonoBehaviour
     {
         [SerializeField] Button _button;
 
