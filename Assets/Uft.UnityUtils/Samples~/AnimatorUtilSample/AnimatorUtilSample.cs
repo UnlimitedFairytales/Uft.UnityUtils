@@ -2,9 +2,9 @@ using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Uft.UnityUtils.Samples.UISample
+namespace Uft.UnityUtils.Samples.AnimatorUtilSample
 {
-    public class AnimatorSample : MonoBehaviour
+    public class AnimatorUtilSample : MonoBehaviour
     {
 #pragma warning disable IDE0051 // 使用されていないプライベート メンバーを削除する
         const string SHOWING = "Showing";
@@ -25,7 +25,7 @@ namespace Uft.UnityUtils.Samples.UISample
                 var nextStateName = this._isClosed ? SHOWING : HIDIING;
                 this._isClosed = !this._isClosed;
                 this._animator.SetTrigger(nextStateName);
-                await this._animator.DelayForAnimation(nextStateName, true);
+                await this._animator.DelayForAnimation(nextStateName);
                 DevLog.Log($"{nextStateName} complete");
             }));
         }

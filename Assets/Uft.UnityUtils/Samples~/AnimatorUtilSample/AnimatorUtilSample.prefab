@@ -494,7 +494,7 @@ GameObject:
   - component: {fileID: 9182705320282619643}
   - component: {fileID: 2532700905873394975}
   m_Layer: 0
-  m_Name: AnimatorSample
+  m_Name: AnimatorUtilSample
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
