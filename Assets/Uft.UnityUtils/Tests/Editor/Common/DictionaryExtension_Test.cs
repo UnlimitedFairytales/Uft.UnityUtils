@@ -368,5 +368,23 @@ namespace Uft.UnityUtils.Tests.Editor.Common
             // Assert
             Assert.Throws<ArgumentNullException>(() => DictionaryExtension.ContainsAndEquals(dic, null, "apple"));
         }
+
+        [Test]
+        public void Get_Test()
+        {
+            // Arrange
+            var dic = new Dictionary<string, string>
+            {
+                { "1st", "apple" }
+            };
+
+            // Act
+            var a = dic.Get("1st");
+            var b = dic.Get("2nd");
+
+            // Assert
+            Assert.AreEqual("apple", a);
+            Assert.AreEqual(default(string), b);
+        }
     }
 }

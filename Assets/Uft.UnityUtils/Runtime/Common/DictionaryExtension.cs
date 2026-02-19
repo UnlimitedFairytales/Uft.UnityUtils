@@ -41,5 +41,9 @@ namespace Uft.UnityUtils.Common
         {
             return new ReadOnlyDictionary<TKey, TVal>(new Dictionary<TKey, TVal>(dictionary));
         }
+
+        /// <summary>GetValueOrDefaultの省略名</summary>
+        public static TVal Get<TKey, TVal>(this Dictionary<TKey, TVal> dict, TKey id) where TVal : class
+            => dict.GetValueOrDefault(id);
     }
 }
