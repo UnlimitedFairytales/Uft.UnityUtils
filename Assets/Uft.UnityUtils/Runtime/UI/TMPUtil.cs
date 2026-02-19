@@ -42,8 +42,14 @@ namespace Uft.UnityUtils.UI
                 acc = 0;
                 for (int i = 0; i < emitCount && index < text.Length; i++)
                 {
-                    tmp.text += text[index]; // NOTE: tmpが未初期化の場合にNREしうる
+                    var c = text[index]; // NOTE: tmpが未初期化の場合にNREしうる
+                    tmp.text += c;
                     index++;
+                    if (c == '\\' && index < text.Length)
+                    {
+                        tmp.text += text[index];
+                        index++;
+                    }
                 }
                 if (scrollRect != null &&
                     0.1f < scrollRect.verticalNormalizedPosition &&
