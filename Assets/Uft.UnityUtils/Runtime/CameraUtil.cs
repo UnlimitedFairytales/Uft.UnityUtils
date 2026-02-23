@@ -18,8 +18,8 @@ namespace Uft.UnityUtils
             return h / (2 * ppu * Mathf.Tan(vFov / 2 * Mathf.Deg2Rad));
         }
         public const float DISTANCE_720P_FOV60_PPU100 = 6.2353829f; // 6.23538290725f;
-        public const float DISTANCE1080P_FOV60_PPU100 = 9.3530743f; // 9.35307436087f;
-        public const float DISTANCE1080P_FOV45_PPU100 = 13.036753f; // 13.0367532368f;
-        public const float DISTANCE1080P_FOV10_PPU100 = 61.722282f; // 61.7222824349f;
+        public const float DISTANCE1080P_FOV60_PPU100 = 9.3530750f; // 9.35307436087f;
+        public const float DISTANCE1080P_FOV45_PPU100 = 13.036754f; // 13.0367532368f;
+        public const float DISTANCE1080P_FOV10_PPU100 = 61.722283f; // 61.7222824349f;
     }
 }
