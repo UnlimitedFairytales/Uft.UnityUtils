@@ -11,12 +11,12 @@ namespace Uft.UnityUtils
     public readonly struct OperationResult<T>
     {
         public readonly OperationResultStatus status;
-        public readonly T? result;
+        public readonly T? value;
 
-        public OperationResult(OperationResultStatus status, T? result)
+        public OperationResult(OperationResultStatus status, T? value)
         {
             this.status = status;
-            this.result = result;
+            this.value = value;
         }
     }
 
