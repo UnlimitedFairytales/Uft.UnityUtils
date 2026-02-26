@@ -1,5 +1,6 @@
 using Cysharp.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Uft.UnityUtils.Samples.ParticleSystemUtilSample
 {
@@ -9,9 +10,9 @@ namespace Uft.UnityUtils.Samples.ParticleSystemUtilSample
 
         void Update()
         {
-            if (Input.GetMouseButtonDown(0))
+            if (Mouse.current.leftButton.wasPressedThisFrame)
             {
-                var screenPos = Input.mousePosition;
+                var screenPos = Mouse.current.position.ReadValue();
                 var distance = CameraUtil.GetPixelEqualSizeDistance(Screen.height, Camera.main.fieldOfView);
                 this._tapEffect_prefab.CreateAndPlayEffectAsync(screenPos, distance, Camera.main, this.transform).Forget();
             }
