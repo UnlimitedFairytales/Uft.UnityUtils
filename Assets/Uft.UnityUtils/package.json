@@ -1,7 +1,7 @@
 ﻿{
   "name": "com.unlimited-fairytales.unityutils",
   "displayName": "Uft.UnityUtils",
-  "version": "3.4.1",
+  "version": "3.5.1",
   "unity": "6000.0",
   "hideInEditor": false,
   "description": "This is simple utilities and helpers.\n\n* Dependencies must be installed manually.\n\nDependencies\n\n- com.unity.ugui 2.0.0\n    - Import TMP Essentials\n- https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask\n- https://assetstore.unity.com/packages/tools/animation/dotween-hotween-v2-27676\n    - Setup DOTween\n    - Create ASMDEF\n    - Project Settings > Player > Scripting Define Symbols > UNITASK_DOTWEEN_SUPPORT",
@@ -15,9 +15,54 @@
   "license": "MIT",
   "samples": [
     {
+      "displayName": "AnimatorUtilSample",
+      "description": "AnimatorUtilSample",
+      "path": "Samples~/AnimatorUtilSample"
+    },
+    {
+      "displayName": "AssetUtilSample",
+      "description": "AssetUtilSample",
+      "path": "Samples~/AssetUtilSample"
+    },
+    {
       "displayName": "AudioSample",
       "description": "AudioSample",
       "path": "Samples~/AudioSample"
+    },
+    {
+      "displayName": "BillBoardSample",
+      "description": "BillBoardSample",
+      "path": "Samples~/BillBoardSample"
+    },
+    {
+      "displayName": "CacheSample",
+      "description": "CacheSample",
+      "path": "Samples~/CacheSample"
+    },
+    {
+      "displayName": "ComponentUtilSample",
+      "description": "ComponentUtilSample",
+      "path": "Samples~/ComponentUtilSample"
+    },
+    {
+      "displayName": "CsvUtilSample",
+      "description": "CsvUtilSample\n\nInstall\n\n- https://github.com/GlitchEnzo/NuGetForUnity.git?path=/src/NuGetForUnity\n    - CsvHelper 33.1.0\n\nProject Settings > Scripting Define Symbols\n\n- UNITYUTILS_CSVHELPER_SUPPORT",
+      "path": "Samples~/CsvUtilSample"
+    },
+    {
+      "displayName": "DevLogSample",
+      "description": "DevLogSample",
+      "path": "Samples~/DevLogSample"
+    },
+    {
+      "displayName": "IInputProxySample",
+      "description": "IInputProxySample",
+      "path": "Samples~/IInputProxySample"
+    },
+    {
+      "displayName": "ParticleSystemUtilSample",
+      "description": "ParticleSystemUtilSample",
+      "path": "Samples~/ParticleSystemUtilSample"
     },
     {
       "displayName": "PlayerLoopSample",
@@ -25,19 +70,19 @@
       "path": "Samples~/PlayerLoopSample"
     },
     {
-      "displayName": "ScriptSample",
-      "description": "ScriptSample\n\nInstall\n\n- https://github.com/GlitchEnzo/NuGetForUnity.git?path=/src/NuGetForUnity\n    - CsvHelper 33.1.0\n\nProject Settings > Scripting Define Symbols\n\n- UNITYUTILS_CSVHELPER_SUPPORT",
-      "path": "Samples~/ScriptSample"
+      "displayName": "UISample1",
+      "description": "UISample1",
+      "path": "Samples~/UISample1"
     },
     {
-      "displayName": "TapSample",
-      "description": "TapSample\n\n- Project Settings > Player > Active Input Handling > Both",
-      "path": "Samples~/TapSample"
+      "displayName": "UISample2",
+      "description": "UISample2",
+      "path": "Samples~/UISample2"
     },
     {
-      "displayName": "UISample",
-      "description": "UISample",
-      "path": "Samples~/UISample"
+      "displayName": "UnityEventUtilSample",
+      "description": "UnityEventUtilSample",
+      "path": "Samples~/UnityEventUtilSample"
     }
   ]
 }
