@@ -15,7 +15,7 @@ namespace Uft.UnityUtils
     /// </summary>
     public static class PlayerLoopUtil
     {
-        const string NAME = "[" + nameof(PlayerLoopUtil) + "]";
+        static readonly DevLogWithTag DevLog = new DevLogWithTag("[" + nameof(PlayerLoopUtil) + "]");
 
 #if !DISABLE_UNITYUTILS_JUST_BEFORE_UPDATE
         public class JustBeforeUpdateType
@@ -60,11 +60,11 @@ namespace Uft.UnityUtils
             if (InsertBefore<Update.ScriptRunBehaviourUpdate>(ref loop, customUpdate))
             {
                 PlayerLoop.SetPlayerLoop(loop);
-                DevLog.Log($"{NAME} enable JustBeforeUpdate");
+                DevLog.Log($"enable JustBeforeUpdate");
             }
             else
             {
-                DevLog.LogWarning($"{NAME} Failed to setup JustBeforeUpdate");
+                DevLog.LogWarning($"Failed to setup JustBeforeUpdate");
             }
         }
 #endif

@@ -72,5 +72,13 @@ namespace Uft.UnityUtils.UI
                 canvasCamera,
                 out localPoint);
         }
+
+        /// <summary>別の座標系基準のローカル座標値を求める。overlayの場合はcameraはnull</summary>
+        public static Vector2 ToOtherLocalPoint(Camera? camera, RectTransform originParent, RectTransform target)
+        {
+            var screenPoint = RectTransformUtility.WorldToScreenPoint(camera, target.position);
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(originParent, screenPoint, camera, out var localPoint);
+            return localPoint;
+        }
     }
 }

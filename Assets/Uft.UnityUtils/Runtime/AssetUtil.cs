@@ -12,7 +12,7 @@ namespace Uft.UnityUtils
 {
     public static class AssetUtil
     {
-        const string NAME = "[" + nameof(AssetUtil) + "]";
+        static readonly DevLogWithTag DevLog = new DevLogWithTag("[" + nameof(AssetUtil) + "]");
 
         static bool _defaultModeIsResources;
         public static bool DefaultModeIsResources
@@ -21,7 +21,7 @@ namespace Uft.UnityUtils
             set
             {
                 _defaultModeIsResources = value;
-                DevLog.LogWarning($"{NAME} {nameof(DefaultModeIsResources)} = {value}");
+                DevLog.LogWarning($"{nameof(DefaultModeIsResources)} = {value}");
             }
         }
 

@@ -21,6 +21,10 @@ namespace Uft.UnityUtils.Samples.UISample1
                 RectTransformUtil.WorldToLocalPointInRect(Camera.main, worldTransform.position, canvas, parent, out Vector2 resultPoint);
                 this._images[i].rectTransform.anchoredPosition = resultPoint;
             }
+
+            var origin = 3;
+            var pos = RectTransformUtil.ToOtherLocalPoint(Camera.main, (RectTransform)this._images[origin].rectTransform.parent, this._images[0].rectTransform);
+            this._images[origin].rectTransform.anchoredPosition = pos;
         }
     }
 }

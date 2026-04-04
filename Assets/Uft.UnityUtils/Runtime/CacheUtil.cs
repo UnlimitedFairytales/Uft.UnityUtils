@@ -7,7 +7,7 @@ namespace Uft.UnityUtils
 {
     public static class CacheUtil
     {
-        const string NAME = "[" + nameof(CacheUtil) + "]";
+        static readonly DevLogWithTag DevLog = new DevLogWithTag("[" + nameof(CacheUtil) + "]");
 
         public static bool isHeavyCallLogged = false;
 
@@ -19,7 +19,7 @@ namespace Uft.UnityUtils
             if (component == null) return null;
 
             cached = component.GetComponent<T>();
-            if (isHeavyCallLogged) DevLog.Log($"{NAME} {nameof(GetCachedComponent)} cache miss, GetComponent() called.");
+            if (isHeavyCallLogged) DevLog.Log($"{nameof(GetCachedComponent)} cache miss, GetComponent() called.");
             return cached;
         }
 
@@ -29,7 +29,7 @@ namespace Uft.UnityUtils
             if (component == null) return null;
 
             var children = component.GetComponentsInChildren<T>(includeInactive);
-            if (isHeavyCallLogged) DevLog.Log($"{NAME} {nameof(GetCachedChildComponent)} cache miss, GetComponentsInChildren() called.");
+            if (isHeavyCallLogged) DevLog.Log($"{nameof(GetCachedChildComponent)} cache miss, GetComponentsInChildren() called.");
 
             if (children.Length == 0) return null;
             if (children.Length == 1 && name == null)
@@ -49,7 +49,7 @@ namespace Uft.UnityUtils
                 }
                 return null;
             }
-            DevLog.LogWarning($"{NAME} name == null and multiple components were found, {nameof(GetCachedChildComponent)} returns first item.");
+            DevLog.LogWarning($"name == null and multiple components were found, {nameof(GetCachedChildComponent)} returns first item.");
             cached = children[0];
             return cached;
         }
@@ -60,7 +60,7 @@ namespace Uft.UnityUtils
             if (component == null) return Array.Empty<T>();
 
             cached = component.GetComponentsInChildren<T>(includeInactive);
-            if (isHeavyCallLogged) DevLog.Log($"{NAME} {nameof(GetCachedChildrenComponents)} cache miss, GetComponentsInChildren() called.");
+            if (isHeavyCallLogged) DevLog.Log($"{nameof(GetCachedChildrenComponents)} cache miss, GetComponentsInChildren() called.");
             return cached;
         }
 
@@ -72,7 +72,7 @@ namespace Uft.UnityUtils
             if (prefab == null) return null;
 
             created = UnityEngine.Object.Instantiate(prefab);
-            if (isHeavyCallLogged) DevLog.Log($"{NAME} {nameof(GetCreatedObject)} instance miss, Instantiate() called.");
+            if (isHeavyCallLogged) DevLog.Log($"{nameof(GetCreatedObject)} instance miss, Instantiate() called.");
             return created;
         }
     }
