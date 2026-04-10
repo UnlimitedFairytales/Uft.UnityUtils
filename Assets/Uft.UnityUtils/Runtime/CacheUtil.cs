@@ -7,7 +7,7 @@ namespace Uft.UnityUtils
 {
     public static class CacheUtil
     {
-        static readonly DevLogWithTag DevLog = new DevLogWithTag("[" + nameof(CacheUtil) + "]");
+        static readonly DevLogWithTag DevLog = new("[" + nameof(CacheUtil) + "]");
 
         public static bool isHeavyCallLogged = false;
 

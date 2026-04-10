@@ -12,7 +12,7 @@ namespace Uft.UnityUtils
 {
     public static class AssetUtil
     {
-        static readonly DevLogWithTag DevLog = new DevLogWithTag("[" + nameof(AssetUtil) + "]");
+        static readonly DevLogWithTag DevLog = new("[" + nameof(AssetUtil) + "]");
 
         static bool _defaultModeIsResources;
         public static bool DefaultModeIsResources

@@ -7,7 +7,7 @@ namespace Uft.UnityUtils
 {
     public class DevLogWithTag
     {
-        string _tag = "";
+        readonly string _tag = "";
         public DevLogWithTag(string tag) => this._tag = tag;
 
         [Conditional("UNITY_EDITOR"), Conditional("DEVELOPMENT_BUILD"), Conditional("DEBUG")]

@@ -15,7 +15,7 @@ namespace Uft.UnityUtils
     /// </summary>
     public static class PlayerLoopUtil
     {
-        static readonly DevLogWithTag DevLog = new DevLogWithTag("[" + nameof(PlayerLoopUtil) + "]");
+        static readonly DevLogWithTag DevLog = new("[" + nameof(PlayerLoopUtil) + "]");
 
 #if !DISABLE_UNITYUTILS_JUST_BEFORE_UPDATE
         public class JustBeforeUpdateType
