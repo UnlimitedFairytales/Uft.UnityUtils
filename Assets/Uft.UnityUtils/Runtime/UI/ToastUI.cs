@@ -17,6 +17,8 @@ namespace Uft.UnityUtils.UI
         public const int RESULT_CANCEL = 2;
 
         [SerializeField] protected Animator? _animator;
+        [SerializeField] protected string showingTriggerAndStateName = "Showing";
+        [SerializeField] protected string hidingTriggerAndStateName = "Hiding";
         [SerializeField] protected TMP_Text? _lblHeader;
         [SerializeField] protected TMP_Text? _lblContent;
         [SerializeField] protected Button? _btnOk; public Button? BtnOk => this._btnOk;
@@ -57,7 +59,9 @@ namespace Uft.UnityUtils.UI
         {
             if (this._btnOk == null) throw new UnassignedReferenceException(nameof(this._btnOk));
 
-            this._windowHelper = new WindowHelper<int>(this.gameObject, (status) => new OperationResult<int>(status, this._result), this._animator);
+            this._windowHelper = new WindowHelper<int>(this.gameObject, (status) => new OperationResult<int>(status, this._result), this._animator,
+                this.showingTriggerAndStateName,
+                this.hidingTriggerAndStateName);
             this._btnOk.onClick.AddListener(UniTask.UnityAction(async () => await this.SubmitOk()));
         }
 
