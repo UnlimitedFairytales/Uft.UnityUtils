@@ -91,30 +91,44 @@ namespace Uft.UnityUtils.Csv
             return config;
         }
 
-        public static List<T> ReadCsv<T>(this FileInfo fileInfo, CsvConfiguration config, Func<CsvReader, T> manualMapping)
+        public static int FindColumnIndex(string[] headers, string name)
         {
-            using var sr = new StreamReader(fileInfo.FullName, config.Encoding);
-            return ReadCsvInner(sr, config, manualMapping);
+            for (int i = 0; i < headers.Length; i++)
+            {
+                if (string.Equals(headers[i], name, StringComparison.OrdinalIgnoreCase))
+                {
+                    return i;
+                }
+            }
+            throw new InvalidOperationException($"Column not found: {name}");
         }
 
-        public static List<T> ReadCsv<T>(this string csvText, CsvConfiguration config, Func<CsvReader, T> manualMapping)
+        public static List<T> ReadCsv<T>(this FileInfo fileInfo, CsvConfiguration config, CsvRowMapperFactory<T> mapperFactory, int capacity = 256)
+        {
+            using var sr = new StreamReader(fileInfo.FullName, config.Encoding, true, 4096);
+            return ReadCsvInner(sr, config, mapperFactory, capacity);
+        }
+
+        public static List<T> ReadCsv<T>(this string csvText, CsvConfiguration config, CsvRowMapperFactory<T> mapperFactory, int capacity = 256)
         {
             using var sr = new StringReader(csvText);
-            return ReadCsvInner(sr, config, manualMapping);
+            return ReadCsvInner(sr, config, mapperFactory, capacity);
         }
 
-        static List<T> ReadCsvInner<T>(TextReader tr, CsvConfiguration config, Func<CsvReader, T> manualMapping)
+        static List<T> ReadCsvInner<T>(TextReader tr, CsvConfiguration config, CsvRowMapperFactory<T> mapperFactory, int capacity = 256)
         {
             using var reader = new CsvReader(tr, config);
             // HACK: Do the below instead of GetRecords<T> due to incompatibility with IL2CPP
             // https://github.com/JoshClose/CsvHelper/issues/1337
             // return reader.GetRecords<T>().ToList();
-            var records = new List<T>();
+            var records = new List<T>(capacity);
             reader.Read();
             reader.ReadHeader();
+            var headers = reader.HeaderRecord ?? Array.Empty<string>();
+            var mapper = mapperFactory(headers);
             while (reader.Read())
             {
-                var record = manualMapping(reader);
+                var record = mapper(new CsvRow(reader));
                 records.Add(record);
             }
             return records;

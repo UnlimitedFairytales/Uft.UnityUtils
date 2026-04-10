@@ -24,7 +24,7 @@ namespace Uft.UnityUtils.Samples.CsvUtilSample
             try
             {
                 var fileInfo = new FileInfo($"{streamingAssetsPath}/{csvName}");
-                var result = fileInfo.ReadCsv(CsvUtil.GetCsvConfiguration(CsvUtil.UTF8), CsvDtoSample.Map);
+                var result = fileInfo.ReadCsv(CsvUtil.GetCsvConfiguration(CsvUtil.UTF8), CsvDtoSample.MapperFactory);
                 this.txtText1.text = string.Join("\n", result);
             }
             catch (Exception ex)
