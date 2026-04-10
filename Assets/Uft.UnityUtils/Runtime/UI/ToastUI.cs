@@ -70,7 +70,7 @@ namespace Uft.UnityUtils.UI
         public WindowState State => this._windowHelper?.State ?? WindowState.Hidden;
 
         /// <summary>引数がnullの場合は文字列を適用しません。</summary>
-        public async UniTask<OperationResult<int>> ShowAsync(string? headerText = null, string? contentText = null, int timeout_sec = 0)
+        public async UniTask<OperationResult<int>> ShowDialogAsync(string? headerText = null, string? contentText = null, int timeout_sec = 0)
         {
             this.gameObject.SetActive(true);
             if (this._windowHelper == null) throw new OperationCanceledException("Before Awake()");
@@ -86,7 +86,7 @@ namespace Uft.UnityUtils.UI
                 {
                     timeoutTimer = cts.CancelAfterSlim(timeout_sec * 1000);
                 }
-                return await this._windowHelper.ShowAsync(cts.Token);
+                return await this._windowHelper.ShowDialogAsync(cts.Token);
             }
             finally
             {

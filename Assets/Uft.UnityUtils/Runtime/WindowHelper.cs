@@ -63,7 +63,7 @@ namespace Uft.UnityUtils
             this._layerIndex = layerIndex;
         }
 
-        public virtual async UniTask<OperationResult<TResult>> ShowAsync(CancellationToken ct)
+        public virtual async UniTask<OperationResult<TResult>> ShowDialogAsync(CancellationToken ct)
         {
             if (this._state != WindowState.Hidden) return this._getResult(OperationResultStatus.RejectedDueToDuplicate);
             if (!this._gameObject) return this._getResult(OperationResultStatus.Canceled);

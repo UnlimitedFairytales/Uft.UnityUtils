@@ -18,8 +18,8 @@ namespace Uft.UnityUtils.Samples.UISample
             this._toastUI = ComponentUtil.Instantiate(this._toastUI_prefab, this.transform, false, false);
             this._button.onClick.AddListener(UniTask.UnityAction(async () =>
             {
-                await this._toastUI.ShowAsync("Header text", "This is content text.", 5);
-                DevLog.Log($"{nameof(this._toastUI.ShowAsync)} complete");
+                await this._toastUI.ShowDialogAsync("Header text", "This is content text.", 5);
+                DevLog.Log($"{nameof(this._toastUI.ShowDialogAsync)} complete");
             }));
         }
     }

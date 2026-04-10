@@ -62,7 +62,7 @@ namespace Uft.UnityUtils.UI
             this._btnCancel.onClick.AddListener(UniTask.UnityAction(async () => await this.SubmitCancel()));
         }
 
-        public async UniTask<OperationResult<int>> ShowAsync(string? headerText = null, string? contentText = null, int timeout_sec = 0, int initialSelection = RESULT_CANCEL)
+        public async UniTask<OperationResult<int>> ShowDialogAsync(string? headerText = null, string? contentText = null, int timeout_sec = 0, int initialSelection = RESULT_CANCEL)
         {
             this.gameObject.SetActive(true);
             if (this._windowHelper == null) throw new OperationCanceledException("Before Awake()");
@@ -90,7 +90,7 @@ namespace Uft.UnityUtils.UI
                 {
                     timeoutTimer = cts.CancelAfterSlim(timeout_sec * 1000);
                 }
-                return await this._windowHelper.ShowAsync(cts.Token);
+                return await this._windowHelper.ShowDialogAsync(cts.Token);
             }
             finally
             {
