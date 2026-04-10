@@ -9,13 +9,13 @@ namespace Uft.UnityUtils.Samples.CsvUtilSample
             int iName = CsvUtil.FindColumnIndex(csvHeaders, "name");
             int iMetaVar = CsvUtil.FindColumnIndex(csvHeaders, "meta-var");
             int iMetaVarJp = CsvUtil.FindColumnIndex(csvHeaders, "meta-var-jp");
-            CsvRowMapper<CsvDtoSample> mapper = (csvRow) =>
+            CsvDtoSample mapper(CsvRow csvRow)
             {
                 return new CsvDtoSample(
                     csvRow.GetString(iName),
                     csvRow.GetString(iMetaVar),
                     csvRow.GetString(iMetaVarJp));
-            };
+            }
             return mapper;
         }
 

@@ -11,8 +11,8 @@ namespace Uft.UnityUtils.Samples.UnityEventUtilSample
 
         void Start()
         {
-            _button.onClick.Rebind(OnTap);
-            _toggle.onValueChanged.Rebind(OnTap2);
+            this._button.onClick.Rebind(this.OnTap);
+            this._toggle.onValueChanged.Rebind(this.OnTap2);
         }
 
         void OnTap() => Debug.Log("Tap");
