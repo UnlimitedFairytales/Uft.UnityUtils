@@ -6,9 +6,9 @@ namespace Uft.UnityUtils.Samples.CsvUtilSample
     {
         public static CsvRowMapper<CsvDtoSample> MapperFactory(string[] csvHeaders)
         {
-            int iName = CsvUtil.FindColumnIndex(csvHeaders, "name");
-            int iMetaVar = CsvUtil.FindColumnIndex(csvHeaders, "meta-var");
-            int iMetaVarJp = CsvUtil.FindColumnIndex(csvHeaders, "meta-var-jp");
+            int iName = CsvUtil.FindColumnIndexOrMinus1(csvHeaders, "name");
+            int iMetaVar = CsvUtil.FindColumnIndexOrMinus1(csvHeaders, "meta-var");
+            int iMetaVarJp = CsvUtil.FindColumnIndexOrMinus1(csvHeaders, "meta-var-jp");
             CsvDtoSample mapper(CsvRow csvRow)
             {
                 return new CsvDtoSample(

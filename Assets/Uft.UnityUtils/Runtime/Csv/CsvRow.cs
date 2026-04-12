@@ -13,10 +13,10 @@ namespace Uft.UnityUtils.Csv
         {
             this.reader = reader;
         }
-        public string? GetString(int index) => this.reader.GetField(index);
-        public int GetInt32(int index) => this.reader.GetField<int>(index);
-        public float GetSingle(int index) => this.reader.GetField<float>(index);
-        public bool GetBoolean(int index) => this.reader.GetField<bool>(index);
+        public string? GetString(int index) => index < 0 ? null : this.reader.GetField(index);
+        public int GetInt32(int index) => index < 0 ? 0 : this.reader.GetField<int>(index);
+        public float GetSingle(int index) => index < 0 ? 0 : this.reader.GetField<float>(index);
+        public bool GetBoolean(int index) => index < 0 ? false : this.reader.GetField<bool>(index);
     }
 }
 #endif

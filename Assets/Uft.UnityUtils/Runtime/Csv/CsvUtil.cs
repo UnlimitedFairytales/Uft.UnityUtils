@@ -91,7 +91,7 @@ namespace Uft.UnityUtils.Csv
             return config;
         }
 
-        public static int FindColumnIndex(string[] headers, string name)
+        public static int FindColumnIndexOrMinus1(string[] headers, string name)
         {
             for (int i = 0; i < headers.Length; i++)
             {
@@ -100,7 +100,7 @@ namespace Uft.UnityUtils.Csv
                     return i;
                 }
             }
-            throw new InvalidOperationException($"Column not found: {name}");
+            return -1;
         }
 
         public static List<T> ReadCsv<T>(this FileInfo fileInfo, CsvConfiguration config, CsvRowMapperFactory<T> mapperFactory, int capacity = 256)
