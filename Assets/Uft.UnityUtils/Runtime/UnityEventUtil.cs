@@ -2,7 +2,7 @@
 
 using UnityEngine.Events;
 
-namespace Assets.Uft.UnityUtils.Runtime
+namespace Uft.UnityUtils
 {
     public static class UnityEventUtil
     {

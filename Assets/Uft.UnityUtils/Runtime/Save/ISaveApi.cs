@@ -2,7 +2,7 @@
 
 using System;
 
-namespace Uft.UnityUtils
+namespace Uft.UnityUtils.Save
 {
     public interface ISaveApi : IDisposable
     {

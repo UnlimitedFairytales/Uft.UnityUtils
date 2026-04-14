@@ -1,4 +1,3 @@
-using Assets.Uft.UnityUtils.Runtime;
 using UnityEngine;
 using UnityEngine.UI;
 
