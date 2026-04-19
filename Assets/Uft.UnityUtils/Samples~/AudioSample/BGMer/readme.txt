@@ -15,3 +15,7 @@ https://bgmer.net/
 003_BPM95.mp3
 夕焼けと分かれ道
 https://bgmer.net/music/003
+
+012_BPM117.mp3
+スキップでいこう
+https://bgmer.net/music/012

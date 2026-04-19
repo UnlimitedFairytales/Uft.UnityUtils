@@ -12,4 +12,5 @@ https://osabisi.sakura.ne.jp/m2/
 著作権はザ・マッチメイカァズ2nd側にあります。
 本プロジェクトへの同梱は規約に基づく適法な利用です。
 
+jihou01.mp3
 water08.mp3
