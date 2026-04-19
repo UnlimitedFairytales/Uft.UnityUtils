@@ -2,7 +2,7 @@
 
 using UnityEngine;
 
-namespace Uft.UnityUtils
+namespace Uft.UnityUtils.Audio
 {
     public static class AudioUtil
     {
