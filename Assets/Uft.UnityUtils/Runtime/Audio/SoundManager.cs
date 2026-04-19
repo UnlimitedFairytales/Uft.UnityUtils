@@ -1,52 +1,74 @@
 using DG.Tweening;
 using System;
 using UnityEngine;
+using UnityEngine.Audio;
 
 namespace Uft.UnityUtils.Audio
 {
     public class SoundManager : MonoBehaviour
     {
+        static void PlayAudioInner(AudioClip clip, bool isLoop, float volume, AudioSource[] audioList, ref int lastIndex)
+        {
+            lastIndex = lastIndex < audioList.Length - 1 ? lastIndex + 1 : 0;
+            int i = lastIndex;
+            audioList[i].clip = clip;
+            audioList[i].loop = isLoop;
+            audioList[i].time = 0;
+            audioList[i].volume = volume;
+            audioList[i].Play();
+        }
+
+        static void StopAudioInner(float fadeOutSeconds, AudioClip clip, AudioSource[] audioList)
+        {
+            var ease = Ease.Linear;
+            for (int i = 0; i < audioList.Length; i++)
+            {
+                var capturedIndex = i;
+                if (clip == null || audioList[capturedIndex].clip == clip)
+                {
+                    audioList[capturedIndex].DOFade(0, fadeOutSeconds)
+                        .SetEase(ease)
+                        .OnComplete(() => audioList[capturedIndex].Stop());
+                }
+            }
+        }
+
         // Parameters
 
         [SerializeField] AudioSource _audioBgm1;
         [SerializeField] AudioSource _audioBgm2;
         [SerializeField] AudioSource[] _audioSeList; // NOTE: 8つ想定
-        [SerializeField] AudioSource _audioVoice1;
-        [SerializeField] AudioSource _audioVoice2;
+        [SerializeField] AudioSource[] _audioVoiceList; // NOTE: 8つ想定
 
-        int _lastSeIndex = -1;
         /// <summary>フェード中は新しい方をcurrentと見なす</summary>
         bool _currentBgmIsBgm1 = false;
-        /// <summary>フェード中は新しい方をcurrentと見なす</summary>
-        bool _currentVoiceIsVoice1 = false;
 
-        public bool IsAnyVoicePlaying => this._audioVoice1.isPlaying || this._audioVoice2.isPlaying;
+        int _lastSeIndex = -1;
+        int _lastVoiceIndex = -1;
 
-        public void PlaySe(AudioClip clip, bool isLoop, float volume)
+        public bool IsAnyVoicePlaying
         {
-            if (this._audioSeList.Length == 0) throw new InvalidOperationException($"{nameof(this._audioSeList)} is empty.");
-
-            this._lastSeIndex = this._lastSeIndex < this._audioSeList.Length - 1 ? this._lastSeIndex + 1 : 0;
-            int i = this._lastSeIndex;
-            this._audioSeList[i].clip = clip;
-            this._audioSeList[i].loop = isLoop;
-            this._audioSeList[i].time = 0;
-            this._audioSeList[i].volume = volume;
-            this._audioSeList[i].Play();
+            get
+            {
+                foreach (var audioVoice in this._audioVoiceList)
+                {
+                    if (audioVoice.isPlaying) return true;
+                }
+                return false;
+            }
         }
 
-        public void StopSe(float fadeOutSeconds, AudioClip clip = null)
+        public void SetOutput(AudioMixer audioMixer, string bgmName = "BGM", string seName = "SE", string voiceName = "Voice")
         {
-            var ease = Ease.Linear;
-            for (int i = 0; i < this._audioSeList.Length; i++)
+            this._audioBgm1.outputAudioMixerGroup = audioMixer.FindMatchingGroups(bgmName)[0];
+            this._audioBgm2.outputAudioMixerGroup = audioMixer.FindMatchingGroups(bgmName)[0];
+            foreach (var audioSe in this._audioSeList)
             {
-                var capturedIndex = i;
-                if (clip == null || this._audioSeList[capturedIndex].clip == clip)
-                {
-                    this._audioSeList[capturedIndex].DOFade(0, fadeOutSeconds)
-                        .SetEase(ease)
-                        .OnComplete(() => this._audioSeList[capturedIndex].Stop());
-                }
+                audioSe.outputAudioMixerGroup = audioMixer.FindMatchingGroups(seName)[0];
+            }
+            foreach (var audioVoice in this._audioVoiceList)
+            {
+                audioVoice.outputAudioMixerGroup = audioMixer.FindMatchingGroups(voiceName)[0];
             }
         }
 
@@ -122,79 +144,22 @@ namespace Uft.UnityUtils.Audio
             }
         }
 
+        public void PlaySe(AudioClip clip, bool isLoop, float volume)
+        {
+            if (this._audioSeList.Length == 0) throw new InvalidOperationException($"{nameof(this._audioSeList)} is empty.");
+
+            PlayAudioInner(clip, isLoop, volume, this._audioSeList, ref this._lastSeIndex);
+        }
+
+        public void StopSe(float fadeOutSeconds, AudioClip clip = null) => StopAudioInner(fadeOutSeconds, clip, this._audioSeList);
+
         public void PlayVoice(AudioClip clip, bool isLoop, float volume)
         {
-            // NOTE: 途中状態は考慮しなくていいように
-            this._audioVoice1.DOComplete();
-            this._audioVoice2.DOComplete();
+            if (this._audioVoiceList.Length == 0) throw new InvalidOperationException($"{nameof(this._audioVoiceList)} is empty.");
 
-            float prevFadeOutSeconds = 0.1f;
-            float fadeInSeconds = 0f;
-
-            var ease = Ease.Linear;
-            var delay = fadeInSeconds == 0.0f ? 0 : (prevFadeOutSeconds / 2.0f);
-
-            // NOTE: ping-pong で次の再生を設定後、フラグを更新
-            if (this._currentVoiceIsVoice1)
-            {
-                this._audioVoice2.clip = clip;
-                this._audioVoice2.loop = isLoop;
-                this._audioVoice2.time = 0;
-                if (0.0f == fadeInSeconds)
-                {
-                    this._audioVoice2.volume = volume;
-                    this._audioVoice2.Play();
-                }
-                else
-                {
-                    this._audioVoice2.volume = 0;
-                    this._audioVoice2.Play();
-                    this._audioVoice2.DOFade(volume, fadeInSeconds).SetEase(ease).SetDelay(delay);
-                }
-                this._audioVoice1.DOFade(0, prevFadeOutSeconds).SetEase(ease)
-                    .OnComplete(() => this._audioVoice1.Stop());
-            }
-            else
-            {
-                this._audioVoice1.clip = clip;
-                this._audioVoice1.loop = isLoop;
-                this._audioVoice1.time = 0;
-                if (0.0f == fadeInSeconds)
-                {
-                    this._audioVoice1.volume = volume;
-                    this._audioVoice1.Play();
-                }
-                else
-                {
-                    this._audioVoice1.volume = 0;
-                    this._audioVoice1.Play();
-                    this._audioVoice1.DOFade(volume, fadeInSeconds).SetEase(ease).SetDelay(delay);
-                }
-                this._audioVoice2.DOFade(0, prevFadeOutSeconds).SetEase(ease)
-                    .OnComplete(() => this._audioVoice2.Stop());
-            }
-            this._currentVoiceIsVoice1 = !this._currentVoiceIsVoice1;
+            PlayAudioInner(clip, isLoop, volume, this._audioVoiceList, ref this._lastVoiceIndex);
         }
 
-        public void StopVoice()
-        {
-            // NOTE: 途中状態は考慮しなくていいように
-            this._audioVoice1.DOComplete();
-            this._audioVoice2.DOComplete();
-
-            var fadeOutSeconds = 0.1f;
-            var ease = Ease.Linear;
-            if (this._audioVoice1.isPlaying)
-            {
-                this._audioVoice1.DOFade(0, fadeOutSeconds)
-                    .SetEase(ease)
-                    .OnComplete(() => this._audioVoice1.Stop());
-            }
-            if (this._audioVoice2.isPlaying)
-            {
-                this._audioVoice2.DOFade(0, fadeOutSeconds).SetEase(ease)
-                    .OnComplete(() => this._audioVoice2.Stop());
-            }
-        }
+        public void StopVoice(float fadeOutSeconds, AudioClip clip = null) => StopAudioInner(fadeOutSeconds, clip, this._audioVoiceList);
     }
 }
