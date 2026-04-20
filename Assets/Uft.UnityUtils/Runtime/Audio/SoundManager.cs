@@ -11,6 +11,10 @@ namespace Uft.UnityUtils.Audio
         {
             lastIndex = lastIndex < audioList.Length - 1 ? lastIndex + 1 : 0;
             int i = lastIndex;
+
+            // NOTE: 途中状態は考慮しなくていいように
+            audioList[i].DOComplete();
+
             audioList[i].clip = clip;
             audioList[i].loop = isLoop;
             audioList[i].time = 0;
@@ -26,6 +30,9 @@ namespace Uft.UnityUtils.Audio
                 var capturedIndex = i;
                 if (clip == null || audioList[capturedIndex].clip == clip)
                 {
+                    // NOTE: 途中状態は考慮しなくていいように
+                    audioList[capturedIndex].DOComplete();
+
                     audioList[capturedIndex].DOFade(0, fadeOutSeconds)
                         .SetEase(ease)
                         .OnComplete(() => audioList[capturedIndex].Stop());
