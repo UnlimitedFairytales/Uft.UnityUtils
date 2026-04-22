@@ -86,7 +86,7 @@ namespace Uft.UnityUtils
 #else
                 try
                 {
-                    return await File.ReadAllTextAsync(path);
+                    return await File.ReadAllTextAsync(path); // NOTE: 他のフローがCancellationTokenをサポートするようになったら、こちらも対応する
                 }
 #endif
                 catch (Exception ex)
