@@ -4,7 +4,6 @@ using Cysharp.Threading.Tasks;
 using System;
 using System.Threading;
 using UnityEngine;
-using UnityEngine.Assertions;
 
 namespace Uft.UnityUtils
 {
@@ -36,9 +35,14 @@ namespace Uft.UnityUtils
         Hiding
     }
 
+    /// <summary>
+    /// ウィンドウのShow/Hide制御を担うヘルパ<br/>
+    /// キャンセルやオブジェクト破棄が発生した場合、 OperationCanceledException を呼び出し元に伝播させず、<see cref="OperationResultStatus.Canceled"/> な結果を返す。
+    /// </summary>
     public class WindowHelper<TResult>
     {
-        readonly GameObject _gameObject;
+        readonly MonoBehaviour _owner;
+        readonly CancellationToken _destroyCt;
         readonly Func<OperationResultStatus, OperationResult<TResult>> _getResult;
         readonly Animator? _animator;
         readonly string _showingTriggerAndStateName;
@@ -47,14 +51,14 @@ namespace Uft.UnityUtils
         readonly int _layerIndex;
 
         WindowState _state = WindowState.Hidden; public WindowState State => this._state;
-        UniTask? _hidingTask = null;
 
-        public WindowHelper(GameObject gameObject, Func<OperationResultStatus, OperationResult<TResult>> getResult, Animator? animator,
+        public WindowHelper(MonoBehaviour owner, Func<OperationResultStatus, OperationResult<TResult>> getResult, Animator? animator,
             string showingTriggerAndStateName = "Showing",
             string hidingTriggerAndStateName = "Hiding",
             bool isCompletionOnUnexpectedNextState = true, int layerIndex = 0)
         {
-            this._gameObject = gameObject;
+            this._owner = owner;
+            this._destroyCt = owner.destroyCancellationToken;
             this._getResult = getResult;
             this._animator = animator;
             this._showingTriggerAndStateName = showingTriggerAndStateName;
@@ -66,79 +70,81 @@ namespace Uft.UnityUtils
         public virtual async UniTask<OperationResult<TResult>> ShowDialogAsync(CancellationToken ct)
         {
             if (this._state != WindowState.Hidden) return this._getResult(OperationResultStatus.RejectedDueToDuplicate);
-            if (!this._gameObject) return this._getResult(OperationResultStatus.Canceled);
+            if (!this._owner) return this._getResult(OperationResultStatus.Canceled);
+
+            // NOTE: 呼び出し側のキャンセル（タイムアウト等）とオブジェクト破棄の両方に反応させるためリンク
+            using var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(ct, this._destroyCt);
 
             try
             {
                 // 1
                 this._state = WindowState.Showing;
-                this._gameObject.SetActive(true);
+                this._owner.gameObject.SetActive(true);
 
                 // 2
-                if (this._animator != null)
+                if (this._animator)
                 {
                     this._animator.SetTrigger(this._showingTriggerAndStateName);
-                    await this._animator.DelayForAnimation(this._showingTriggerAndStateName, true, this._isCompletionOnUnexpectedNextState, this._layerIndex, ct);
+                    await this._animator.DelayForAnimation(this._showingTriggerAndStateName, true, this._isCompletionOnUnexpectedNextState, this._layerIndex, linkedCts.Token);
                 }
 
                 // 3
-                if (!this._gameObject || !this._gameObject.activeInHierarchy) return this._getResult(OperationResultStatus.Canceled);
-                this._state = WindowState.Shown;
+                if (!this._owner || !this._owner.gameObject.activeInHierarchy) throw new OperationCanceledException();
+                if (this._state == WindowState.Showing) this._state = WindowState.Shown;
 
-                while (this._gameObject && this._gameObject.activeInHierarchy)
+                while (this._owner && this._owner.gameObject.activeInHierarchy)
                 {
-                    await UniTask.NextFrame(ct);
+                    await UniTask.NextFrame(linkedCts.Token);
                 }
 
                 // 4
-                return this._getResult(this._gameObject ? OperationResultStatus.Accepted : OperationResultStatus.Canceled);
+                return this._getResult(this._owner ? OperationResultStatus.Accepted : OperationResultStatus.Canceled);
             }
             catch (OperationCanceledException)
             {
-                await this.HideAsync(CancellationToken.None);
+                // NOTE: ctは既にキャンセル済みな場合あり。そうでない場合、先祖が非アクティブ。_destroyCtを渡す
+                await this.HideAsync(this._destroyCt);
                 return this._getResult(OperationResultStatus.Canceled);
             }
             finally
             {
                 if (this._state == WindowState.Showing || this._state == WindowState.Shown)
                 {
-                    this._state = this._gameObject && this._gameObject.activeInHierarchy ? WindowState.Shown : WindowState.Hidden;
+                    this._state = this._owner && this._owner.gameObject.activeInHierarchy ? WindowState.Shown : WindowState.Hidden;
                 }
             }
         }
 
-        public virtual UniTask HideAsync(CancellationToken ct)
+        public virtual async UniTask HideAsync(CancellationToken ct)
         {
-            if (this._state == WindowState.Hiding)
-            {
-                Assert.IsTrue(this._hidingTask != null);
-                return UniTask.CompletedTask; // NOTE: UniTaskは多重awaitを許可しないため、完了タスクを返す
-            }
-            if (this._state == WindowState.Hidden) return UniTask.CompletedTask;
+            // NOTE: 呼び出し側のキャンセル（タイムアウト等）とオブジェクト破棄の両方に反応させるためリンク
+            using var linkedCts = CancellationTokenSource.CreateLinkedTokenSource(ct, this._destroyCt);
 
-            this._state = WindowState.Hiding;
-            var uniTask = this.HideAsyncInner(ct);
-            this._hidingTask = uniTask;
-            return uniTask;
-        }
-
-        protected virtual async UniTask HideAsyncInner(CancellationToken ct)
-        {
             try
             {
-                Assert.IsTrue(this._state == WindowState.Hiding);
-                if (!this._gameObject) return;
-                if (this._animator != null)
+                if (this._state == WindowState.Hiding)
+                {
+                    // NOTE: finallyが必ずHiddenにするため、WaitUntilで完了を待つ
+                    await UniTask.WaitUntil(() => this._state == WindowState.Hidden, cancellationToken: linkedCts.Token);
+                    return;
+                }
+                if (this._state == WindowState.Hidden) return;
+
+                this._state = WindowState.Hiding;
+                if (this._animator)
                 {
                     this._animator.SetTrigger(this._hidingTriggerAndStateName);
-                    await this._animator.DelayForAnimation(this._hidingTriggerAndStateName, true, this._isCompletionOnUnexpectedNextState, this._layerIndex, ct);
+                    await this._animator.DelayForAnimation(this._hidingTriggerAndStateName, true, this._isCompletionOnUnexpectedNextState, this._layerIndex, linkedCts.Token);
                 }
             }
+            catch (OperationCanceledException) { } // NOTE: OCEは握りつぶす
             finally
             {
-                if (this._gameObject) this._gameObject.SetActive(false);
-                this._hidingTask = null;
-                this._state = WindowState.Hidden;
+                if (this._state != WindowState.Hidden)
+                {
+                    if (this._owner) this._owner.gameObject.SetActive(false);
+                    this._state = WindowState.Hidden;
+                }
             }
         }
     }

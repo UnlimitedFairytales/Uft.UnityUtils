@@ -59,10 +59,10 @@ namespace Uft.UnityUtils.UI
         {
             if (this._btnOk == null) throw new UnassignedReferenceException(nameof(this._btnOk));
 
-            this._windowHelper = new WindowHelper<int>(this.gameObject, (status) => new OperationResult<int>(status, this._result), this._animator,
+            this._windowHelper = new WindowHelper<int>(this, (status) => new OperationResult<int>(status, this._result), this._animator,
                 this.showingTriggerAndStateName,
                 this.hidingTriggerAndStateName);
-            this._btnOk.onClick.AddListener(UniTask.UnityAction(async () => await this.SubmitOk()));
+            this._btnOk.onClick.AddListener(UniTask.UnityAction(async () => await this.SubmitOk(this.destroyCancellationToken)));
         }
 
         // Unity event functions & event handlers / pure code
@@ -72,9 +72,9 @@ namespace Uft.UnityUtils.UI
         /// <summary>引数がnullの場合は文字列を適用しません。</summary>
         public async UniTask<OperationResult<int>> ShowDialogAsync(string? headerText = null, string? contentText = null, int timeout_sec = 0)
         {
-            this.gameObject.SetActive(true);
             if (this._windowHelper == null) throw new OperationCanceledException("Before Awake()");
 
+            this.gameObject.SetActive(true);
             if (this._lblHeader != null && headerText != null) this._lblHeader.SetText(headerText);
             if (this._lblContent != null && contentText != null) this._lblContent.SetText(contentText);
 
@@ -95,12 +95,16 @@ namespace Uft.UnityUtils.UI
             }
         }
 
-        public virtual async UniTask SubmitOk()
+        public virtual async UniTask SubmitOk(CancellationToken ct = default)
         {
             if (this._windowHelper == null) throw new OperationCanceledException("Before Awake()");
 
+            if (ct == default)
+            {
+                ct = this.destroyCancellationToken;
+            }
             this._result = RESULT_OK;
-            await this._windowHelper.HideAsync(default);
+            await this._windowHelper.HideAsync(ct);
         }
     }
 }
