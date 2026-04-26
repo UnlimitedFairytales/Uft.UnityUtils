@@ -15,6 +15,7 @@ namespace Uft.UnityUtils.Samples.AnimatorUtilSample
 
         [SerializeField] Button _button;
         [SerializeField] Animator _animator;
+        [SerializeField] bool _isCompleteOnUnexpectedNextState;
 
         bool _isClosed = true;
 
@@ -25,7 +26,7 @@ namespace Uft.UnityUtils.Samples.AnimatorUtilSample
                 var nextStateName = this._isClosed ? SHOWING : HIDIING;
                 this._isClosed = !this._isClosed;
                 this._animator.SetTrigger(nextStateName);
-                await this._animator.DelayForAnimation(nextStateName);
+                await this._animator.DelayForAnimation(nextStateName, isCompleteOnUnexpectedNextState: _isCompleteOnUnexpectedNextState);
                 DevLog.Log($"{nextStateName} complete");
             }));
         }
