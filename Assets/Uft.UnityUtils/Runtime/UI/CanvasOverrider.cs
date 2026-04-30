@@ -13,7 +13,7 @@ namespace Uft.UnityUtils
 
         Canvas? _canvas;
 
-        protected virtual void Awake()
+        protected virtual void Start()
         {
             this._canvas = this.GetComponent<Canvas>();
             this.ApplySortingLayer();
