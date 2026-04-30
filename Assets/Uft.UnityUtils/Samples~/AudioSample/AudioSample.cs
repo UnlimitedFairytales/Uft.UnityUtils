@@ -30,7 +30,7 @@ namespace Uft.UnityUtils.Samples.AudioSample
 
         void Start()
         {
-            this._soundManager.SetOutput(this._audioMixer, "BGM", "SE", "Voice");
+            this._soundManager.SetOutput(this._audioMixer, "BGM", "SE", "Voice", "MasterVolume", "BGMVolume", "SEVolume", "VoiceVolume");
 
             // 1
             this._btnBGM1.onClick.AddListener(() => this._soundManager.ChangeBgm(this._audioBGM1, true, 1, 3.0f, 3.0f));
@@ -45,16 +45,10 @@ namespace Uft.UnityUtils.Samples.AudioSample
 
         void Update()
         {
-            this.SetVolume("MasterVolume", this._sldMaster.value);
-            this.SetVolume("BGMVolume", this._sldBGM.value);
-            this.SetVolume("SEVolume", this._sldSE.value);
-            this.SetVolume("VoiceVolume", this._sldVoice.value);
-        }
-
-        void SetVolume(string name, float linearValue)
-        {
-            var dB = AudioUtil.LinearToDecibel(linearValue);
-            this._audioMixer.SetFloat(name, dB);
+            this._soundManager.SetMixerMasterVolume(this._sldMaster.value);
+            this._soundManager.SetMixerBgmVolume(this._sldBGM.value);
+            this._soundManager.SetMixerSeVolume(this._sldSE.value);
+            this._soundManager.SetMixerVoiceVolume(this._sldVoice.value);
         }
     }
 }

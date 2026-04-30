@@ -951,6 +951,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29041fa5bf95d944d901e7173ac3f59c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _audioMixer: {fileID: 24100000, guid: 15e27cb4ce0307e4ca228ca5df8e5034, type: 2}
+  _masterVolumeName: MasterVolume
+  _bgmVolumeName: BGMVolume
+  _seVolumeName: SEVolume
+  _voiceVolumeName: VoiceVolume
   _audioBgm1: {fileID: 252630614594030128}
   _audioBgm2: {fileID: 2296562414248810869}
   _audioSeList:

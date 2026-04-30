@@ -1,3 +1,5 @@
+#nullable enable
+
 using DG.Tweening;
 using System;
 using UnityEngine;
@@ -22,7 +24,7 @@ namespace Uft.UnityUtils.Audio
             audioList[i].Play();
         }
 
-        static void StopAudioInner(float fadeOutSeconds, AudioClip clip, AudioSource[] audioList)
+        static void StopAudioInner(float fadeOutSeconds, AudioClip? clip, AudioSource[] audioList)
         {
             var ease = Ease.Linear;
             for (int i = 0; i < audioList.Length; i++)
@@ -42,6 +44,11 @@ namespace Uft.UnityUtils.Audio
 
         // Parameters
 
+        [SerializeField] AudioMixer _audioMixer; public AudioMixer AudioMixer => this._audioMixer;
+        [SerializeField] string _masterVolumeName = "MasterVolume";
+        [SerializeField] string _bgmVolumeName = "BGMVolume";
+        [SerializeField] string _seVolumeName = "SEVolume";
+        [SerializeField] string _voiceVolumeName = "VoiceVolume";
         [SerializeField] AudioSource _audioBgm1;
         [SerializeField] AudioSource _audioBgm2;
         [SerializeField] AudioSource[] _audioSeList; // NOTE: 8つ想定
@@ -65,18 +72,41 @@ namespace Uft.UnityUtils.Audio
             }
         }
 
-        public void SetOutput(AudioMixer audioMixer, string bgmName = "BGM", string seName = "SE", string voiceName = "Voice")
+        public void SetOutput(AudioMixer? audioMixer = null, string bgmName = "BGM", string seName = "SE", string voiceName = "Voice",
+            string masterVolumeName = "MasterVolume",
+            string bgmVolumeName = "BGMVolume",
+            string seVolumeName = "SEVolume",
+            string voiceVolumeName = "VoiceVolume")
         {
-            this._audioBgm1.outputAudioMixerGroup = audioMixer.FindMatchingGroups(bgmName)[0];
-            this._audioBgm2.outputAudioMixerGroup = audioMixer.FindMatchingGroups(bgmName)[0];
+            if (audioMixer != null)
+            {
+                this._audioMixer = audioMixer;
+            }
+            var mixer = this._audioMixer;
+            this._audioBgm1.outputAudioMixerGroup = mixer.FindMatchingGroups(bgmName)[0];
+            this._audioBgm2.outputAudioMixerGroup = mixer.FindMatchingGroups(bgmName)[0];
             foreach (var audioSe in this._audioSeList)
             {
-                audioSe.outputAudioMixerGroup = audioMixer.FindMatchingGroups(seName)[0];
+                audioSe.outputAudioMixerGroup = mixer.FindMatchingGroups(seName)[0];
             }
             foreach (var audioVoice in this._audioVoiceList)
             {
-                audioVoice.outputAudioMixerGroup = audioMixer.FindMatchingGroups(voiceName)[0];
+                audioVoice.outputAudioMixerGroup = mixer.FindMatchingGroups(voiceName)[0];
             }
+            this._masterVolumeName = masterVolumeName;
+            this._bgmVolumeName = bgmVolumeName;
+            this._seVolumeName = seVolumeName;
+            this._voiceVolumeName = voiceVolumeName;
+        }
+
+        public void SetMixerMasterVolume(float linearValue) => this.SetMixerVolume(this._masterVolumeName, linearValue);
+        public void SetMixerBgmVolume(float linearValue) => this.SetMixerVolume(this._bgmVolumeName, linearValue);
+        public void SetMixerSeVolume(float linearValue) => this.SetMixerVolume(this._seVolumeName, linearValue);
+        public void SetMixerVoiceVolume(float linearValue) => this.SetMixerVolume(this._voiceVolumeName, linearValue);
+        void SetMixerVolume(string name, float linearValue)
+        {
+            var dB = AudioUtil.LinearToDecibel(linearValue);
+            this._audioMixer.SetFloat(name, dB);
         }
 
         public void ChangeBgm(AudioClip clip, bool isLoop, float volume, float prevFadeOutSeconds, float fadeInSeconds)
@@ -158,7 +188,7 @@ namespace Uft.UnityUtils.Audio
             PlayAudioInner(clip, isLoop, volume, this._audioSeList, ref this._lastSeIndex);
         }
 
-        public void StopSe(float fadeOutSeconds, AudioClip clip = null) => StopAudioInner(fadeOutSeconds, clip, this._audioSeList);
+        public void StopSe(float fadeOutSeconds, AudioClip? clip = null) => StopAudioInner(fadeOutSeconds, clip, this._audioSeList);
 
         public void PlayVoice(AudioClip clip, bool isLoop, float volume)
         {
@@ -167,6 +197,6 @@ namespace Uft.UnityUtils.Audio
             PlayAudioInner(clip, isLoop, volume, this._audioVoiceList, ref this._lastVoiceIndex);
         }
 
-        public void StopVoice(float fadeOutSeconds, AudioClip clip = null) => StopAudioInner(fadeOutSeconds, clip, this._audioVoiceList);
+        public void StopVoice(float fadeOutSeconds, AudioClip? clip = null) => StopAudioInner(fadeOutSeconds, clip, this._audioVoiceList);
     }
 }
