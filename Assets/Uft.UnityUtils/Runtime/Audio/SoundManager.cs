@@ -9,6 +9,8 @@ namespace Uft.UnityUtils.Audio
 {
     public class SoundManager : MonoBehaviour
     {
+        static readonly DevLogWithTag DevLog = new("[" + nameof(SoundManager) + "]");
+
         static void PlayAudioInner(AudioClip clip, bool isLoop, float volume, AudioSource[] audioList, ref int lastIndex)
         {
             lastIndex = lastIndex < audioList.Length - 1 ? lastIndex + 1 : 0;
@@ -44,15 +46,15 @@ namespace Uft.UnityUtils.Audio
 
         // Parameters
 
-        [SerializeField] AudioMixer _audioMixer; public AudioMixer AudioMixer => this._audioMixer;
+        [SerializeField] AudioMixer _audioMixer = null!; public AudioMixer AudioMixer => this._audioMixer;
         [SerializeField] string _masterVolumeName = "MasterVolume";
         [SerializeField] string _bgmVolumeName = "BGMVolume";
         [SerializeField] string _seVolumeName = "SEVolume";
         [SerializeField] string _voiceVolumeName = "VoiceVolume";
-        [SerializeField] AudioSource _audioBgm1;
-        [SerializeField] AudioSource _audioBgm2;
-        [SerializeField] AudioSource[] _audioSeList; // NOTE: 8つ想定
-        [SerializeField] AudioSource[] _audioVoiceList; // NOTE: 8つ想定
+        [SerializeField] AudioSource _audioBgm1 = null!;
+        [SerializeField] AudioSource _audioBgm2 = null!;
+        [SerializeField] AudioSource[] _audioSeList = null!; // NOTE: 8つ想定
+        [SerializeField] AudioSource[] _audioVoiceList = null!; // NOTE: 8つ想定
 
         /// <summary>フェード中は新しい方をcurrentと見なす</summary>
         bool _currentBgmIsBgm1 = false;

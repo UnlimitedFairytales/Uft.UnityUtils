@@ -8,7 +8,7 @@ namespace Uft.UnityUtils
     public class BillBoard : MonoBehaviour
     {
         public bool isYOnly = false;
-        public Camera sourceCamera;
+        public Camera? sourceCamera;
 
         protected virtual void LateUpdate()
         {
