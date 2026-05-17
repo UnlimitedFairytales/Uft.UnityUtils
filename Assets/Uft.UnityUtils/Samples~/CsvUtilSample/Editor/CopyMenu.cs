@@ -11,7 +11,7 @@ namespace Uft.UnityUtils.Samples.CsvUtilSample.Editor
 
         const string MENU_ITEM_SA = "Copy to StreamingAssets";
 
-        [MenuItem("Tools/Uft.UnityUtils.Samples/CsvUtilSample/" + MENU_ITEM_SA, priority = 3 + 19)]
+        [MenuItem("Tools/Uft.UnityUtils.Samples/CsvUtilSample/" + MENU_ITEM_SA, priority = 21062000 + 3)]
         private static void Copy2StreamingAssets()
         {
             try
