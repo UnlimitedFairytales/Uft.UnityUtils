@@ -23,10 +23,11 @@ namespace Uft.UnityUtils.Samples.AnimatorUtilSample
         {
             this._button.onClick.AddListener(UniTask.UnityAction(async () =>
             {
+                var ct = destroyCancellationToken;
                 var nextStateName = this._isClosed ? SHOWING : HIDIING;
                 this._isClosed = !this._isClosed;
                 this._animator.SetTrigger(nextStateName);
-                await this._animator.DelayForAnimation(nextStateName, isCompleteOnUnexpectedNextState: _isCompleteOnUnexpectedNextState);
+                await this._animator.DelayForAnimation(ct, nextStateName, isCompleteOnUnexpectedNextState: _isCompleteOnUnexpectedNextState);
                 DevLog.Log($"{nextStateName} complete");
             }));
         }

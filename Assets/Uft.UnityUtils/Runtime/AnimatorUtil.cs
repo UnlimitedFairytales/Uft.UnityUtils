@@ -8,7 +8,7 @@ namespace Uft.UnityUtils
 {
     public static class AnimatorUtil
     {
-        public static async UniTask DelayForAnimation(this Animator animator, string delayStateName, bool isCompleteAfterFirstLoop = false, bool isCompleteOnUnexpectedNextState = true, int layerIndex = 0, CancellationToken cancellationToken = default)
+        public static async UniTask DelayForAnimation(this Animator animator, CancellationToken cancellationToken, string delayStateName, bool isCompleteAfterFirstLoop = false, bool isCompleteOnUnexpectedNextState = true, int layerIndex = 0)
         {
             if (!animator) return;
             if (layerIndex < 0 || animator.layerCount <= layerIndex) return;

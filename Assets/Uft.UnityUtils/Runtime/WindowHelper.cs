@@ -85,7 +85,7 @@ namespace Uft.UnityUtils
                 if (this._animator)
                 {
                     this._animator.SetTrigger(this._showingTriggerAndStateName);
-                    await this._animator.DelayForAnimation(this._showingTriggerAndStateName, true, this._isCompletionOnUnexpectedNextState, this._layerIndex, linkedCts.Token);
+                    await this._animator.DelayForAnimation(linkedCts.Token, this._showingTriggerAndStateName, true, this._isCompletionOnUnexpectedNextState, this._layerIndex);
                 }
 
                 // 3
@@ -134,7 +134,7 @@ namespace Uft.UnityUtils
                 if (this._animator)
                 {
                     this._animator.SetTrigger(this._hidingTriggerAndStateName);
-                    await this._animator.DelayForAnimation(this._hidingTriggerAndStateName, true, this._isCompletionOnUnexpectedNextState, this._layerIndex, linkedCts.Token);
+                    await this._animator.DelayForAnimation(linkedCts.Token, this._hidingTriggerAndStateName, true, this._isCompletionOnUnexpectedNextState, this._layerIndex);
                 }
             }
             catch (OperationCanceledException) { } // NOTE: OCEは握りつぶす
