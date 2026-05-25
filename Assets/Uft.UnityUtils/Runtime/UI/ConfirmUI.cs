@@ -62,7 +62,7 @@ namespace Uft.UnityUtils.UI
             this._btnCancel.onClick.AddListener(UniTask.UnityAction(async () => await this.SubmitCancel(this.destroyCancellationToken)));
         }
 
-        public async UniTask<OperationResult<int>> ShowDialogAsync(string? headerText = null, string? contentText = null, int timeout_sec = 0, int initialSelection = RESULT_CANCEL)
+        public async UniTask<OperationResult<int>> ShowDialogAsync(CancellationToken ct, string? headerText = null, string? contentText = null, int timeout_sec = 0, int initialSelection = RESULT_CANCEL)
         {
             if (this._windowHelper == null) throw new OperationCanceledException("Before Awake()");
             if (this._btnOk == null) throw new UnassignedReferenceException(nameof(this._btnOk));
@@ -73,16 +73,10 @@ namespace Uft.UnityUtils.UI
             if (this._lblContent != null && contentText != null) this._lblContent.SetText(contentText);
 
             // NOTE: このブロックだけ追加された。それ以外はコピペ
-            if (initialSelection == RESULT_OK)
-            {
-                this._btnOk.Select();
-            }
-            else if (initialSelection == RESULT_CANCEL)
-            {
-                this._btnCancel.Select();
-            }
+            if (initialSelection == RESULT_OK) this._btnOk.Select();
+            else if (initialSelection == RESULT_CANCEL) this._btnCancel.Select();
 
-            var cts = new CancellationTokenSource();
+            using var cts = CancellationTokenSource.CreateLinkedTokenSource(ct);
             IDisposable? timeoutTimer = null;
             try
             {
@@ -95,18 +89,12 @@ namespace Uft.UnityUtils.UI
             finally
             {
                 timeoutTimer?.Dispose();
-                cts.Dispose();
             }
         }
 
-        public virtual async UniTask SubmitCancel(CancellationToken ct = default)
+        public virtual async UniTask SubmitCancel(CancellationToken ct)
         {
             if (this._windowHelper == null) throw new OperationCanceledException("Before Awake()");
-
-            if (ct == default)
-            {
-                ct = this.destroyCancellationToken;
-            }
             this._result = RESULT_CANCEL;
             await this._windowHelper.HideAsync(ct);
         }

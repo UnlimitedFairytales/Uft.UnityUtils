@@ -70,7 +70,7 @@ namespace Uft.UnityUtils.UI
         public WindowState State => this._windowHelper?.State ?? WindowState.Hidden;
 
         /// <summary>引数がnullの場合は文字列を適用しません。</summary>
-        public async UniTask<OperationResult<int>> ShowDialogAsync(string? headerText = null, string? contentText = null, int timeout_sec = 0)
+        public async UniTask<OperationResult<int>> ShowDialogAsync(CancellationToken ct, string? headerText = null, string? contentText = null, int timeout_sec = 0)
         {
             if (this._windowHelper == null) throw new OperationCanceledException("Before Awake()");
 
@@ -78,7 +78,7 @@ namespace Uft.UnityUtils.UI
             if (this._lblHeader != null && headerText != null) this._lblHeader.SetText(headerText);
             if (this._lblContent != null && contentText != null) this._lblContent.SetText(contentText);
 
-            var cts = new CancellationTokenSource();
+            using var cts = CancellationTokenSource.CreateLinkedTokenSource(ct);
             IDisposable? timeoutTimer = null;
             try
             {
@@ -91,18 +91,12 @@ namespace Uft.UnityUtils.UI
             finally
             {
                 timeoutTimer?.Dispose();
-                cts.Dispose();
             }
         }
 
-        public virtual async UniTask SubmitOk(CancellationToken ct = default)
+        public virtual async UniTask SubmitOk(CancellationToken ct)
         {
             if (this._windowHelper == null) throw new OperationCanceledException("Before Awake()");
-
-            if (ct == default)
-            {
-                ct = this.destroyCancellationToken;
-            }
             this._result = RESULT_OK;
             await this._windowHelper.HideAsync(ct);
         }
