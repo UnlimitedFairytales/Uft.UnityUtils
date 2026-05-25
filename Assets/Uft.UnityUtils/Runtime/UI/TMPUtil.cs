@@ -17,13 +17,13 @@ namespace Uft.UnityUtils.UI
         /// 簡易的なタイプライターエフェクト。より実用的な機能が欲しい場合は、DOTween Proなどを使用してください
         /// </summary>
         /// <param name="tmp"></param>
+        /// <param name="cancellationToken"></param>
         /// <param name="text"></param>
         /// <param name="wait_sec"></param>
-        /// <param name="ct"></param>
         /// <param name="scrollRect"></param>
         /// <param name="scrollDuration_sec"></param>
         /// <returns></returns>
-        public static async UniTask TypeWriterEffectAsync(this TMP_Text tmp, string text, float wait_sec = ONE_FRAME * 2, CancellationToken ct = default, ScrollRect? scrollRect = null, float scrollDuration_sec = 0.3f)
+        public static async UniTask TypeWriterEffectAsync(this TMP_Text tmp, CancellationToken cancellationToken, string text, float wait_sec = ONE_FRAME * 2, ScrollRect? scrollRect = null, float scrollDuration_sec = 0.3f)
         {
             var charsPerFrame = wait_sec < 0.001f ? 1000 : ONE_FRAME / wait_sec;
 
@@ -31,7 +31,7 @@ namespace Uft.UnityUtils.UI
             float acc = 0f;
             while (index < text.Length)
             {
-                await UniTask.NextFrame(ct);
+                await UniTask.NextFrame(cancellationToken);
 
                 if (!tmp) return;
 
@@ -57,7 +57,7 @@ namespace Uft.UnityUtils.UI
                     !DOTween.IsTweening(scrollRect)) // NOTE: scrollRectのアサインが不十分だとNREしうるが、考慮外とする
                 {
                     var t = scrollRect.DOVerticalNormalizedPos(0.0f, scrollDuration_sec);
-                    await t.ToUniTask(cancellationToken: ct);
+                    await t.ToUniTask(cancellationToken: cancellationToken);
                 }
             }
         }
