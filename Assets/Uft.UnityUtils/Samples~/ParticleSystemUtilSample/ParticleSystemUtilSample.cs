@@ -14,7 +14,7 @@ namespace Uft.UnityUtils.Samples.ParticleSystemUtilSample
             {
                 var screenPos = Mouse.current.position.ReadValue();
                 var distance = CameraUtil.GetPixelEqualSizeDistance(Screen.height, Camera.main.fieldOfView);
-                this._tapEffect_prefab.CreateAndPlayEffectAsync(screenPos, distance, Camera.main, this.transform).Forget();
+                this._tapEffect_prefab.CreateAndPlayEffectAsync(screenPos, distance, Camera.main, this.transform, destroyCancellationToken).Forget();
             }
         }
     }
