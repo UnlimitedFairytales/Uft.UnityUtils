@@ -6,6 +6,7 @@
 using Cysharp.Threading.Tasks;
 using System;
 using System.IO;
+using System.Threading;
 using UnityEngine;
 
 namespace Uft.UnityUtils
@@ -56,16 +57,14 @@ namespace Uft.UnityUtils
             }
         }
 
-        public static async UniTask<string> LoadTextAsync(string relativePath, bool? isResources = null)
+        public static async UniTask<string> LoadTextAsync(string relativePath, CancellationToken cancellationToken, bool? isResources = null)
         {
             isResources ??= DefaultModeIsResources;
 
             if (isResources.Value)
             {
                 var path = FixPath(relativePath);
-                var asyncOperation = Resources.LoadAsync<TextAsset>(path);
-                await asyncOperation;
-                var asset = asyncOperation.asset as TextAsset;
+                var asset = await Resources.LoadAsync<TextAsset>(path).WithCancellation(cancellationToken) as TextAsset;
                 if (asset == null) throw new InvalidOperationException($"[Resources] Failed to load: {path}");
                 return asset.text;
             }
@@ -76,7 +75,7 @@ namespace Uft.UnityUtils
                 try
                 {
                     using var request = UnityEngine.Networking.UnityWebRequest.Get(path);
-                    await request.SendWebRequest();
+                    await request.SendWebRequest().WithCancellation(cancellationToken);
                     if (request.result != UnityEngine.Networking.UnityWebRequest.Result.Success)
                     {
                         throw new Exception($"responseCode={request.responseCode}, error={request.error}");
@@ -86,10 +85,10 @@ namespace Uft.UnityUtils
 #else
                 try
                 {
-                    return await File.ReadAllTextAsync(path); // NOTE: 他のフローがCancellationTokenをサポートするようになったら、こちらも対応する
+                    return await File.ReadAllTextAsync(path, cancellationToken);
                 }
 #endif
-                catch (Exception ex)
+                catch (Exception ex) when (ex is not OperationCanceledException)
                 {
                     throw new InvalidOperationException($"[StreamingAssets] Failed to load: {path}", ex);
                 }

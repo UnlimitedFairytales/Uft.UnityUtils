@@ -44,8 +44,9 @@ namespace Uft.UnityUtils.Samples.AssetUtilSample
             {
                 try
                 {
+                    var ct = destroyCancellationToken;
                     await UniTask.WaitForSeconds(1);
-                    this.txtText2.text = await AssetUtil.LoadTextAsync(relativePath, false);
+                    this.txtText2.text = await AssetUtil.LoadTextAsync(relativePath, ct, isResources: false);
                 }
                 catch (Exception ex)
                 {
