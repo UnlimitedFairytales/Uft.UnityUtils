@@ -29,7 +29,6 @@ namespace Uft.UnityUtils.Samples.UISample
                         this._lastCts = null;
                     }
                 }
-                this._tmpText.text = "";
                 var cts = new CancellationTokenSource();
                 this._lastCts = cts;
                 try
@@ -38,7 +37,7 @@ namespace Uft.UnityUtils.Samples.UISample
 Thaw, and resolve itself into a dew! \nOr that the Everlasting had not fix'd
 His canon 'gainst self-slaughter! O God! God!
 How weary, stale, flat, and profitable
-Seem to me all the uses of this world!", TMPUtil.ONE_FRAME * 10, this._scrollRect);
+Seem to me all the uses of this world!", false, 0.0333f, this._scrollRect);
                 }
                 catch (OperationCanceledException)
                 {
