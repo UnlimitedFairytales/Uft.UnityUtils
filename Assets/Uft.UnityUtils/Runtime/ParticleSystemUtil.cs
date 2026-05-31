@@ -11,7 +11,7 @@ namespace Uft.UnityUtils
         /// <summary>subEmittersは1段目のみ対応で、再帰的にチェックしていません。また、loop=trueな内容はDelay判定から無視されます。</summary>
         public static async UniTask DelayForParticleSystem(this GameObject instantiated, CancellationToken cancellationToken)
         {
-            bool AnyPlaying(ParticleSystem[] effects)
+            static bool AnyPlaying(ParticleSystem[] effects)
             {
                 foreach (var effect in effects)
                 {
@@ -35,7 +35,7 @@ namespace Uft.UnityUtils
         }
 
         /// <summary>subEmittersが生成元の子にならない場合、Destroy対象にならないため注意してください。生成後のawaitはDelayForParticleSystemに従います。</summary>
-        public static async UniTask CreateAndPlayEffectAsync(this GameObject effectPrefab, Vector3 screenPos, float distance, Camera camera, Transform parent, CancellationToken cancellationToken)
+        public static async UniTask CreateAndPlayEffectAsync(this GameObject effectPrefab, CancellationToken cancellationToken, Vector3 screenPos, float distance, Camera camera, Transform parent)
         {
             var instantiated = Object.Instantiate(effectPrefab, parent);
             if (instantiated)
