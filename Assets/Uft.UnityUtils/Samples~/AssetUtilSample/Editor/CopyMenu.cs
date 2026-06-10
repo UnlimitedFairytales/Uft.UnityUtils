@@ -12,7 +12,7 @@ namespace Uft.UnityUtils.Samples.AssetUtilSample.Editor
         const string MENU_ITEM_RS = "Copy to Resources";
         const string MENU_ITEM_SA = "Copy to StreamingAssets";
 
-        [MenuItem("Tools/Uft.UnityUtils.Samples/AssetUtilSample/" + MENU_ITEM_RS, priority = 21062000 + 1)]
+        [MenuItem("Tools/Uft.UnityUtils.Samples/AssetUtilSample/" + MENU_ITEM_RS, priority = 21062000 + 10, secondaryPriority = 1)]
         private static void Copy2Resources()
         {
             try
@@ -26,7 +26,7 @@ namespace Uft.UnityUtils.Samples.AssetUtilSample.Editor
             AssetDatabase.Refresh();
         }
 
-        [MenuItem("Tools/Uft.UnityUtils.Samples/AssetUtilSample/" + MENU_ITEM_SA, priority = 21062000 + 2)]
+        [MenuItem("Tools/Uft.UnityUtils.Samples/AssetUtilSample/" + MENU_ITEM_SA, priority = 21062000 + 10, secondaryPriority = 2)]
         private static void Copy2StreamingAssets()
         {
             try

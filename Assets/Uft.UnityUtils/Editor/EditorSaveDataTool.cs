@@ -10,7 +10,7 @@ namespace Uft.UnityUtils.Editor
     {
         static readonly DevLogWithTag DevLog = new("[" + nameof(EditorSaveDataTool) + "]");
 
-        [MenuItem("Tools/Uft.UnityUtils/Delete " + SaveApiWindows.EDITOR_SAVE_DATA_NAME, priority = 21062000 - 1)]
+        [MenuItem("Tools/Uft.UnityUtils/Delete " + SaveApiWindows.EDITOR_SAVE_DATA_NAME, priority = 21062000, secondaryPriority = 1)]
         static void DeleteEditorSaveData()
         {
             var title = "Delete " + SaveApiWindows.EDITOR_SAVE_DATA_NAME;
