@@ -13,6 +13,7 @@ namespace Uft.UnityUtils
 
         // Cached
 
+        [Obsolete()]
         public static T? GetCachedComponent<T>(ref T? cached, Component? component) where T : Component
         {
             if (cached != null) return cached;
@@ -23,6 +24,7 @@ namespace Uft.UnityUtils
             return cached;
         }
 
+        [Obsolete()]
         public static T? GetCachedChildComponent<T>(ref T? cached, Component? component, bool includeInactive, string? name = null) where T : Component
         {
             if (cached != null) return cached;
@@ -54,6 +56,7 @@ namespace Uft.UnityUtils
             return cached;
         }
 
+        [Obsolete()]
         public static T[] GetCachedChildrenComponents<T>(ref T[]? cached, Component? component, bool includeInactive) where T : Component
         {
             if (cached != null) return cached;
