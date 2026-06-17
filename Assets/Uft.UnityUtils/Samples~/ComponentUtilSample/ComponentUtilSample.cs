@@ -17,6 +17,8 @@ namespace Uft.UnityUtils.Samples.ComponentUtilSample
                 var t = txtList[i];
                 t.text = $"YEAH! {i}";
             }
+            var txt = instance.transform.GetComponentInChildrenByName<TMP_Text>("txtBar", true);
+            txt.text = "WOO HOO!";
         }
     }
 }

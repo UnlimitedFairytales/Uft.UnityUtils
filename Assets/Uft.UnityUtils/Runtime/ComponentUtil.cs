@@ -18,7 +18,13 @@ namespace Uft.UnityUtils
             return instantiated;
         }
 
-        public static List<TComponent> GetComponentsInChildrenOrderByName<TComponent>(this Component component, bool includeInactive, Func<TComponent, bool>? whereCondition = null) where TComponent : Component
+        public static TComponent? GetComponentInChildrenByName<TComponent>(this Component component, string name, bool includeInactive = false) where TComponent : Component
+        {
+            return component.GetComponentsInChildren<TComponent>(includeInactive)
+                .FirstOrDefault(c => c.gameObject.name == name);
+        }
+
+        public static List<TComponent> GetComponentsInChildrenOrderByName<TComponent>(this Component component, bool includeInactive = false, Func<TComponent, bool>? whereCondition = null) where TComponent : Component
         {
             if (whereCondition == null)
             {
