@@ -80,5 +80,16 @@ namespace Uft.UnityUtils.UI
             RectTransformUtility.ScreenPointToLocalPointInRectangle(originParent, screenPoint, camera, out var localPoint);
             return localPoint;
         }
+
+        /// <summary>ワールド座標をdestinationのAnchoredPositionに変換する。overlayの場合はcameraはnull</summary>
+        public static Vector2 ToOtherAnchoredPosition(Camera? camera, Vector3 worldPos, RectTransform destination)
+        {
+            var originParent = (RectTransform)destination.parent;
+            var screenPoint = RectTransformUtility.WorldToScreenPoint(camera, worldPos);
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(originParent, screenPoint, camera, out var localPoint);
+            var anchorCenter = (destination.anchorMin + destination.anchorMax) * 0.5f;
+            var anchorOffset = (anchorCenter - originParent.pivot) * originParent.rect.size;
+            return localPoint - anchorOffset;
+        }
     }
 }
