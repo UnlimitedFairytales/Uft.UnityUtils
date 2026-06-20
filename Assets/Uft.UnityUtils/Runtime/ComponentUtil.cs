@@ -18,6 +18,22 @@ namespace Uft.UnityUtils
             return instantiated;
         }
 
+        // TODO: sample
+
+        public static TComponent? GetComponentOnSceneRoot<TComponent>(this Component component) where TComponent : Component
+        {
+            var objects = component.gameObject.scene.GetRootGameObjects();
+            var myRoot = component.transform.root.gameObject;
+            for (int i = 0; i < objects.Length; i++)
+            {
+                var obj = objects[i];
+                if (obj == myRoot) continue;
+                var cmp = obj.GetComponent<TComponent>();
+                if (cmp != null) return cmp;
+            }
+            return null;
+        }
+
         public static TComponent? GetComponentInChildrenByName<TComponent>(this Component component, string name, bool includeInactive = false) where TComponent : Component
         {
             return component.GetComponentsInChildren<TComponent>(includeInactive)
