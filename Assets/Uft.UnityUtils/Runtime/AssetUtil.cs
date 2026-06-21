@@ -13,6 +13,9 @@ namespace Uft.UnityUtils
 {
     public static class AssetUtil
     {
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        static void ResetState() => _defaultModeIsResources = false;
+
         static readonly DevLogWithTag DevLog = new("[" + nameof(AssetUtil) + "]");
 
         static bool _defaultModeIsResources;

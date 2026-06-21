@@ -7,6 +7,9 @@ namespace Uft.UnityUtils
 {
     public static class CacheUtil
     {
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        static void ResetState() => isHeavyCallLogged = false;
+
         static readonly DevLogWithTag DevLog = new("[" + nameof(CacheUtil) + "]");
 
         public static bool isHeavyCallLogged = false;
