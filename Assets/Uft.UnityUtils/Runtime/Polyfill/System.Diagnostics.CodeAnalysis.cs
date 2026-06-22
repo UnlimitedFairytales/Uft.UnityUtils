@@ -1,9 +1,10 @@
 #pragma warning disable IDE0009 // メンバー アクセスを修飾する必要があります。
 
+#if !NET5_0_OR_GREATER
 namespace System.Diagnostics.CodeAnalysis
 {
     [AttributeUsage(AttributeTargets.Method | AttributeTargets.Property, Inherited = false, AllowMultiple = true)]
-    sealed class MemberNotNullAttribute : Attribute
+    public sealed class MemberNotNullAttribute : Attribute
     {
         /// <summary>Initializes the attribute with a field or property member.</summary>
         /// <param name="member">
@@ -22,7 +23,7 @@ namespace System.Diagnostics.CodeAnalysis
     }
 
     [AttributeUsage(AttributeTargets.Method | AttributeTargets.Property, Inherited = false, AllowMultiple = true)]
-    sealed class MemberNotNullWhenAttribute : Attribute
+    public sealed class MemberNotNullWhenAttribute : Attribute
     {
         /// <summary>Initializes the attribute with the specified return value condition and a field or property member.</summary>
         /// <param name="returnValue">
@@ -57,3 +58,4 @@ namespace System.Diagnostics.CodeAnalysis
         public string[] Members { get; }
     }
 }
+#endif
