@@ -1,7 +1,6 @@
 #nullable enable
 
 using UnityEngine;
-using UnityEngine.Profiling;
 using UnityEngine.UI;
 
 namespace Uft.UnityUtils.UI
@@ -29,23 +28,12 @@ namespace Uft.UnityUtils.UI
 
         protected virtual void Update()
         {
-            this._timer += Time.unscaledDeltaTime;
-            this._frameCount++;
-            if (this._timer >= this._interval)
+            var result = ProfilerUtil.FpsAndMemory(ref this._timer, ref this._frameCount, this._interval);
+            if (result != null)
             {
-                this._fps = this._frameCount / this._timer;
-                this._text!.color = (this._fps < 30f) ? Color.red : this._normalColor;
-                this._timer -= this._interval;
-                this._frameCount = 0;
-
-                long totalReserved = Profiler.GetTotalReservedMemoryLong() / (1024 * 1024);
-                long totalUsed = Profiler.GetTotalAllocatedMemoryLong() / (1024 * 1024);
-                long monoUsed = Profiler.GetMonoUsedSizeLong() / (1024 * 1024);
-
-                this._text!.text = $"{this._fps:F1} FPS" + "\n" +
-                    $"Total Reserved: {totalReserved} MB\n" +
-                    $"Used: {totalUsed} MB\n" +
-                    $"Mono: {monoUsed} MB";
+                this._fps = result.Value.fps;
+                this._text!.text = result.Value.text;
+                this._text!.color = this._fps < 30 ? Color.red : this._normalColor;
             }
         }
     }
