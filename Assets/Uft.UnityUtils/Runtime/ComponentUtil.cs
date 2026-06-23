@@ -28,8 +28,7 @@ namespace Uft.UnityUtils
             {
                 var obj = objects[i];
                 if (obj == myRoot) continue;
-                var cmp = obj.GetComponent<TComponent>();
-                if (cmp != null) return cmp;
+                if (obj.TryGetComponent<TComponent>(out var cmp)) return cmp;
             }
             return null;
         }
