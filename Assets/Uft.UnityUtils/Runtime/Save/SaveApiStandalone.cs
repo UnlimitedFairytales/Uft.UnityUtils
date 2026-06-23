@@ -14,7 +14,7 @@ namespace Uft.UnityUtils.Save
         {
             if (!File.Exists(filePath))
             {
-                File.WriteAllBytes(filePath, emptyData);
+                this.WriteRaw(filePath, emptyData);
             }
         }
 
@@ -24,8 +24,7 @@ namespace Uft.UnityUtils.Save
         {
             if (!File.Exists(filePath))
             {
-                DevLog.Log($"{nameof(ReadRaw)}() file not found. ({nameof(filePath)}={filePath})");
-                throw new FileNotFoundException();
+                throw new FileNotFoundException($"{nameof(filePath)}={filePath}");
             }
             var buffer = File.ReadAllBytes(filePath);
             DevLog.Log($"{nameof(ReadRaw)}() loaded {buffer.Length} bytes.");
@@ -34,8 +33,20 @@ namespace Uft.UnityUtils.Save
 
         public void WriteRaw(string filePath, byte[] buffer)
         {
-            using var fs = new FileStream(filePath, FileMode.Create, FileAccess.Write);
-            fs.Write(buffer);
+            var tempFilePath = filePath + ".tmp";
+            using (var fs = new FileStream(tempFilePath, FileMode.Create, FileAccess.Write, FileShare.None))
+            {
+                fs.Write(buffer);
+                fs.Flush(true);
+            }
+            if (File.Exists(filePath))
+            {
+                File.Replace(tempFilePath, filePath, null);
+            }
+            else
+            {
+                File.Move(tempFilePath, filePath);
+            }
             DevLog.Log($"{nameof(WriteRaw)}() written {buffer.Length} bytes.");
         }
     }
