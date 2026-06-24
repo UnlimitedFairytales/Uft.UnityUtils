@@ -9,5 +9,6 @@ namespace Uft.UnityUtils.Save
         void Initialize(string filePath, byte[] emptyData);
         byte[] ReadRaw(string filePath);
         void WriteRaw(string filePath, byte[] buffer);
+        void MoveCorruptedFile(string filePath);
     }
 }

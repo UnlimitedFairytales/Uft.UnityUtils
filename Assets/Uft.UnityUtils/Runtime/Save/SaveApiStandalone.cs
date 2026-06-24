@@ -1,5 +1,6 @@
 #nullable enable
 
+using System;
 using System.IO;
 
 namespace Uft.UnityUtils.Save
@@ -48,6 +49,15 @@ namespace Uft.UnityUtils.Save
                 File.Move(tempFilePath, filePath);
             }
             DevLog.Log($"{nameof(WriteRaw)}() written {buffer.Length} bytes.");
+        }
+
+        public void MoveCorruptedFile(string filePath)
+        {
+            if (!File.Exists(filePath)) return;
+            var timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
+            var backupPath = $"{filePath}.{timestamp}.corrupted";
+            File.Move(filePath, backupPath);
+            DevLog.Log($"{nameof(MoveCorruptedFile)}() moved to {backupPath}");
         }
     }
 }
