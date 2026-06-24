@@ -9,6 +9,8 @@ namespace Uft.UnityUtils.Audio
 {
     public class SoundManager : MonoBehaviour
     {
+        // Static members ======================================================
+
         static readonly DevLogWithTag DevLog = new("[" + nameof(SoundManager) + "]");
 
         static void PlayAudioInner(AudioClip clip, bool isLoop, float volume, AudioSource[] audioList, ref int lastIndex)
@@ -44,7 +46,7 @@ namespace Uft.UnityUtils.Audio
             }
         }
 
-        // Parameters
+        // Parameters ==========================================================
 
         [SerializeField] AudioMixer _audioMixer = null!; public AudioMixer AudioMixer => this._audioMixer;
         [SerializeField] string _masterVolumeName = "MasterVolume";
@@ -55,6 +57,8 @@ namespace Uft.UnityUtils.Audio
         [SerializeField] AudioSource _audioBgm2 = null!;
         [SerializeField] AudioSource[] _audioSeList = null!; // NOTE: 8つ想定
         [SerializeField] AudioSource[] _audioVoiceList = null!; // NOTE: 8つ想定
+
+        // Status ==============================================================
 
         /// <summary>フェード中は新しい方をcurrentと見なす</summary>
         bool _currentBgmIsBgm1 = false;
@@ -73,6 +77,8 @@ namespace Uft.UnityUtils.Audio
                 return false;
             }
         }
+
+        // Methods =============================================================
 
         public void SetOutput(AudioMixer? audioMixer = null, string bgmName = "BGM", string seName = "SE", string voiceName = "Voice",
             string masterVolumeName = "MasterVolume",
