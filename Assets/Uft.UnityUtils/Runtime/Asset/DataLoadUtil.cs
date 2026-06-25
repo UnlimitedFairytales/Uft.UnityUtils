@@ -41,7 +41,7 @@ namespace Uft.UnityUtils.Asset
 
             if (isResources.Value)
             {
-                var path = FixPath(relativePath);
+                var path = AssetLoadProxy.TrimExtension(relativePath);
                 var asset = Resources.Load<TextAsset>(path);
                 if (asset == null) throw new InvalidOperationException($"(Resources) Failed to load: {path}");
                 return asset.text;
@@ -66,7 +66,7 @@ namespace Uft.UnityUtils.Asset
 
             if (isResources.Value)
             {
-                var path = FixPath(relativePath);
+                var path = AssetLoadProxy.TrimExtension(relativePath);
                 var asset = await Resources.LoadAsync<TextAsset>(path).WithCancellation(cancellationToken) as TextAsset;
                 if (asset == null) throw new InvalidOperationException($"(Resources) Failed to load: {path}");
                 return asset.text;
@@ -96,14 +96,6 @@ namespace Uft.UnityUtils.Asset
                     throw new InvalidOperationException($"(StreamingAssets) Failed to load: {path}", ex);
                 }
             }
-        }
-
-        static string FixPath(string relativePath)
-        {
-            var dirName = Path.GetDirectoryName(relativePath) ?? "";
-            var fileName = Path.GetFileNameWithoutExtension(relativePath);
-            var path = Path.Combine(dirName, fileName).Replace(@"\", "/");
-            return path;
         }
     }
 }
