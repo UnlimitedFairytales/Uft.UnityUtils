@@ -32,7 +32,7 @@ namespace Uft.UnityUtils.Samples.AssetUtilSample
             }
             try
             {
-                this.txtText1.text = AssetUtil.LoadText(relativePath, true);
+                this.txtText1.text = DataLoadUtil.LoadText(relativePath, true);
             }
             catch (Exception ex)
             {
@@ -47,7 +47,7 @@ namespace Uft.UnityUtils.Samples.AssetUtilSample
                 {
                     var ct = this.destroyCancellationToken;
                     await UniTask.WaitForSeconds(1);
-                    this.txtText2.text = await AssetUtil.LoadTextAsync(relativePath, ct, isResources: false);
+                    this.txtText2.text = await DataLoadUtil.LoadTextAsync(relativePath, ct, isResources: false);
                 }
                 catch (Exception ex)
                 {

@@ -11,12 +11,12 @@ using UnityEngine;
 
 namespace Uft.UnityUtils.Asset
 {
-    public static class AssetUtil
+    public static class DataLoadUtil
     {
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
         static void ResetState() => _defaultModeIsResources = false;
 
-        static readonly DevLogWithTag DevLog = new("[" + nameof(AssetUtil) + "]");
+        static readonly DevLogWithTag DevLog = new("[" + nameof(DataLoadUtil) + "]");
 
         static bool _defaultModeIsResources;
         public static bool DefaultModeIsResources
@@ -43,7 +43,7 @@ namespace Uft.UnityUtils.Asset
             {
                 var path = FixPath(relativePath);
                 var asset = Resources.Load<TextAsset>(path);
-                if (asset == null) throw new InvalidOperationException($"[Resources] Failed to load: {path}");
+                if (asset == null) throw new InvalidOperationException($"(Resources) Failed to load: {path}");
                 return asset.text;
             }
             else
@@ -55,7 +55,7 @@ namespace Uft.UnityUtils.Asset
                 }
                 catch (Exception ex)
                 {
-                    throw new InvalidOperationException($"[StreamingAssets] Failed to load: {path}", ex);
+                    throw new InvalidOperationException($"(StreamingAssets) Failed to load: {path}", ex);
                 }
             }
         }
@@ -68,7 +68,7 @@ namespace Uft.UnityUtils.Asset
             {
                 var path = FixPath(relativePath);
                 var asset = await Resources.LoadAsync<TextAsset>(path).WithCancellation(cancellationToken) as TextAsset;
-                if (asset == null) throw new InvalidOperationException($"[Resources] Failed to load: {path}");
+                if (asset == null) throw new InvalidOperationException($"(Resources) Failed to load: {path}");
                 return asset.text;
             }
             else
@@ -93,7 +93,7 @@ namespace Uft.UnityUtils.Asset
 #endif
                 catch (Exception ex) when (ex is not OperationCanceledException)
                 {
-                    throw new InvalidOperationException($"[StreamingAssets] Failed to load: {path}", ex);
+                    throw new InvalidOperationException($"(StreamingAssets) Failed to load: {path}", ex);
                 }
             }
         }
