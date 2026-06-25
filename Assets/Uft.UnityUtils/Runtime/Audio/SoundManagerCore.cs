@@ -10,11 +10,11 @@ using UnityEngine.Audio;
 
 namespace Uft.UnityUtils.Audio
 {
-    public class SoundManager : MonoBehaviour
+    public class SoundManagerCore : MonoBehaviour
     {
         // Static members ======================================================
 
-        static readonly DevLogWithTag DevLog = new("[" + nameof(SoundManager) + "]");
+        static readonly DevLogWithTag DevLog = new("[" + nameof(SoundManagerCore) + "]");
 
         static bool IsLoopSectionEnabled(int loopStart, int loopLength) => 0 <= loopStart && 0 < loopLength;
 

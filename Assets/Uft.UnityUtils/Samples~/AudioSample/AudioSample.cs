@@ -14,7 +14,7 @@ namespace Uft.UnityUtils.Samples.AudioSample
         [SerializeField] Slider _sldVoice;
 
         [Header("SoundManager")]
-        [SerializeField] SoundManager _soundManager;
+        [SerializeField] SoundManagerCore _soundManager;
         [SerializeField] AudioClip _audioBGM1;
         [SerializeField] AudioClip _audioSE1;
         [SerializeField] AudioClip _audioVoice1;
