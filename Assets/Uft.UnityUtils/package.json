@@ -20,9 +20,9 @@
       "path": "Samples~/AnimatorUtilSample"
     },
     {
-      "displayName": "AssetUtilSample",
-      "description": "AssetUtilSample",
-      "path": "Samples~/AssetUtilSample"
+      "displayName": "AssetSamples",
+      "description": "AssetSamples",
+      "path": "Samples~/AssetSamples"
     },
     {
       "displayName": "AudioSample",

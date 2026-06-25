@@ -5,12 +5,12 @@ using Uft.UnityUtils.Asset;
 using Uft.UnityUtils.Common;
 using UnityEngine;
 
-namespace Uft.UnityUtils.Samples.AssetUtilSample
+namespace Uft.UnityUtils.Samples.AssetSamples.DataLoadUtilSample
 {
-    public class AssetUtilSample : MonoBehaviour
+    public class DataLoadUtilSample : MonoBehaviour
     {
         public const string PATH_PART1 = "Assets/Samples/Uft.UnityUtils";
-        public const string PATH_PART2 = "AssetUtilSample/Scripts";
+        public const string PATH_PART2 = "AssetSamples/DataLoadUtilSample/Scripts";
         const string fileName = "txt-sample.txt";
 
         [SerializeField] TMP_Text txtText1;
@@ -36,7 +36,7 @@ namespace Uft.UnityUtils.Samples.AssetUtilSample
             }
             catch (Exception ex)
             {
-                var message = "Please click \"Tools > Uft.UnityUtils.Samples > AssetUtilSample > ..., and restart";
+                var message = "Please click \"Tools > Uft.UnityUtils.Samples > AssetSamples/DataLoadUtilSample > ..., and restart";
                 DevLog.LogWarning(ex.Message);
                 this.txtText1.text = message;
             }
@@ -51,7 +51,7 @@ namespace Uft.UnityUtils.Samples.AssetUtilSample
                 }
                 catch (Exception ex)
                 {
-                    var message = "Please click \"Tools > Uft.UnityUtils.Samples > AssetUtilSample > ..., and restart";
+                    var message = "Please click \"Tools > Uft.UnityUtils.Samples > AssetSamples/DataLoadUtilSample > ..., and restart";
                     DevLog.LogWarning(ex.Message);
                     this.txtText2.text = message;
                 }

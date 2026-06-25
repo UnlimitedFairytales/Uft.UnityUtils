@@ -1,5 +1,5 @@
 {
-    "name": "Uft.UnityUtils.Samples.AssetUtilSample",
+    "name": "Uft.UnityUtils.Samples.AssetSamples.DataLoadUtilSample",
     "rootNamespace": "",
     "references": [
         "Uft.UnityUtils",

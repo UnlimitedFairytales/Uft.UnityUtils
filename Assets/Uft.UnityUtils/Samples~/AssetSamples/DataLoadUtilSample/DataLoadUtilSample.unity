@@ -306,7 +306,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8217605665569222458, guid: 277e51c4f224a854fa2ec80c2bb5c654, type: 3}
       propertyPath: m_Name
-      value: AssetUtilSample
+      value: DataLoadUtilSample
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
