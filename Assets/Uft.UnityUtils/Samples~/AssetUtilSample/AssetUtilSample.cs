@@ -1,6 +1,7 @@
 using Cysharp.Threading.Tasks;
 using System;
 using TMPro;
+using Uft.UnityUtils.Asset;
 using Uft.UnityUtils.Common;
 using UnityEngine;
 
@@ -44,7 +45,7 @@ namespace Uft.UnityUtils.Samples.AssetUtilSample
             {
                 try
                 {
-                    var ct = destroyCancellationToken;
+                    var ct = this.destroyCancellationToken;
                     await UniTask.WaitForSeconds(1);
                     this.txtText2.text = await AssetUtil.LoadTextAsync(relativePath, ct, isResources: false);
                 }

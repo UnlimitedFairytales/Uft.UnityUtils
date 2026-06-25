@@ -9,7 +9,7 @@ using System.IO;
 using System.Threading;
 using UnityEngine;
 
-namespace Uft.UnityUtils
+namespace Uft.UnityUtils.Asset
 {
     public static class AssetUtil
     {
