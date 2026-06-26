@@ -194,7 +194,11 @@ namespace Uft.UnityUtils.Audio
                 }
                 SetLoopWatch(this._audioBgm2, isLoop, loopStart, loopLength, this._loopCtsBySource, this.destroyCancellationToken);
                 this._audioBgm1.DOFade(0, prevFadeOutSeconds).SetEase(ease)
-                    .OnComplete(() => this._audioBgm1.Stop());
+                    .OnComplete(() =>
+                    {
+                        CancelLoopWatch(this._audioBgm1, this._loopCtsBySource);
+                        this._audioBgm1.Stop();
+                    });
             }
             else
             {
@@ -214,7 +218,11 @@ namespace Uft.UnityUtils.Audio
                 }
                 SetLoopWatch(this._audioBgm1, isLoop, loopStart, loopLength, this._loopCtsBySource, this.destroyCancellationToken);
                 this._audioBgm2.DOFade(0, prevFadeOutSeconds).SetEase(ease)
-                    .OnComplete(() => this._audioBgm2.Stop());
+                    .OnComplete(() =>
+                    {
+                        CancelLoopWatch(this._audioBgm2, this._loopCtsBySource);
+                        this._audioBgm2.Stop();
+                    });
             }
             this._currentBgmIsBgm1 = !this._currentBgmIsBgm1;
         }
